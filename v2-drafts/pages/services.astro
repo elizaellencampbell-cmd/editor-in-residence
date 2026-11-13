@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Aura from '../components/Aura.astro';
+import { site } from '../site.config.js';
+
+const services = [
+  { name: 'Pitch strategy and writing', colour: 'var(--coral)', text: 'What editors actually say yes to, and how to stand out among the 80-odd pitches an editor gets each day. Then I write the pitches and press releases.' },
+  { name: 'Pitch editing and guidance', colour: 'var(--pink)', text: "Send me what you've drafted. I'll rework the wording, sharpen the angle and tell you which outlets it fits." },
+  { name: 'Audience analysis', colour: 'var(--aqua)', text: 'Who reads each of your target publications, what its editors want, and what earns coverage there.' },
+  { name: 'Brand positioning and tone of voice', colour: 'var(--seagreen)', text: "Brand identity and voice guides, built on the in-house voice work I've done at MADE Group and Afterpay." },
+  { name: 'Content and editorial strategy', colour: 'var(--sun)', text: 'Data-led plans for owned channels, newsletters and SEO.' },
+  { name: 'Copywriting', colour: 'var(--sky)', text: 'Brand, web and social copy that sounds like a person wrote it.' },
+  { name: 'Strategic consulting', colour: 'var(--aqua)', text: 'Ongoing advice on getting stories over the line with media.' },
+];
+---
+<Base title="Services" description="Pitch strategy, audience analysis, tone of voice, content strategy and copywriting for PR agencies and brands.">
+  <PageHead label="Work with me" title="Services." lede="I spent years deciding which pitches made it in. Now I help you write the ones that do." />
+
+  <section class="list">
+    <div class="wrap">
+      <ol class="svc">
+        {services.map((s, i) => (
+          <li style={`--c:${s.colour}`}>
+            <span class="n">0{i + 1}</span>
+            <h2><span class="dot" aria-hidden="true"></span>{s.name}</h2>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <div class="field">
+    <Aura />
+    <section>
+      <div class="wrap ways">
+        <div>
+          <p class="label">Monthly retainer</p>
+          <p class="big-serif">For agencies and brands with a steady flow of stories.</p>
+          <p>Pitch writing and press releases are part of the retainer, scoped to your roster and how much you're putting out. Get in touch for a quote.</p>
+        </div>
+        <div>
+          <p class="label">Ad hoc</p>
+          <p class="big-serif">{site.hourlyRate} an hour.</p>
+          <p>For one-off jobs, like a single press release, a pitch audit or a voice guide.</p>
+        </div>
+      </div>
+      <p class="wrap ask big-serif"><a href="/contact/" class="text-link">Start a conversation</a></p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .list { padding-top: 0; margin-top: 0; }
+  .svc { list-style: none; padding: 0; margin: 0; }
+  .svc li {
+    display: grid; grid-template-columns: 60px 1.2fr 1fr; gap: 24px; align-items: baseline;
+    padding: 30px 0; border-top: 1px solid var(--line);
+  }
+  .svc li:last-child { border-bottom: 1px solid var(--line); }
+  .n { font-size: .75rem; letter-spacing: .16em; color: var(--muted); }
+  .svc h2 { font-size: clamp(1.7rem, 3.6vw, 2.8rem); margin: 0; display: flex; align-items: center; gap: 16px; }
+  .svc p { margin: 0; color: var(--muted); }
+  .dot { flex: none; width: .38em; height: .38em; border-radius: 50%; background: radial-gradient(circle, var(--ink) 0 33%, var(--c) 35%); box-shadow: 0 0 24px var(--c); }
+  @media (max-width: 760px) { .svc li { grid-template-columns: 1fr; gap: 8px; } }
+  .ways { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  @media (max-width: 760px) { .ways { grid-template-columns: 1fr; gap: 32px; } }
+  .label { opacity: .8; }
+  .ask { margin-top: 48px; }
+</style>

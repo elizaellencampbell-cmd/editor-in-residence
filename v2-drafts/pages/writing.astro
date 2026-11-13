@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import articles from '../data/articles.json';
+import { sections, verticals } from '../site.config.js';
+
+const sorted = [...articles].sort((a, b) => b.date.localeCompare(a.date));
+const usedVerticals = Object.keys(verticals).filter((v) => articles.some((a) => a.vertical === v));
+---
+<Base title="Writing" description="Features, interviews, guides and columns by Eliza Campbell for Concrete Playground, Time Out Melbourne, Halliday Wine Companion and Broadsheet.">
+  <PageHead
+    label="Writing"
+    title="Bylines."
+    lede="Features, interviews, guides and columns for Concrete Playground, Time Out Melbourne, Halliday Wine Companion and Broadsheet."
+  />
+
+  <section class="list">
+    <div class="wrap">
+      <div class="filters" role="group" aria-label="Filter by type">
+        <button class="f on" data-kind="section" data-value="all">Everything</button>
+        {sections.map((s) => <button class="f" data-kind="section" data-value={s}>{s}</button>)}
+      </div>
+      <div class="filters topics" role="group" aria-label="Filter by topic">
+        <button class="f on" data-kind="vertical" data-value="all">All topics</button>
+        {usedVerticals.map((v) => (
+          <button class="f" data-kind="vertical" data-value={v} style={`--c:${verticals[v]}`}><span class="dot" aria-hidden="true"></span>{v}</button>
+        ))}
+      </div>
+
+      <div class="tiles" id="cards">
+        {sorted.map((a) => <ArticleCard a={a} />)}
+      </div>
+      <p id="empty" class="small-serif muted" hidden>Nothing here yet for that combination.</p>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  (function () {
+    var state = { section: 'all', vertical: 'all' };
+    var cards = document.querySelectorAll('#cards .tile');
+    var empty = document.getElementById('empty');
+    function apply() {
+      var shown = 0;
+      cards.forEach(function (c) {
+        var ok = (state.section === 'all' || c.dataset.section === state.section) &&
+                 (state.vertical === 'all' || c.dataset.vertical === state.vertical);
+        c.hidden = !ok;
+        if (ok) shown++;
+      });
+      empty.hidden = shown > 0;
+    }
+    document.querySelectorAll('.f').forEach(function (b) {
+      b.addEventListener('click', function () {
+        state[b.dataset.kind] = b.dataset.value;
+        document.querySelectorAll('.f[data-kind="' + b.dataset.kind + '"]').forEach(function (x) {
+          x.classList.toggle('on', x === b);
+        });
+        apply();
+      });
+    });
+  })();
+</script>
+
+<style>
+  .list { padding-top: 0; margin-top: 0; }
+  .filters { display: flex; flex-wrap: wrap; gap: 6px 28px; margin-bottom: 14px; }
+  .topics { margin-bottom: 64px; }
+  .f {
+    font: inherit; font-family: var(--serif); font-size: 1.25rem; cursor: pointer;
+    background: none; border: 0; padding: 4px 0; color: var(--muted);
+    display: inline-flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid transparent;
+  }
+  .topics .f { font-size: 1rem; font-family: var(--sans); }
+  .f:hover { color: var(--ink); }
+  .f.on { color: var(--ink); font-style: italic; border-bottom-color: currentColor; }
+  .topics .f.on { font-style: normal; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+  .tile[hidden] { display: none; }
+</style>

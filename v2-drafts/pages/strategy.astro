@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+
+const cases = [
+  {
+    org: 'Afterpay',
+    role: 'Content Strategist, Block (Afterpay ANZ) · Sep 2022 – Mar 2024',
+    colour: 'var(--aqua)',
+    stat: '919%',
+    statLabel: 'growth in organic website pageviews',
+    body: [
+      'I ran editorial, commercial and affiliate content strategy across the app, web and newsletter, and wrote the brand tone-of-voice guide. Test-and-learn programs tuned what we published for engagement, frequency and revenue, and I advised the CRM, lifecycle, social and B2B leads along the way.',
+      'Organic website pageviews grew 919%, and app pageviews grew 19%.',
+    ],
+  },
+  {
+    org: 'Concrete Playground',
+    role: 'Managing Editor · May 2025 – Nov 2026',
+    colour: 'var(--coral)',
+    stat: '17×',
+    statLabel: 'more link clicks from social',
+    body: [
+      'I led the Sydney, Melbourne and Brisbane editions on my own, covering work previously done by five roles. I wrote the 2026 editorial strategy, built three weekly city newsletters, and halved our posting volume to focus on fewer, better posts.',
+      'In my first 18 months, compared with the 18 months before, social engagements grew from 1.0M to 4.4M and link clicks from 48K to 826K. Engagements per post rose 108%.',
+    ],
+  },
+  {
+    org: 'MADE Group',
+    role: 'Communications & Content Specialist (cocobella, Rokeby, Impressed) · Aug 2024 – Feb 2025',
+    colour: 'var(--seagreen)',
+    stat: '78%',
+    statLabel: 'audience growth for cocobella',
+    body: [
+      'A six-month contract developing content and PR strategy and brand tone-of-voice guides. I gave creative direction on brand shoots and TVC production, and managed influencers, ambassadors, agencies and creators.',
+      'Audiences grew 78% for cocobella and 49% for Rokeby.',
+    ],
+  },
+  {
+    org: 'Time Out Melbourne',
+    role: 'Editor · Nov 2021 – Sep 2022',
+    colour: 'var(--sun)',
+    stat: 'On camera',
+    statLabel: 'city guides video strategy',
+    body: [
+      "I created Time Out's city guides video strategy and presented it on camera, project managed the Time Out Food & Drink Awards, and consulted on commercial partnership briefs and pitches.",
+    ],
+  },
+];
+---
+<Base title="Strategy" description="Content, editorial and brand strategy case studies from Eliza Campbell.">
+  <PageHead label="Strategy" title="The thinking." lede="Content, editorial and brand strategy from my in-house years. The same thinking goes into every client engagement." />
+
+  <div class="cases">
+    {cases.map((c, i) => (
+      <section class="case glow-bg" style={`--c:${c.colour}`}>
+        <div class="wrap cols">
+          <div class="side">
+            <span class="num">0{i + 1}</span>
+            <span class="stat">{c.stat}</span>
+            <span class="small-serif">{c.statLabel}</span>
+          </div>
+          <div class="narrow">
+            <h2>{c.org}</h2>
+            <p class="label muted">{c.role}</p>
+            {c.body.map((p, j) => <p class={j === c.body.length - 1 && c.body.length > 1 ? 'big-serif result' : ''}>{p}</p>)}
+          </div>
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <section>
+    <div class="wrap">
+      <p class="big-serif">Need a plan like this? <a href="/contact/" class="text-link">Let's talk.</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cases { margin-top: 0; }
+  .case { border-bottom: 1px solid var(--line); }
+  .case:first-child { padding-top: 0; }
+  .cols { display: grid; grid-template-columns: 1fr 1.6fr; gap: 56px; }
+  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; gap: 20px; } }
+  .side { display: flex; flex-direction: column; gap: 6px; align-self: start; position: sticky; top: 40px; }
+  .num { font-size: .75rem; letter-spacing: .16em; color: var(--muted); }
+  .stat {
+    font-family: var(--serif); font-size: clamp(3.6rem, 8vw, 6.5rem); line-height: 1;
+    text-shadow: 0 0 40px color-mix(in srgb, var(--c) 70%, transparent);
+  }
+  h2 { font-size: clamp(2.2rem, 4.5vw, 3.6rem); }
+  .label { margin-bottom: 1.6em; }
+  .result { font-size: clamp(1.3rem, 2.4vw, 1.8rem); }
+</style>

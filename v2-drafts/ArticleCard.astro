@@ -1,0 +1,58 @@
+---
+import { verticals } from '../site.config.js';
+const { a } = Astro.props;
+const colour = verticals[a.vertical] ?? 'var(--aqua)';
+---
+<a
+  class="tile"
+  href={a.url}
+  target="_blank"
+  rel="noopener"
+  data-section={a.section}
+  data-vertical={a.vertical}
+  style={`--tone:${colour}`}
+>
+  <div class="pic">
+    <div class="glow" aria-hidden="true"></div>
+    {a.image && <img src={a.image} alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" />}
+    <span class="tab">{a.outlet}</span>
+    <p class="quote">{a.quote}{a.quoteBy && <span class="by">{a.quoteBy}</span>}</p>
+  </div>
+  <p class="kicker">{a.section} · {a.vertical}</p>
+  <h3>{a.title}</h3>
+</a>
+
+<style>
+  .tile { display: block; text-decoration: none; color: inherit; }
+  .pic {
+    position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+    background: var(--field); isolation: isolate;
+  }
+  .glow {
+    position: absolute; inset: -15%; z-index: -1; filter: blur(40px);
+    background:
+      radial-gradient(circle at 70% 30%, var(--tone), transparent 55%),
+      radial-gradient(circle at 25% 75%, color-mix(in srgb, var(--tone) 60%, var(--pink)), transparent 55%);
+  }
+  .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s, filter .6s; }
+  .tab {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    background: var(--bg); color: var(--ink); padding: 4px 14px 6px;
+    font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
+  }
+  .quote {
+    position: absolute; inset: auto 0 0 0; margin: 0; padding: 60px 22px 22px;
+    font-family: var(--serif); font-style: italic; font-size: 1.15rem; line-height: 1.35;
+    color: #f6efe2;
+    background: linear-gradient(transparent, rgba(6, 24, 42, .78));
+    opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s;
+  }
+  .by { display: block; font-family: var(--sans); font-style: normal; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; margin-top: 8px; opacity: .85; }
+  .tile:hover .quote, .tile:focus-visible .quote { opacity: 1; transform: none; }
+  .tile:hover img { transform: scale(1.04); filter: saturate(1.1); }
+  /* No hover on touch screens: always show the quote */
+  @media (hover: none) { .quote { opacity: 1; transform: none; } }
+  .kicker { margin: 16px 0 6px; font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  h3 { font-size: 1.35rem; margin: 0; }
+  .tile:hover h3 { font-style: italic; }
+</style>

@@ -1,0 +1,26 @@
+{
+  "name": "editor-in-residence",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "dev:cms": "tinacms dev -c \"astro dev\"",
+    "build": "astro build",
+    "build:cms": "tinacms build && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/bodoni-moda": "^5.3.0",
+    "@fontsource/bodoni-moda": "^5.3.0",
+    "@fontsource/dm-sans": "^5.3.0",
+    "@fontsource/nunito": "^5.3.0",
+    "astro": "7.4.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tinacms": "^3.15.2"
+  },
+  "devDependencies": {
+    "@tinacms/cli": "^4.0.5"
+  }
+}

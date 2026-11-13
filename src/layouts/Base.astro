@@ -1,0 +1,111 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import { site, categories } from '../site.config.js';
+
+const { title, description = 'Food, drink, travel and lifestyle writing by Eliza Campbell.' } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} ${site.byline}`;
+const path = Astro.url.pathname;
+// v1: the bottom menu is the four portfolio categories plus About and email.
+// Strategy, Services, Writing and Contact pages are parked in v2-drafts/ until v2.
+const nav = [
+  ...categories.map((c) => ({ href: `/#${c.toLowerCase()}`, label: c })),
+  { href: '/about/', label: 'About' },
+];
+const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
+---
+<!doctype html>
+<html lang="en-AU" data-cw={site.heroColourway}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={new URL(path, Astro.site).href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      (function () {
+        var t;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
+  </head>
+  <body>
+    <main><slot /></main>
+
+    <footer class="site-footer">
+      <div class="wrap foot">
+        <a href="/" class="home"><Logo variant="wordmark" /></a>
+        <div class="labels small">{site.signoff.map((l) => <span class="eir-label">{l}</span>)}</div>
+        <p class="links">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <a href={site.instagram} target="_blank" rel="noopener">Instagram</a>
+          <a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        </p>
+      </div>
+    </footer>
+
+    <nav class="bottom-nav" aria-label="Main">
+      <a href="/" class="mark" data-cw="cobalt" aria-label="Home"><Logo variant="wordmark" flash={false} /></a>
+      <div class="items">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={n.href === path ? 'page' : undefined}>{n.label}</a>
+        ))}
+        <a href={`mailto:${site.email}`}>Email</a>
+      </div>
+      <button id="theme" class="theme" type="button" aria-label="Switch between day and night">
+        <span class="day">Day</span><span class="sep">/</span><span class="night">Night</span>
+      </button>
+    </nav>
+
+    <script is:inline>
+      document.getElementById('theme').addEventListener('click', function () {
+        var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .bottom-nav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    height: var(--nav-h); display: flex; align-items: center; gap: 24px;
+    padding: 0 24px; background: var(--navy); color: #fff;
+    font-size: .92rem;
+  }
+  .bottom-nav a { text-decoration: none; }
+  .mark { flex: none; width: 150px; color: #fff; }
+  .home { width: min(420px, 80vw); color: var(--ink); }
+  .items { flex: 1; display: flex; justify-content: space-around; gap: 18px; }
+  .items a { opacity: .85; transition: opacity .2s; }
+  .items a:hover, .items a[aria-current='page'] { opacity: 1; }
+  .items a[aria-current='page'] { font-family: var(--serif); font-style: italic; }
+  .theme {
+    flex: none; font: inherit; font-size: .85rem; color: inherit; background: none; border: 0; cursor: pointer; padding: 6px 0;
+  }
+  .theme span { opacity: .55; }
+  .theme .sep { margin: 0 4px; }
+  :global([data-theme='light']) .theme .day,
+  :global([data-theme='dark']) .theme .night { opacity: 1; font-family: var(--serif); font-style: italic; }
+  @media (max-width: 760px) {
+    .mark { display: none; }
+    .bottom-nav { gap: 12px; padding: 0 14px; font-size: .82rem; }
+    .items { justify-content: space-between; gap: 10px; }
+  }
+  @media (max-width: 400px) { .bottom-nav { font-size: .76rem; } }
+
+  .site-footer { padding: 96px 0 72px; }
+  .foot { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .home { text-decoration: none; }
+  .links { display: flex; gap: 24px; flex-wrap: wrap; font-size: .95rem; }
+  .links a { text-decoration: none; border-bottom: 1px solid var(--line); }
+</style>

@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { site } from '../site.config.js';
+
+const roles = [
+  ['Independent Consultant', 'Editor in Residence', 'Nov 2026 – present'],
+  ['Managing Editor', 'Concrete Playground', 'May 2025 – Nov 2026'],
+  ['Communications & Content Specialist', 'MADE Group', 'Aug 2024 – Feb 2025'],
+  ['Editor (freelance)', 'Victorian Department of Education', 'Mar – Aug 2024'],
+  ['Content Strategist', 'Afterpay (Block)', 'Sep 2022 – Mar 2024'],
+  ['Editor', 'Time Out Melbourne', 'Nov 2021 – Sep 2022'],
+  ['Content Editor', 'Halliday Wine Companion', 'Sep 2019 – Nov 2021'],
+];
+---
+<Base title="About" description="Eliza Campbell: former editor of Concrete Playground, Time Out Melbourne and Halliday Wine Companion, now an independent consultant.">
+  <PageHead label="About" title={site.signature} />
+
+  <section class="bio">
+    <div class="wrap narrow">
+      <p class="big-serif">I'm Eliza Campbell, a Melbourne editor and writer. I've edited Concrete Playground, Time Out Melbourne and Halliday Wine Companion.</p>
+      <p>At Concrete Playground I led the Sydney, Melbourne and Brisbane editions and read 80-odd PR pitches every workday. I know which ones get opened, which get forwarded and which get covered, and why.</p>
+      <p>I've also worked brand-side, on content and PR strategy and tone of voice at MADE Group and Afterpay. Editor in Residence brings both sides together. It's just me, working directly with you.</p>
+      <p>I hold a Master of Writing and Publishing from RMIT, with a thesis on Australian native advertising, and a WSET Level 2 with Distinction.</p>
+    </div>
+  </section>
+
+  <section class="glow-bg">
+    <div class="wrap">
+      <p class="label muted">Experience</p>
+      <ol class="roles">
+        {roles.map(([title, org, dates]) => (
+          <li><span class="org">{org}</span><span>{title}</span><span class="muted">{dates}</span></li>
+        ))}
+      </ol>
+      <p class="label muted" style="margin-top:72px">Bylines</p>
+      <p class="outlets">Concrete Playground, Time Out Melbourne, Halliday Wine Companion, Broadsheet.</p>
+      <p><a href="/#work" class="text-link">Read my writing</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .bio { padding-top: 0; margin-top: 0; }
+  .roles { list-style: none; padding: 0; margin: 16px 0 0; }
+  .roles li { display: grid; grid-template-columns: 1.3fr 1.2fr auto; gap: 16px; align-items: baseline; padding: 18px 0; border-top: 1px solid var(--line); }
+  .org { font-family: var(--serif); font-size: clamp(1.4rem, 2.6vw, 2rem); }
+  @media (max-width: 680px) { .roles li { grid-template-columns: 1fr; gap: 2px; } }
+  .outlets { font-family: var(--serif); font-style: italic; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.2; }
+</style>

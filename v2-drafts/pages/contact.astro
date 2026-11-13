@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { site } from '../site.config.js';
+---
+<Base title="Contact" description="Get in touch with Eliza Campbell about pitches, positioning and content strategy.">
+  <PageHead label="Contact" title="Let's talk." lede="What you're working on, who you want to reach, and when." />
+
+  <section class="form-section">
+    <div class="wrap cols">
+      <div>
+        <p class="small-serif muted">Or write to me directly</p>
+        <p class="big-serif"><a href={`mailto:${site.email}`} class="text-link">{site.email}</a></p>
+      </div>
+
+      <div>
+        <p id="sent" class="notice" hidden>Thanks, that's come through. I'll be in touch soon.</p>
+        <p id="failed" class="notice err" hidden>Something went wrong sending that. Please email me directly instead.</p>
+        <form method="POST" action="/api/contact">
+          <label>Name<input name="name" required autocomplete="name" /></label>
+          <label>Email<input name="email" type="email" required autocomplete="email" /></label>
+          <label>Agency or brand<input name="company" autocomplete="organization" /></label>
+          <label>What do you need?
+            <select name="service">
+              <option>Pitch strategy and writing</option>
+              <option>Pitch editing and guidance</option>
+              <option>Audience analysis</option>
+              <option>Brand positioning and tone of voice</option>
+              <option>Content and editorial strategy</option>
+              <option>Copywriting</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <label>Message<textarea name="message" rows="5" required></textarea></label>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+          <button type="submit">Send <span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  var q = new URLSearchParams(location.search);
+  if (q.get('sent') === '1') document.getElementById('sent').hidden = false;
+  if (q.get('sent') === '0') document.getElementById('failed').hidden = false;
+</script>
+
+<style>
+  .form-section { padding-top: 0; margin-top: 0; }
+  .cols { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; }
+  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; gap: 24px; } }
+  .big-serif { word-break: break-word; }
+  form { display: grid; gap: 26px; }
+  label { display: grid; gap: 4px; font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  input, select, textarea {
+    font: inherit; font-family: var(--serif); font-size: 1.35rem; letter-spacing: 0; text-transform: none;
+    color: var(--ink); background: transparent;
+    border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 6px 0; width: 100%;
+  }
+  select option { color: #0b2e4f; }
+  input:focus, select:focus, textarea:focus { outline: none; border-bottom-color: var(--coral); }
+  button {
+    justify-self: start; cursor: pointer; background: none; border: 0; padding: 0 0 2px;
+    font-family: var(--serif); font-style: italic; font-size: 1.8rem; color: var(--ink);
+    border-bottom: 1px solid currentColor;
+  }
+  button:hover { color: var(--coral); }
+  .hp { position: absolute; left: -9999px; }
+  .notice { font-family: var(--serif); font-style: italic; font-size: 1.3rem; border-left: 3px solid var(--aqua); padding-left: 16px; }
+  .notice.err { border-color: var(--coral); }
+</style>

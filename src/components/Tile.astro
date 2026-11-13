@@ -1,0 +1,138 @@
+---
+// One portfolio tile: a photo card and a text card in a single link, swapping on a timer.
+// Without an image (or if it fails to load) the tile shows the text card only.
+import { categoryColourways } from '../site.config.js';
+const { a } = Astro.props;
+const cw = categoryColourways[a.category] ?? 'cobalt';
+const shape = a.shape ?? 'portrait';
+
+// Short label on the text card, per the handoff: Feature / Interview / Column / Guide
+const label =
+  a.category === 'Interviews' ? 'Interview'
+  : a.section === 'Columns' ? 'Column'
+  : a.label ? a.label
+  : a.section === 'Guides & Reviews' ? (a.title.split(' ').length <= 3 ? 'Review' : 'Guide')
+  : 'Feature';
+---
+<a
+  class:list={['tile', `shape-${shape}`, a.image ? 'has-photo' : 'text-only']}
+  href={a.url}
+  target="_blank"
+  rel="noopener"
+  data-category={a.category}
+  data-featured={a.featured || a.rankAll != null ? 'true' : 'false'}
+  data-rank-cat={a.rankCat ?? ''}
+  data-cw={cw}
+>
+  <span class="tab">{a.outlet}</span>
+  <div class="cards">
+    {a.image && (
+      <div class="card photo" aria-hidden="true">
+        <img
+          src={a.image}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="no-referrer"
+          onerror="var t=this.closest('.tile');t.classList.remove('has-photo');t.classList.add('text-only');this.parentNode.remove();"
+        />
+      </div>
+    )}
+    <div class="card text">
+      <span class="kicker">{label}</span>
+      <h3>{a.title}</h3>
+      {a.quote && (
+        <p class="quote">
+          “{a.quote}”
+          {a.quoteBy && <span class="by">{a.quoteBy}</span>}
+        </p>
+      )}
+    </div>
+  </div>
+</a>
+
+<style>
+  .tile {
+    position: relative; display: block; text-decoration: none; color: inherit;
+    padding-top: 13px; /* room for the tab hanging over the top edge */
+    margin-bottom: 26px;
+    break-inside: avoid;
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .tile.in { opacity: 1; transform: none; }
+  :global(.no-js) .tile, .tile.no-anim { opacity: 1; transform: none; }
+
+  .tab {
+    position: absolute; z-index: 3; top: 0; left: 50%; transform: translateX(-50%);
+    background: var(--lbg); color: var(--lfg);
+    padding: 6px 14px 7px; white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis;
+    font-family: var(--sans); font-weight: 600; font-size: .64rem; line-height: 1.2;
+    letter-spacing: .16em; text-transform: uppercase;
+  }
+
+
+  .cards { position: relative; overflow: hidden; container-type: inline-size; }
+  .has-photo .cards { aspect-ratio: 7 / 10; }
+  .has-photo.shape-landscape .cards { aspect-ratio: 5 / 4; }
+  .has-photo.shape-tall .cards { aspect-ratio: 366 / 631; }
+  .has-photo.shape-short .cards { aspect-ratio: 366 / 240; }
+
+  .card { position: absolute; inset: 0; transition: opacity .3s ease; }
+  .text-only .card.text { position: relative; }
+
+  .photo { background: var(--g); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .text {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; gap: .55em;
+    padding: 2.4em 9% 2em;
+    background: var(--g);
+    color: var(--fg);
+    isolation: isolate; overflow: hidden;
+  }
+  .text-only .text { padding: 3.2em 10% 2.8em; }
+  .text.text::before {
+    content: ''; position: absolute; inset: -30%; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--a1) 70%, transparent), transparent 40%),
+      radial-gradient(circle at 8% 95%, color-mix(in srgb, var(--a2) 60%, transparent), transparent 42%);
+    filter: blur(28px);
+  }
+  .kicker {
+    font-family: var(--sans); font-weight: 600; font-size: .7rem;
+    letter-spacing: .14em; text-transform: uppercase; background: var(--lbg); color: var(--lfg); padding: .3em .6em .25em;
+  }
+  h3 {
+    margin: 0; font-family: var(--serif); font-weight: 400;
+    font-size: clamp(1.25rem, 7.6cqi, 2rem); line-height: 1.12; letter-spacing: -0.01em;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  .quote {
+    margin: .35em 0 0; font-family: var(--serif); font-style: italic;
+    font-size: clamp(.95rem, 4.6cqi, 1.15rem); line-height: 1.35; color: var(--fg);
+    text-wrap: balance;
+  }
+  .by {
+    display: block; margin-top: .55em; font-family: var(--sans); font-style: normal;
+    font-variant: small-caps; text-transform: lowercase; letter-spacing: .08em; font-size: .95em; opacity: .8;
+  }
+  .has-photo.shape-landscape h3, .has-photo.shape-short h3 { font-size: clamp(1.1rem, 6.2cqi, 1.6rem); }
+  .has-photo.shape-landscape .text, .has-photo.shape-short .text { padding: 1.6em 8% 1.2em; gap: .4em; }
+
+  /* Swap: photo first, text card on .flip */
+  .has-photo .text { opacity: 0; }
+  .has-photo.flip .text { opacity: 1; }
+  .has-photo.flip .photo { opacity: 0; }
+
+  .tile:hover h3, .tile:focus-visible h3 { font-style: italic; }
+  .tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile { opacity: 1; transform: none; transition: none; }
+    .has-photo .photo { display: none; }
+    .has-photo .text { opacity: 1; }
+  }
+</style>

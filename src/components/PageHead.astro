@@ -1,0 +1,22 @@
+---
+import Aura from './Aura.astro';
+const { label, title, lede } = Astro.props;
+---
+<div class="field">
+  <Aura />
+  <header class="wrap head">
+    {label && <p class="label">{label}</p>}
+    <h1>{title}</h1>
+    {lede && <p class="lede small-serif">{lede}</p>}
+    <slot />
+  </header>
+</div>
+<div class="fade-out short" aria-hidden="true"></div>
+
+<style>
+  .head { padding-top: 18vh; padding-bottom: 40px; }
+  .label { opacity: .8; margin-bottom: 1.2em; }
+  h1 { margin: 0; }
+  .lede { font-size: clamp(1.1rem, 2vw, 1.4rem); max-width: 34ch; margin: 1.2em 0 0; opacity: .92; }
+  .short { height: 16vh; }
+</style>

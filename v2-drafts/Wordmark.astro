@@ -1,0 +1,24 @@
+---
+// Renders text in the wordmark style. Only the "i" of "in" gets the big flashing two-tone dot.
+const { text = 'Editor in Residence', size = '1.6rem', tag = 'span', flash = true } = Astro.props;
+const Tag = tag;
+const words = text.split(' ');
+---
+<Tag class="wordmark" style={`font-size:${size}`} aria-label={text}>
+  {words.map((w, wi) => (
+    <Fragment><span class="word" aria-hidden="true">{w === 'in'
+      ? <Fragment><span class:list={['dot-i', flash && 'flash-dot']}>ı</span>n</Fragment>
+      : w}</span>{wi < words.length - 1 ? ' ' : ''}</Fragment>
+  ))}
+</Tag>
+
+<style>
+  .wordmark {
+    font-family: var(--serif);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    display: inline-block;
+  }
+  .word { white-space: nowrap; }
+</style>
