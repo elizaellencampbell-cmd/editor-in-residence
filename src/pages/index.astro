@@ -42,29 +42,18 @@ const md = (t = '') => esc(t)
       </div>
     );
     if (t === 'chooser') return (
-      <section class="chooser" id="choose" aria-labelledby="choose-h">
-        <div class="wrap">
-          {sec.heading && <h2 id="choose-h" class="choose-h">{sec.heading}</h2>}
-          <div class="dots">
-            <a class="big-dot day" href={sec.dayLink || '/writing/'}>
-              <span class="disc" aria-hidden="true"><span class="core"></span></span>
-              <span class="dot-copy">
-                <span class="when">{sec.dayLabel || 'Day'}</span>
-                <span class="what">{sec.dayTitle || 'Read my writing'}</span>
-                {sec.dayNote && <span class="note">{sec.dayNote}</span>}
-              </span>
-            </a>
-            <a class="big-dot night" href={sec.nightLink || '/work-with-me/'}>
-              <span class="disc" aria-hidden="true"><span class="core"></span></span>
-              <span class="dot-copy">
-                <span class="when">{sec.nightLabel || 'Night'}</span>
-                <span class="what">{sec.nightTitle || 'Work with me'}</span>
-                {sec.nightNote && <span class="note">{sec.nightNote}</span>}
-              </span>
-            </a>
-          </div>
+      <nav class="chooser" aria-label="Choose: read my writing or work with me">
+        <div class="dots">
+          <a class="big-dot day" href={sec.dayLink || '/writing/'}>
+            <span class="disc" aria-hidden="true"><span class="haze"></span><span class="ring"></span><span class="core"></span></span>
+            <span class="cap">{sec.dayTitle || 'Read my writing'}</span>
+          </a>
+          <a class="big-dot night" href={sec.nightLink || '/work-with-me/'}>
+            <span class="cap">{sec.nightTitle || 'Work with me'}</span>
+            <span class="disc" aria-hidden="true"><span class="haze"></span><span class="ring"></span><span class="core"></span></span>
+          </a>
         </div>
-      </section>
+      </nav>
     );
     if (t === 'about') return (
       <section class="about glow-bg" id="about">
@@ -109,8 +98,8 @@ const md = (t = '') => esc(t)
 
 <style>
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .eir-hazy { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 22vh;
-    -webkit-mask-image: linear-gradient(#000 calc(100% - 22vh), transparent); mask-image: linear-gradient(#000 calc(100% - 22vh), transparent); }
+  .eir-hazy { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 14vh;
+    -webkit-mask-image: linear-gradient(#000 calc(100% - 14vh), transparent); mask-image: linear-gradient(#000 calc(100% - 14vh), transparent); }
   .eir-hazy > * { position: relative; z-index: 2; }
   .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
   .b1 { left: -16%; top: 18%; width: 56%; background: var(--a1); filter: blur(130px); opacity: .95; }
@@ -120,7 +109,7 @@ const md = (t = '') => esc(t)
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
   .hero {
-    min-height: min(78svh, 760px);
+    min-height: 0;
     display: flex; flex-direction: column; color: var(--fg);
     padding: 44px max(16px, 4vw) 72px;
   }
@@ -132,48 +121,47 @@ const md = (t = '') => esc(t)
     box-shadow: 0 0 22px 4px color-mix(in srgb, var(--ring) 55%, transparent); }
   .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: #fff; }
   .masthead { width: min(820px, 92vw); margin: 14vh 0 0; color: #fff; }
-  /* One line on desktop: label · byline · credentials. The credentials carry the one new accent colour. */
-  .standfirst { --accent-line: var(--lemon); display: flex; flex-wrap: nowrap; align-items: baseline; gap: .55em 1.1em;
-    margin: 40px 0 0; font-size: clamp(.95rem, 1.12vw, 1.12rem); line-height: 1.4; color: #fff; white-space: nowrap; }
-  .sf-label.eir-label { font-size: 1.12em; }
-  .sf-by { font-weight: 700; }
-  .sf-cred { font-family: var(--serif); font-style: italic; font-size: 1.12em; color: var(--accent-line); }
-  @media (max-width: 1180px) {
-    .standfirst { flex-wrap: wrap; white-space: normal; }
-    .sf-label.eir-label { flex-basis: 100%; max-width: max-content; }
-  }
+  /* Stacked under the wordmark: sign-off on its navy label, byline in white, credentials in navy */
+  .standfirst { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin: 36px 0 0; color: #fff; line-height: 1.35; }
+  .sf-label.eir-label { background: var(--navy); color: #fff; }
+  .sf-by { font-weight: 700; font-size: clamp(1.05rem, 1.6vw, 1.35rem); }
+  .sf-cred { font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem, 1.6vw, 1.35rem); color: var(--cred, var(--navy)); max-width: 46ch; }
   @media (max-width: 767px) {
     .top ul { gap: 16px; font-size: .86rem; }
-    .masthead { margin-top: 22vh; }
-    .standfirst { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .masthead { margin-top: 18vh; }
   }
 
   .more-btn { font: 700 1rem/1 var(--sans); padding: 14px 22px; border: 0; cursor: pointer; background: var(--lbg); color: var(--lfg); filter: var(--shadow); }
   .more-btn:hover { background: var(--ring); color: #fff; }
 
-  /* Day / night chooser: two oversized dots */
-  .chooser { padding-top: 40px; }
-  .choose-h { text-align: center; font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: .2em; }
-  .choose-sub { text-align: center; }
-  .dots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 6vw, 96px); max-width: 1040px; margin: 48px auto 0; }
-  .big-dot { position: relative; display: grid; place-items: center; text-decoration: none; aspect-ratio: 1; isolation: isolate; }
-  .disc { position: absolute; inset: 0; border-radius: 50%; background: var(--ring-c);
-    box-shadow: 0 0 60px 10px color-mix(in srgb, var(--ring-c) 45%, transparent); transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s; z-index: -1; }
-  .core { position: absolute; inset: 14%; border-radius: 50%; background: var(--core-c); }
-  .big-dot:hover .disc, .big-dot:focus-visible .disc { transform: scale(1.04); box-shadow: 0 0 90px 22px color-mix(in srgb, var(--ring-c) 55%, transparent); }
+  /* Two hazy dots. Day sits low with its caption under it; night sits high with its caption above. */
+  .chooser { padding: 8px 0 72px; overflow-x: clip; }
+  .dots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 8vw, 140px); max-width: 980px; margin: 0 auto; padding: 0 24px; align-items: start; }
+  .big-dot { display: flex; flex-direction: column; align-items: center; gap: 22px; text-decoration: none; color: var(--ink); }
+  .day { margin-top: clamp(40px, 9vw, 130px); }
+  .disc { position: relative; display: block; width: 100%; max-width: 380px; aspect-ratio: 1; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .disc > span { position: absolute; border-radius: 50%; }
+  .haze { inset: -18%; background: radial-gradient(circle, var(--ring-c) 0 30%, color-mix(in srgb, var(--glow-c) 70%, transparent) 48%, transparent 70%); filter: blur(34px); opacity: .9; animation: breathe 7s ease-in-out infinite alternate; }
+  .ring { inset: 0; background: var(--ring-c); filter: blur(1.5px); }
+  .core { inset: 26%; background: var(--core-c); filter: blur(10px); box-shadow: 0 0 40px 10px var(--core-c); }
+  .night .haze { animation-delay: -3.5s; }
+  .big-dot:hover .disc, .big-dot:focus-visible .disc { transform: scale(1.05); }
   .big-dot:focus-visible { outline: none; }
-  .day   { --ring-c: var(--lemon); --core-c: var(--pink); color: #fff; }
-  .night { --ring-c: var(--violet); --core-c: var(--navy); color: #fff; }
-  .dot-copy { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .5em; padding: 0 17%; }
-  .when { font: 600 clamp(.68rem, 1vw, .82rem)/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; opacity: .9; }
-  .what { font-family: var(--serif); font-weight: 700; font-size: clamp(1.5rem, 3.8vw, 3.2rem); line-height: 1.02; letter-spacing: -.015em; }
-  .big-dot:hover .what { font-style: italic; }
-  .note { font-size: clamp(.72rem, 1vw, .9rem); line-height: 1.35; opacity: .9; max-width: 22ch; }
+  .big-dot:focus-visible .cap { text-decoration: underline; text-underline-offset: 6px; }
+  .day   { --ring-c: var(--lemon);  --core-c: var(--pink); --glow-c: #ffb347; }
+  .night { --ring-c: var(--violet); --core-c: var(--navy); --glow-c: var(--pink); }
+  .cap { font-family: var(--serif); font-weight: 700; font-size: clamp(1.4rem, 2.8vw, 2.3rem); line-height: 1; letter-spacing: -.015em; }
+  .big-dot:hover .cap { font-style: italic; }
+  @keyframes breathe { from { transform: scale(.94); opacity: .75; } to { transform: scale(1.06); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .haze { animation: none; } .disc { transition: none; } }
   @media (max-width: 640px) {
-    .dots { grid-template-columns: 1fr; max-width: 340px; gap: 28px; }
-    .what { font-size: 2.2rem; }
-    .note { font-size: .85rem; }
+    .dots { gap: 12px; padding: 0 16px; }
+    .day { margin-top: 64px; }
+    .big-dot { gap: 14px; }
+    .cap { font-size: 1.25rem; text-align: center; }
+    .haze { filter: blur(22px); }
   }
+  .about { padding-top: 40px; }
 
   .about-inner { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
   .headshot img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; display: block; }

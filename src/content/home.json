@@ -7,6 +7,13 @@
       "credentials": "Former editor of Concrete Playground Australia, Time Out Melbourne and Halliday Wine Companion."
     },
     {
+      "_template": "chooser",
+      "dayTitle": "Read my writing",
+      "dayLink": "/writing/",
+      "nightTitle": "Work with me",
+      "nightLink": "/work-with-me/"
+    },
+    {
       "_template": "about",
       "heading": "Eliza Campbell",
       "role": "Writer and editor · Melbourne, Australia",
@@ -15,18 +22,6 @@
         "From the coldest vodka martini in town to the live music gigs you should be buying tickets to, I'm the friend whose recommendations you don't second-guess. Irreverent, dry and reliably the one in the room saying \"it's PR, not ER\" when everyone else is deeping it, I take the wine list (but not life) very seriously."
       ],
       "emailPrompt": "Commissioning? Email me."
-    },
-    {
-      "_template": "chooser",
-      "heading": "Day or night?",
-      "dayLabel": "Day · Front of book",
-      "dayTitle": "Read my writing",
-      "dayNote": "Features, guides, reviews and interviews",
-      "dayLink": "/writing/",
-      "nightLabel": "Night · Back of book",
-      "nightTitle": "Work with me",
-      "nightNote": "Editor in Residence: editing, strategy and PR",
-      "nightLink": "/work-with-me/"
     }
   ]
 }
