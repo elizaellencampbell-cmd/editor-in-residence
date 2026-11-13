@@ -15,11 +15,15 @@ const md = (t = '') => esc(t)
   .replace(/\*([^*]+)\*/g, '<em>$1</em>');
 ---
 <Base description={`Food, drink, travel and lifestyle writing by Eliza Campbell for ${outlets}.`}>
+  <!-- One hazy wash behind the whole page: hot pink ground at the top, aura glows drifting down, softening to a pale wash. No hard edges. -->
+  <div class="wash eir-hazy">
+    <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
+    <span class="blob b4" aria-hidden="true"></span><span class="blob b5" aria-hidden="true"></span><span class="blob b6" aria-hidden="true"></span>
+    <span class="grain" aria-hidden="true"></span>
   {sections.map((sec) => {
     const t = sec._template;
     if (t === 'hero') return (
-      <div class="field eir-hazy">
-        <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
+      <div class="hero-wrap">
         <header class="hero">
           <nav class="top" aria-label="Header">
             <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
@@ -38,7 +42,6 @@ const md = (t = '') => esc(t)
             {sec.credentials && <span class="sf-cred">{sec.credentials}</span>}
           </p>
         </header>
-        <span class="grain" aria-hidden="true"></span>
       </div>
     );
     if (t === 'chooser') return (
@@ -49,14 +52,14 @@ const md = (t = '') => esc(t)
             <span class="cap">{sec.dayTitle || 'Read my writing'}</span>
           </a>
           <a class="big-dot night" href={sec.nightLink || '/work-with-me/'}>
-            <span class="cap">{sec.nightTitle || 'Work with me'}</span>
             <span class="disc" aria-hidden="true"><span class="haze"></span><span class="ring"></span><span class="core"></span></span>
+            <span class="cap">{sec.nightTitle || 'Work with me'}</span>
           </a>
         </div>
       </nav>
     );
     if (t === 'about') return (
-      <section class="about glow-bg" id="about">
+      <section class="about" id="about">
         <div class="wrap about-inner">
           <picture class="headshot">
             <source srcset="/images/eliza-campbell.webp" type="image/webp" />
@@ -92,22 +95,27 @@ const md = (t = '') => esc(t)
     );
     return null;
   })}
+  </div>
 </Base>
 
 
 
 <style>
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .eir-hazy { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 14vh;
-    -webkit-mask-image: linear-gradient(#000 calc(100% - 14vh), transparent); mask-image: linear-gradient(#000 calc(100% - 14vh), transparent); }
-  .eir-hazy > * { position: relative; z-index: 2; }
+  .wash { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 40px;
+    background: linear-gradient(180deg, var(--pink) 0, var(--pink) 760px, #f98fc6 1150px, #f7c4dc 1650px, #f6e3e6 2300px, var(--bg) 100%); }
+  .wash > * { position: relative; z-index: 2; }
   .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
-  .b1 { left: -16%; top: 18%; width: 56%; background: var(--a1); filter: blur(130px); opacity: .95; }
-  .b2 { left: 56%;  top: -14%; width: 50%; background: var(--a2); filter: blur(140px); opacity: .75; }
-  .b3 { left: 72%;  top: 34%;  width: 39%; background: var(--a3); filter: blur(140px); opacity: .7; }
+  .b1 { left: -16%; top: 180px;  width: 56vw; background: var(--cobalt); filter: blur(130px); opacity: .95; }
+  .b2 { left: 56%;  top: -140px; width: 50vw; background: #ffb347;      filter: blur(140px); opacity: .75; }
+  .b3 { left: 72%;  top: 420px;  width: 39vw; background: var(--violet); filter: blur(140px); opacity: .7; }
+  .b4 { left: 30%;  top: 980px;  width: 46vw; background: var(--violet); filter: blur(160px); opacity: .35; }
+  .b5 { left: -12%; top: 1500px; width: 44vw; background: var(--aqua);   filter: blur(170px); opacity: .32; }
+  .b6 { left: 66%;  top: 1750px; width: 42vw; background: var(--pink);   filter: blur(170px); opacity: .3; }
   .grain { position: absolute !important; inset: 0; z-index: 3 !important; mix-blend-mode: overlay; opacity: .35; pointer-events: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
+  .hero-wrap { position: relative; }
   .hero {
     min-height: 0;
     display: flex; flex-direction: column; color: var(--fg);
@@ -125,7 +133,8 @@ const md = (t = '') => esc(t)
   .standfirst { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin: 36px 0 0; color: #fff; line-height: 1.35; }
   .sf-label.eir-label { background: var(--navy); color: #fff; }
   .sf-by { font-weight: 700; font-size: clamp(1.05rem, 1.6vw, 1.35rem); }
-  .sf-cred { font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem, 1.6vw, 1.35rem); color: var(--cred, var(--navy)); max-width: 46ch; }
+  .sf-cred { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(1.05rem, 1.5vw, 1.35rem); color: #fff; }
+  @media (min-width: 900px) { .sf-cred { white-space: nowrap; } }
   @media (max-width: 767px) {
     .top ul { gap: 16px; font-size: .86rem; }
     .masthead { margin-top: 18vh; }
@@ -134,32 +143,30 @@ const md = (t = '') => esc(t)
   .more-btn { font: 700 1rem/1 var(--sans); padding: 14px 22px; border: 0; cursor: pointer; background: var(--lbg); color: var(--lfg); filter: var(--shadow); }
   .more-btn:hover { background: var(--ring); color: #fff; }
 
-  /* Two hazy dots. Day sits low with its caption under it; night sits high with its caption above. */
-  .chooser { padding: 8px 0 72px; overflow-x: clip; }
-  .dots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 8vw, 140px); max-width: 980px; margin: 0 auto; padding: 0 24px; align-items: start; }
-  .big-dot { display: flex; flex-direction: column; align-items: center; gap: 22px; text-decoration: none; color: var(--ink); }
-  .day { margin-top: clamp(40px, 9vw, 130px); }
-  .disc { position: relative; display: block; width: 100%; max-width: 380px; aspect-ratio: 1; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  /* Two dots, built to the kit: a crisp two-tone dot (centre inset 22%) with a soft glow of the ring colour behind it.
+     Day: cobalt ring, hot pink centre. Night: navy ring, lemon centre. Captions under both. */
+  .chooser { padding: 24px 0 40px; }
+  .dots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 12vw, 200px); max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+  .big-dot { display: flex; flex-direction: column; align-items: center; gap: 28px; text-decoration: none; color: var(--ink); }
+  .disc { position: relative; display: block; width: 78%; max-width: 330px; aspect-ratio: 1; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
   .disc > span { position: absolute; border-radius: 50%; }
-  .haze { inset: -18%; background: radial-gradient(circle, var(--ring-c) 0 30%, color-mix(in srgb, var(--glow-c) 70%, transparent) 48%, transparent 70%); filter: blur(34px); opacity: .9; animation: breathe 7s ease-in-out infinite alternate; }
-  .ring { inset: 0; background: var(--ring-c); filter: blur(1.5px); }
-  .core { inset: 26%; background: var(--core-c); filter: blur(10px); box-shadow: 0 0 40px 10px var(--core-c); }
-  .night .haze { animation-delay: -3.5s; }
+  .haze { inset: -20%; background: var(--ring-c); filter: blur(60px); opacity: .85; }
+  .ring { inset: 0; background: var(--ring-c); filter: var(--shadow); }
+  .core { inset: 22%; background: var(--core-c); }
   .big-dot:hover .disc, .big-dot:focus-visible .disc { transform: scale(1.05); }
   .big-dot:focus-visible { outline: none; }
   .big-dot:focus-visible .cap { text-decoration: underline; text-underline-offset: 6px; }
-  .day   { --ring-c: var(--lemon);  --core-c: var(--pink); --glow-c: #ffb347; }
-  .night { --ring-c: var(--violet); --core-c: var(--navy); --glow-c: var(--pink); }
-  .cap { font-family: var(--serif); font-weight: 700; font-size: clamp(1.4rem, 2.8vw, 2.3rem); line-height: 1; letter-spacing: -.015em; }
+  .day   { --ring-c: var(--cobalt); --core-c: var(--pink); }
+  .night { --ring-c: var(--navy);   --core-c: var(--lemon); }
+  .cap { font-family: var(--serif); font-weight: 800; font-size: clamp(1.5rem, 2.8vw, 2.4rem); line-height: 1; letter-spacing: -.01em; text-align: center; }
   .big-dot:hover .cap { font-style: italic; }
-  @keyframes breathe { from { transform: scale(.94); opacity: .75; } to { transform: scale(1.06); opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) { .haze { animation: none; } .disc { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .disc { transition: none; } }
   @media (max-width: 640px) {
-    .dots { gap: 12px; padding: 0 16px; }
-    .day { margin-top: 64px; }
-    .big-dot { gap: 14px; }
-    .cap { font-size: 1.25rem; text-align: center; }
-    .haze { filter: blur(22px); }
+    .dots { gap: 20px; padding: 0 16px; }
+    .disc { width: 84%; }
+    .big-dot { gap: 18px; }
+    .cap { font-size: 1.15rem; white-space: nowrap; }
+    .haze { filter: blur(36px); }
   }
   .about { padding-top: 40px; }
 
@@ -169,7 +176,7 @@ const md = (t = '') => esc(t)
   .about-copy h2 { font-size: clamp(2.6rem, 5vw, 4rem); margin-bottom: .2em; }
   .role { font-weight: 700; margin-bottom: 1.6em; }
   .about-copy p { max-width: 60ch; }
-  .email-line { font-family: var(--serif); font-size: clamp(1.3rem, 2.4vw, 1.8rem); line-height: 1.3; margin-top: 1.4em; }
+  .email-line { font-family: var(--serif); font-weight: 600; font-size: clamp(1.3rem, 2.4vw, 1.8rem); line-height: 1.3; margin-top: 1.4em; }
   .email-line a { overflow-wrap: anywhere; }
   .ig a { color: var(--accent); }
   .about-copy .labels { margin-top: 28px; }
@@ -179,6 +186,6 @@ const md = (t = '') => esc(t)
   .text-block p { max-width: 62ch; }
   .text-block .more-btn { display: inline-block; text-decoration: none; margin-top: .6em; }
   .quote-block blockquote { margin: 0; text-align: center; }
-  .quote-block blockquote p { font-family: var(--serif); font-style: italic; font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1.25; margin: 0; }
+  .quote-block blockquote p { font-family: var(--serif); font-weight: 600; font-style: italic; font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1.25; margin: 0; }
   .quote-block cite { display: block; margin-top: 1em; font-style: normal; font-size: .8rem; letter-spacing: .16em; text-transform: uppercase; }
 </style>

@@ -88,14 +88,14 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
   .items { flex: 1; display: flex; justify-content: space-around; gap: 18px; }
   .items a { opacity: .85; transition: opacity .2s; }
   .items a:hover, .items a[aria-current='page'] { opacity: 1; }
-  .items a[aria-current='page'] { font-family: var(--serif); font-style: italic; }
+  .items a[aria-current='page'] { font-family: var(--serif); font-weight: 600; font-style: italic; }
   .theme {
     flex: none; font: inherit; font-size: .85rem; color: inherit; background: none; border: 0; cursor: pointer; padding: 6px 0;
   }
   .theme span { opacity: .55; }
   .theme .sep { margin: 0 4px; }
   :global([data-theme='light']) .theme .day,
-  :global([data-theme='dark']) .theme .night { opacity: 1; font-family: var(--serif); font-style: italic; }
+  :global([data-theme='dark']) .theme .night { opacity: 1; font-family: var(--serif); font-weight: 600; font-style: italic; }
   @media (max-width: 760px) {
     .mark { display: none; }
     .bottom-nav { gap: 12px; padding: 0 14px; font-size: .82rem; }
@@ -103,7 +103,8 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
   }
   @media (max-width: 400px) { .bottom-nav { font-size: .76rem; } }
 
-  .site-footer { padding: 96px 0 72px; }
+  /* Footer: a white block with a hard rule on top, then the bottom nav */
+  .site-footer { padding: 72px 0 64px; background: var(--footer-bg); border-top: 1px solid var(--ink); }
   .foot { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
   .home { text-decoration: none; }
   .links { display: flex; gap: 24px; flex-wrap: wrap; font-size: .95rem; }
