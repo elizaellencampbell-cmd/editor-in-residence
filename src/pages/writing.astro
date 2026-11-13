@@ -1,0 +1,285 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import Tile from '../components/Tile.astro';
+import { buildTiles } from '../lib/merch.js';
+import { site, categories, categoryColourways } from '../site.config.js';
+
+// Front of book. Featured picks (src/content/merch.json, set in the site editor) lead the page:
+// pick 1 runs full bleed, picks 2–3 run large side by side, picks 4–7 run as a row of smaller stories.
+// Everything else follows in the filterable grid.
+const tiles = buildTiles();
+let picks = tiles.filter((a) => a.rankAll != null && a.image);
+// MOCKUP ONLY: the Featured list is empty for now, so use a sample of pieces with photos.
+if (!picks.length) {
+  const sample = ['guide-to-vanuatu', 'marco-pierre-white', 'barossa-valley', 'matt-berninger', 'chilled-reds', 'first-timer-s-guide-to-singapore', 'lisa-gorman'];
+  picks = sample.map((k) => tiles.find((a) => a.image && a.image.includes(k))).filter(Boolean);
+}
+const [lead, ...rest] = picks;
+const second = rest.slice(0, 2);
+const third = rest.slice(2, 6);
+const pickedUrls = new Set(picks.map((a) => a.url));
+const gridTiles = tiles.filter((a) => !pickedUrls.has(a.url));
+const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a) => a.category === c).length]));
+const kicker = (a) => a.category === 'Interviews' ? 'Interview' : a.label || a.category || 'Feature';
+---
+<Base title="Writing" description="Food, drink, travel and lifestyle writing by Eliza Campbell.">
+  <div class="field eir-hazy short-hero">
+    <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
+    <header class="hero">
+      <nav class="top" aria-label="Header">
+        <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
+        <ul>
+          <li><a href="/writing/" aria-current="page">Writing</a></li>
+          <li><a href="/work-with-me/">Work with me</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href={`mailto:${site.email}`}>Contact</a></li>
+        </ul>
+      </nav>
+      <div class="page-title">
+        <span class="eir-label">Day · Front of book</span>
+        <h1>Featured.</h1>
+      </div>
+    </header>
+    <span class="grain" aria-hidden="true"></span>
+  </div>
+
+  {lead && (
+    <a class="lead" href={lead.url} target="_blank" rel="noopener" data-cw={categoryColourways[lead.category] ?? 'cobalt'}>
+      <img src={lead.image} alt="" />
+      <span class="lead-copy">
+        <span class="kick">{kicker(lead)} · {lead.outlet}</span>
+        <span class="lead-h">{lead.title}</span>
+      </span>
+    </a>
+  )}
+
+  <section class="ed-rows">
+    <div class="wrap">
+      <div class="row two">
+        {second.map((a) => (
+          <a class="story" href={a.url} target="_blank" rel="noopener" data-cw={categoryColourways[a.category] ?? 'cobalt'}>
+            <span class="pic"><img src={a.image} alt="" loading="lazy" /></span>
+            <span class="kick">{kicker(a)} · {a.outlet}</span>
+            <span class="h">{a.title}</span>
+          </a>
+        ))}
+      </div>
+      <div class="row four">
+        {third.map((a) => (
+          <a class="story small" href={a.url} target="_blank" rel="noopener" data-cw={categoryColourways[a.category] ?? 'cobalt'}>
+            <span class="pic"><img src={a.image} alt="" loading="lazy" /></span>
+            <span class="kick">{kicker(a)} · {a.outlet}</span>
+            <span class="h">{a.title}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <h2 class="featured-title" id="work">All writing.</h2>
+  <div class="filters wrap" role="group" aria-label="Show writing by category">
+    <button type="button" class="f on" data-cat="all" aria-pressed="true">All <span class="n">{gridTiles.length}</span></button>
+    {categories.map((c) => (
+      <button type="button" class="f" data-cat={c} aria-pressed="false"><span class="sw" data-cw={categoryColourways[c]} aria-hidden="true"></span>{c} <span class="n">{counts[c]}</span></button>
+    ))}
+  </div>
+  <section class="tiles-section">
+    <div class="wrap tiles" id="tiles">
+      {gridTiles.map((a) => <Tile a={a} />)}
+    </div>
+    <p class="more-wrap"><button type="button" id="more" class="more-btn" hidden>Show more</button></p>
+  </section>
+</Base>
+
+<script is:inline>
+  (function () {
+    var grid = document.getElementById('tiles');
+    if (!grid) return;
+    var allTiles = Array.prototype.slice.call(grid.querySelectorAll('.tile'));
+    var tiles = allTiles;
+    var buttons = document.querySelectorAll('.filters .f');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    var current = 'all';
+
+    // Masonry: drop each visible tile into the shortest column; the third column starts lower.
+    var lastN = 0;
+    function layout(force) {
+      var w = grid.clientWidth;
+      var n = window.innerWidth > 900 ? 3 : window.innerWidth >= 560 ? 2 : 1;
+      if (!force && n === lastN) return;
+      lastN = n;
+      grid.classList.add('js-cols');
+      grid.querySelectorAll('.col').forEach(function (c) { c.remove(); });
+      var cols = [];
+      for (var i = 0; i < n; i++) {
+        var c = document.createElement('div');
+        c.className = 'col' + (n === 3 && i === 2 ? ' drop' : '');
+        grid.appendChild(c);
+        cols.push(c);
+      }
+      tiles.forEach(function (t) {
+        if (t.hidden) { cols[0].appendChild(t); return; }
+        var shortest = cols.reduce(function (a, b) { return b.offsetHeight + b.offsetTop < a.offsetHeight + a.offsetTop ? b : a; });
+        shortest.appendChild(t);
+      });
+    }
+
+    var PAGE = 36, limit = PAGE;
+    var more = document.getElementById('more');
+    function filter(cat, keepLimit) {
+      if (!keepLimit) limit = PAGE;
+      current = cat;
+      // Under a category, that category's picks come first (in order), then the usual order.
+      tiles = cat === 'all' ? allTiles : allTiles.slice().sort(function (a, b) {
+        var ra = a.dataset.rankCat === '' ? 1e6 : Number(a.dataset.rankCat);
+        var rb = b.dataset.rankCat === '' ? 1e6 : Number(b.dataset.rankCat);
+        return ra - rb || allTiles.indexOf(a) - allTiles.indexOf(b);
+      });
+      var shown = 0, total = 0;
+      tiles.forEach(function (t) {
+        var match = cat === 'all' || t.dataset.category === cat;
+        if (match) total++;
+        t.hidden = !(match && shown < limit);
+        if (!t.hidden) shown++;
+      });
+      more.hidden = shown >= total;
+      more.textContent = 'Show more (' + (total - shown) + ' to go)';
+      buttons.forEach(function (b) {
+        var on = b.dataset.cat === cat;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      layout(true);
+      tiles.forEach(function (t) { if (!t.hidden) t.classList.add('in'); });
+    }
+    more.addEventListener('click', function () { limit += PAGE; filter(current, true); });
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        filter(b.dataset.cat);
+        history.replaceState(null, '', b.dataset.cat === 'all' ? '#work' : '#' + b.dataset.cat.toLowerCase());
+      });
+    });
+    function fromHash() {
+      var h = decodeURIComponent(location.hash.slice(1)).toLowerCase();
+      var match = Array.prototype.find.call(buttons, function (b) { return b.dataset.cat.toLowerCase() === h; });
+      if (match) {
+        filter(match.dataset.cat);
+        document.getElementById('work').scrollIntoView();
+      }
+    }
+    window.addEventListener('hashchange', fromHash);
+
+    // Fade tiles in as they scroll into view.
+    if ('IntersectionObserver' in window && !reduce.matches) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      allTiles.forEach(function (t) { io.observe(t); });
+    } else {
+      allTiles.forEach(function (t) { t.classList.add('in'); });
+    }
+
+    // Photo ⇄ text card, every 3s, staggered, paused on hover/focus. Off under reduced motion.
+    var paused = new Set();
+    allTiles.forEach(function (t, i) {
+      t.addEventListener('mouseenter', function () { paused.add(t); });
+      t.addEventListener('mouseleave', function () { paused.delete(t); });
+      t.addEventListener('focus', function () { paused.add(t); t.classList.add('flip'); });
+      t.addEventListener('blur', function () { paused.delete(t); });
+      t.dataset.offset = String((i * 7) % 10); // spread start times across the 3s cycle
+    });
+    var tick = 0;
+    setInterval(function () {
+      if (reduce.matches || document.hidden) return;
+      tick = (tick + 1) % 10;
+      allTiles.forEach(function (t) {
+        if (paused.has(t) || !t.classList.contains('has-photo')) return;
+        if (Number(t.dataset.offset) === tick) t.classList.toggle('flip');
+      });
+    }, 300);
+
+    filter('all');
+    fromHash();
+    var rt;
+    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { layout(false); }, 120); });
+    // Re-balance once images have their final size.
+    window.addEventListener('load', function () { layout(true); });
+  })();
+</script>
+
+<style>
+  .eir-hazy { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 34vh;
+    -webkit-mask-image: linear-gradient(#000 calc(100% - 34vh), transparent); mask-image: linear-gradient(#000 calc(100% - 34vh), transparent); }
+  .eir-hazy > * { position: relative; z-index: 2; }
+  .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
+  .b1 { left: -16%; top: 18%; width: 56%; background: var(--a1); filter: blur(130px); opacity: .95; }
+  .b2 { left: 56%;  top: -14%; width: 50%; background: var(--a2); filter: blur(140px); opacity: .75; }
+  .b3 { left: 72%;  top: 34%;  width: 39%; background: var(--a3); filter: blur(140px); opacity: .7; }
+  .grain { position: absolute !important; inset: 0; z-index: 3 !important; mix-blend-mode: overlay; opacity: .35; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .top ul { display: flex; gap: 34px; list-style: none; margin: 0; padding: 0; font-size: 1rem; }
+  .top a { color: #fff; text-decoration: none; }
+  .top ul a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: var(--ring);
+    box-shadow: 0 0 22px 4px color-mix(in srgb, var(--ring) 55%, transparent); }
+  .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: #fff; }
+
+  .short-hero { padding-bottom: 0; -webkit-mask-image: none; mask-image: none; }
+  .hero { display: flex; flex-direction: column; color: #fff; padding: 44px max(16px, 4vw) 56px; }
+  .top ul a[aria-current='page'] { font-family: var(--serif); font-style: italic; }
+  @media (max-width: 767px) { .top ul { gap: 14px; font-size: .84rem; } }
+  .page-title { margin-top: 12vh; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .page-title h1 { color: #fff; margin: 0; font-size: clamp(3.6rem, 10vw, 8.5rem); }
+
+  /* Lead story: full bleed */
+  .lead { position: relative; display: block; height: min(82vh, 860px); color: #fff; text-decoration: none; overflow: hidden; }
+  .lead img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
+  .lead:hover img { transform: scale(1.025); }
+  .lead::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(12, 20, 56, .78)); }
+  .lead-copy { position: absolute; z-index: 1; left: max(16px, 4vw); right: max(16px, 4vw); bottom: clamp(28px, 6vh, 64px); display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .lead-h { font-family: var(--serif); font-weight: 700; font-size: clamp(2rem, 5.4vw, 5rem); line-height: 1.02; letter-spacing: -.02em; max-width: 20ch; text-wrap: balance; }
+  .lead:hover .lead-h { font-style: italic; }
+  .kick { display: inline-block; font: 600 .68rem/1.2 var(--sans); letter-spacing: .16em; text-transform: uppercase; background: var(--lbg); color: var(--lfg); padding: .45em .8em .4em; }
+
+  .ed-rows { padding: 56px 0 24px; }
+  .row { display: grid; gap: 40px 32px; }
+  .row.two { grid-template-columns: 1fr 1fr; }
+  .row.four { grid-template-columns: repeat(4, 1fr); margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--line); }
+  .story { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; text-decoration: none; color: var(--ink); }
+  .pic { display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: var(--g); }
+  .small .pic { aspect-ratio: 1; }
+  .pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
+  .story:hover img { transform: scale(1.03); }
+  .story .h { font-family: var(--serif); font-weight: 700; font-size: clamp(1.5rem, 2.6vw, 2.4rem); line-height: 1.08; letter-spacing: -.015em; text-wrap: balance; }
+  .story.small .h { font-size: clamp(1.1rem, 1.5vw, 1.35rem); line-height: 1.15; font-weight: 600; }
+  .story:hover .h { font-style: italic; }
+  @media (max-width: 900px) { .row.four { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) {
+    .row.two { grid-template-columns: 1fr; }
+    .row.four { gap: 28px 16px; margin-top: 40px; }
+    .lead { height: 72vh; }
+    .page-title { margin-top: 8vh; }
+  }
+
+  .featured-title { text-align: center; margin: 0; padding: 40px 0 0; font-size: clamp(3rem, 7vw, 5.5rem); scroll-margin-top: 24px; }
+
+  .filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 26px; padding-top: 18px; padding-bottom: 8px; }
+  .f {
+    font: inherit; font-family: var(--sans); font-weight: 600; font-size: .74rem; letter-spacing: .16em; text-transform: uppercase;
+    cursor: pointer; background: none; border: 0; border-bottom: 1px solid transparent; color: var(--fg); opacity: .8; padding: 6px 0; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .f:hover { opacity: 1; }
+  .f.on { opacity: 1; border-bottom-color: currentColor; }
+  .n { opacity: .7; font-weight: 500; }
+  .more-wrap { text-align: center; margin: 24px 0 0; }
+  .more-btn { font: 700 1rem/1 var(--sans); padding: 14px 22px; border: 0; cursor: pointer; background: var(--lbg); color: var(--lfg); filter: var(--shadow); }
+  .more-btn:hover { background: var(--ring); color: #fff; }
+  .sw { width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle, var(--centre) 0 38%, var(--ring) 40%); }
+
+  .tiles-section { padding-top: 0; margin-top: 0; position: relative; z-index: 2; }
+  .tiles { padding-left: clamp(16px, 5vw, 65px); padding-right: clamp(16px, 5vw, 65px); max-width: 1280px; }
+
+</style>

@@ -1,15 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
-import Tile from '../components/Tile.astro';
 import home from '../content/home.json';
-import { buildTiles } from '../lib/merch.js';
-import { site, categories, categoryColourways } from '../site.config.js';
+import { site } from '../site.config.js';
 
-// Every byline: Featured picks first, then newest first. The grid shows a page at a
-// time with a "Show more" button. Category picks come first under each filter.
-const tiles = buildTiles();
-const counts = Object.fromEntries(categories.map((c) => [c, tiles.filter((a) => a.category === c).length]));
 const outlets = 'Concrete Playground, Time Out Melbourne, Halliday Wine Companion and Broadsheet';
 
 // Page sections, in the order set in the site editor (src/content/home.json).
@@ -24,40 +18,53 @@ const md = (t = '') => esc(t)
   {sections.map((sec) => {
     const t = sec._template;
     if (t === 'hero') return (
-      <Fragment>
-        <!-- Homepage header, built to the hazy kit's 1600 × 900 recipe: aura blobs behind, crisp marks in front, grain over everything -->
-        <div class="field eir-hazy">
-          <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
-          <header class="hero">
-            <nav class="top" aria-label="Header">
-              <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
-              <ul>
-                <li><a href="#work">Work</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href={`mailto:${site.email}`}>Contact</a></li>
-              </ul>
-            </nav>
-            <h1 class="masthead"><Logo variant="masthead" label="Editor in Residence" /></h1>
-            {sec.signoff && <div class="labels hero-labels"><span class="eir-label">{sec.signoff}</span></div>}
-            <p class="byline">{sec.byline}{sec.credentials && <Fragment><br /><em>{sec.credentials}</em></Fragment>}</p>
-          </header>
-          <h2 class="featured-title" id="work">{sec.featuredHeading || 'Featured.'}</h2>
-          <div class="filters wrap" role="group" aria-label="Show writing by category">
-            <button type="button" class="f on" data-cat="all" aria-pressed="true">All <span class="n">{tiles.length}</span></button>
-            {categories.map((c) => (
-              <button type="button" class="f" data-cat={c} aria-pressed="false"><span class="sw" data-cw={categoryColourways[c]} aria-hidden="true"></span>{c} <span class="n">{counts[c]}</span></button>
-            ))}
+      <div class="field eir-hazy">
+        <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
+        <header class="hero">
+          <nav class="top" aria-label="Header">
+            <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
+            <ul>
+              <li><a href="/writing/">Writing</a></li>
+              <li><a href="/work-with-me/">Work with me</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href={`mailto:${site.email}`}>Contact</a></li>
+            </ul>
+          </nav>
+          <h1 class="masthead"><Logo variant="masthead" label="Editor in Residence" /></h1>
+          <!-- One line across the page on desktop: sign-off label, byline, credentials (the accent colour) -->
+          <p class="standfirst">
+            {sec.signoff && <span class="eir-label sf-label">{sec.signoff}</span>}
+            <span class="sf-by">{sec.byline}</span>
+            {sec.credentials && <span class="sf-cred">{sec.credentials}</span>}
+          </p>
+        </header>
+        <span class="grain" aria-hidden="true"></span>
+      </div>
+    );
+    if (t === 'chooser') return (
+      <section class="chooser" id="choose" aria-labelledby="choose-h">
+        <div class="wrap">
+          {sec.heading && <h2 id="choose-h" class="choose-h">{sec.heading}</h2>}
+          <div class="dots">
+            <a class="big-dot day" href={sec.dayLink || '/writing/'}>
+              <span class="disc" aria-hidden="true"><span class="core"></span></span>
+              <span class="dot-copy">
+                <span class="when">{sec.dayLabel || 'Day'}</span>
+                <span class="what">{sec.dayTitle || 'Read my writing'}</span>
+                {sec.dayNote && <span class="note">{sec.dayNote}</span>}
+              </span>
+            </a>
+            <a class="big-dot night" href={sec.nightLink || '/work-with-me/'}>
+              <span class="disc" aria-hidden="true"><span class="core"></span></span>
+              <span class="dot-copy">
+                <span class="when">{sec.nightLabel || 'Night'}</span>
+                <span class="what">{sec.nightTitle || 'Work with me'}</span>
+                {sec.nightNote && <span class="note">{sec.nightNote}</span>}
+              </span>
+            </a>
           </div>
-          <span class="grain" aria-hidden="true"></span>
         </div>
-
-        <section class="tiles-section">
-          <div class="wrap tiles" id="tiles">
-            {tiles.map((a) => <Tile a={a} />)}
-          </div>
-          <p class="more-wrap"><button type="button" id="more" class="more-btn" hidden>Show more</button></p>
-        </section>
-      </Fragment>
+      </section>
     );
     if (t === 'about') return (
       <section class="about glow-bg" id="about">
@@ -98,126 +105,12 @@ const md = (t = '') => esc(t)
   })}
 </Base>
 
-<script is:inline>
-  (function () {
-    var grid = document.getElementById('tiles');
-    if (!grid) return;
-    var allTiles = Array.prototype.slice.call(grid.querySelectorAll('.tile'));
-    var tiles = allTiles;
-    var buttons = document.querySelectorAll('.filters .f');
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
-    var current = 'all';
 
-    // Masonry: drop each visible tile into the shortest column; the third column starts lower.
-    var lastN = 0;
-    function layout(force) {
-      var w = grid.clientWidth;
-      var n = window.innerWidth > 900 ? 3 : window.innerWidth >= 560 ? 2 : 1;
-      if (!force && n === lastN) return;
-      lastN = n;
-      grid.classList.add('js-cols');
-      grid.querySelectorAll('.col').forEach(function (c) { c.remove(); });
-      var cols = [];
-      for (var i = 0; i < n; i++) {
-        var c = document.createElement('div');
-        c.className = 'col' + (n === 3 && i === 2 ? ' drop' : '');
-        grid.appendChild(c);
-        cols.push(c);
-      }
-      tiles.forEach(function (t) {
-        if (t.hidden) { cols[0].appendChild(t); return; }
-        var shortest = cols.reduce(function (a, b) { return b.offsetHeight + b.offsetTop < a.offsetHeight + a.offsetTop ? b : a; });
-        shortest.appendChild(t);
-      });
-    }
-
-    var PAGE = 36, limit = PAGE;
-    var more = document.getElementById('more');
-    function filter(cat, keepLimit) {
-      if (!keepLimit) limit = PAGE;
-      current = cat;
-      // Under a category, that category's picks come first (in order), then the usual order.
-      tiles = cat === 'all' ? allTiles : allTiles.slice().sort(function (a, b) {
-        var ra = a.dataset.rankCat === '' ? 1e6 : Number(a.dataset.rankCat);
-        var rb = b.dataset.rankCat === '' ? 1e6 : Number(b.dataset.rankCat);
-        return ra - rb || allTiles.indexOf(a) - allTiles.indexOf(b);
-      });
-      var shown = 0, total = 0;
-      tiles.forEach(function (t) {
-        var match = cat === 'all' || t.dataset.category === cat;
-        if (match) total++;
-        t.hidden = !(match && shown < limit);
-        if (!t.hidden) shown++;
-      });
-      more.hidden = shown >= total;
-      more.textContent = 'Show more (' + (total - shown) + ' to go)';
-      buttons.forEach(function (b) {
-        var on = b.dataset.cat === cat;
-        b.classList.toggle('on', on);
-        b.setAttribute('aria-pressed', on ? 'true' : 'false');
-      });
-      layout(true);
-      tiles.forEach(function (t) { if (!t.hidden) t.classList.add('in'); });
-    }
-    more.addEventListener('click', function () { limit += PAGE; filter(current, true); });
-    buttons.forEach(function (b) {
-      b.addEventListener('click', function () {
-        filter(b.dataset.cat);
-        history.replaceState(null, '', b.dataset.cat === 'all' ? '#work' : '#' + b.dataset.cat.toLowerCase());
-      });
-    });
-    function fromHash() {
-      var h = decodeURIComponent(location.hash.slice(1)).toLowerCase();
-      var match = Array.prototype.find.call(buttons, function (b) { return b.dataset.cat.toLowerCase() === h; });
-      if (match) {
-        filter(match.dataset.cat);
-        document.getElementById('work').scrollIntoView();
-      }
-    }
-    window.addEventListener('hashchange', fromHash);
-
-    // Fade tiles in as they scroll into view.
-    if ('IntersectionObserver' in window && !reduce.matches) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { rootMargin: '0px 0px -8% 0px' });
-      allTiles.forEach(function (t) { io.observe(t); });
-    } else {
-      allTiles.forEach(function (t) { t.classList.add('in'); });
-    }
-
-    // Photo ⇄ text card, every 3s, staggered, paused on hover/focus. Off under reduced motion.
-    var paused = new Set();
-    allTiles.forEach(function (t, i) {
-      t.addEventListener('mouseenter', function () { paused.add(t); });
-      t.addEventListener('mouseleave', function () { paused.delete(t); });
-      t.addEventListener('focus', function () { paused.add(t); t.classList.add('flip'); });
-      t.addEventListener('blur', function () { paused.delete(t); });
-      t.dataset.offset = String((i * 7) % 10); // spread start times across the 3s cycle
-    });
-    var tick = 0;
-    setInterval(function () {
-      if (reduce.matches || document.hidden) return;
-      tick = (tick + 1) % 10;
-      allTiles.forEach(function (t) {
-        if (paused.has(t) || !t.classList.contains('has-photo')) return;
-        if (Number(t.dataset.offset) === tick) t.classList.toggle('flip');
-      });
-    }, 300);
-
-    filter('all');
-    fromHash();
-    var rt;
-    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { layout(false); }, 120); });
-    // Re-balance once images have their final size.
-    window.addEventListener('load', function () { layout(true); });
-  })();
-</script>
 
 <style>
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .eir-hazy { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 34vh;
-    -webkit-mask-image: linear-gradient(#000 calc(100% - 34vh), transparent); mask-image: linear-gradient(#000 calc(100% - 34vh), transparent); }
+  .eir-hazy { position: relative; overflow: hidden; isolation: isolate; padding-bottom: 22vh;
+    -webkit-mask-image: linear-gradient(#000 calc(100% - 22vh), transparent); mask-image: linear-gradient(#000 calc(100% - 22vh), transparent); }
   .eir-hazy > * { position: relative; z-index: 2; }
   .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
   .b1 { left: -16%; top: 18%; width: 56%; background: var(--a1); filter: blur(130px); opacity: .95; }
@@ -227,7 +120,7 @@ const md = (t = '') => esc(t)
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
   .hero {
-    min-height: min(100svh, 900px);
+    min-height: min(78svh, 760px);
     display: flex; flex-direction: column; color: var(--fg);
     padding: 44px max(16px, 4vw) 72px;
   }
@@ -238,31 +131,49 @@ const md = (t = '') => esc(t)
   .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: var(--ring);
     box-shadow: 0 0 22px 4px color-mix(in srgb, var(--ring) 55%, transparent); }
   .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: #fff; }
-  .masthead { width: min(820px, 92vw); margin: 18vh 0 0; color: #fff; }
-  .hero-labels { margin-top: 34px; }
-  .byline { margin: 30px 0 0; max-width: 52ch; font-size: 1rem; line-height: 1.5; color: #fff; }
-  .byline em { font-family: var(--serif); font-size: 1.08em; }
+  .masthead { width: min(820px, 92vw); margin: 14vh 0 0; color: #fff; }
+  /* One line on desktop: label · byline · credentials. The credentials carry the one new accent colour. */
+  .standfirst { --accent-line: var(--lemon); display: flex; flex-wrap: nowrap; align-items: baseline; gap: .55em 1.1em;
+    margin: 40px 0 0; font-size: clamp(.95rem, 1.12vw, 1.12rem); line-height: 1.4; color: #fff; white-space: nowrap; }
+  .sf-label.eir-label { font-size: 1.12em; }
+  .sf-by { font-weight: 700; }
+  .sf-cred { font-family: var(--serif); font-style: italic; font-size: 1.12em; color: var(--accent-line); }
+  @media (max-width: 1180px) {
+    .standfirst { flex-wrap: wrap; white-space: normal; }
+    .sf-label.eir-label { flex-basis: 100%; max-width: max-content; }
+  }
   @media (max-width: 767px) {
-    .top ul { gap: 20px; font-size: .9rem; }
-    .masthead { margin-top: 30vh; }
+    .top ul { gap: 16px; font-size: .86rem; }
+    .masthead { margin-top: 22vh; }
+    .standfirst { flex-direction: column; align-items: flex-start; gap: 10px; }
   }
-  .featured-title { text-align: center; margin: 0; padding: 40px 0 0; font-size: clamp(3rem, 7vw, 5.5rem); scroll-margin-top: 24px; }
 
-  .filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 26px; padding-top: 18px; padding-bottom: 8px; }
-  .f {
-    font: inherit; font-family: var(--sans); font-weight: 600; font-size: .74rem; letter-spacing: .16em; text-transform: uppercase;
-    cursor: pointer; background: none; border: 0; border-bottom: 1px solid transparent; color: var(--fg); opacity: .8; padding: 6px 0; display: inline-flex; align-items: center; gap: 8px;
-  }
-  .f:hover { opacity: 1; }
-  .f.on { opacity: 1; border-bottom-color: currentColor; }
-  .n { opacity: .7; font-weight: 500; }
-  .more-wrap { text-align: center; margin: 24px 0 0; }
   .more-btn { font: 700 1rem/1 var(--sans); padding: 14px 22px; border: 0; cursor: pointer; background: var(--lbg); color: var(--lfg); filter: var(--shadow); }
   .more-btn:hover { background: var(--ring); color: #fff; }
-  .sw { width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle, var(--centre) 0 38%, var(--ring) 40%); }
 
-  .tiles-section { padding-top: 0; margin-top: -30vh; position: relative; z-index: 2; }
-  .tiles { padding-left: clamp(16px, 5vw, 65px); padding-right: clamp(16px, 5vw, 65px); max-width: 1280px; }
+  /* Day / night chooser: two oversized dots */
+  .chooser { padding-top: 40px; }
+  .choose-h { text-align: center; font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: .2em; }
+  .choose-sub { text-align: center; }
+  .dots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 6vw, 96px); max-width: 1040px; margin: 48px auto 0; }
+  .big-dot { position: relative; display: grid; place-items: center; text-decoration: none; aspect-ratio: 1; isolation: isolate; }
+  .disc { position: absolute; inset: 0; border-radius: 50%; background: var(--ring-c);
+    box-shadow: 0 0 60px 10px color-mix(in srgb, var(--ring-c) 45%, transparent); transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s; z-index: -1; }
+  .core { position: absolute; inset: 14%; border-radius: 50%; background: var(--core-c); }
+  .big-dot:hover .disc, .big-dot:focus-visible .disc { transform: scale(1.04); box-shadow: 0 0 90px 22px color-mix(in srgb, var(--ring-c) 55%, transparent); }
+  .big-dot:focus-visible { outline: none; }
+  .day   { --ring-c: var(--lemon); --core-c: var(--pink); color: #fff; }
+  .night { --ring-c: var(--violet); --core-c: var(--navy); color: #fff; }
+  .dot-copy { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .5em; padding: 0 17%; }
+  .when { font: 600 clamp(.68rem, 1vw, .82rem)/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; opacity: .9; }
+  .what { font-family: var(--serif); font-weight: 700; font-size: clamp(1.5rem, 3.8vw, 3.2rem); line-height: 1.02; letter-spacing: -.015em; }
+  .big-dot:hover .what { font-style: italic; }
+  .note { font-size: clamp(.72rem, 1vw, .9rem); line-height: 1.35; opacity: .9; max-width: 22ch; }
+  @media (max-width: 640px) {
+    .dots { grid-template-columns: 1fr; max-width: 340px; gap: 28px; }
+    .what { font-size: 2.2rem; }
+    .note { font-size: .85rem; }
+  }
 
   .about-inner { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
   .headshot img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; display: block; }
