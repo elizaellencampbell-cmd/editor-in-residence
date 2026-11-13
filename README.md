@@ -55,3 +55,5 @@ Enquiries are sent by `functions/api/contact.js` through Resend (free tier).
 1. Sign up at resend.com and verify `editorinresidence.com.au` (add the DNS records it gives you at VentraIP).
 2. Create an API key.
 3. In Cloudflare → your project → Settings → Variables and secrets, add `RESEND_API_KEY` (secret), `CONTACT_TO` (your inbox) and `CONTACT_FROM` (e.g. `website@editorinresidence.com.au`).
+
+TinaCloud project: editor-in-residence (client ID set as TINA_CLIENT_ID in Cloudflare).
