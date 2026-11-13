@@ -43,7 +43,7 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
     <footer class="site-footer">
       <div class="wrap foot">
         <a href="/" class="home"><Logo variant="wordmark" /></a>
-        <div class="labels small">{site.signoff.map((l) => <span class="eir-label">{l}</span>)}</div>
+        <div class="labels small">{site.signoff.map((l, i) => <span class={`eir-label pop-${i % 2 ? 'aqua' : 'lemon'}`}>{l}</span>)}</div>
         <p class="links">
           <a href={`mailto:${site.email}`}>{site.email}</a>
           <a href={site.instagram} target="_blank" rel="noopener">Instagram</a>
@@ -141,5 +141,9 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
   .foot { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
   .home { text-decoration: none; }
   .links { display: flex; gap: 24px; flex-wrap: wrap; font-size: .95rem; }
-  .links a { text-decoration: none; border-bottom: 1px solid var(--line); }
+  .links a { text-decoration: none; border-bottom: 2px solid var(--aqua); }
+  .links a:hover { border-bottom-color: #3B3FD6; }
+  /* Footer labels take the dot colours: lemon, then aqua, both with navy type */
+  .pop-lemon.eir-label { background: var(--lemon); color: var(--navy); }
+  .pop-aqua.eir-label { background: var(--aqua); color: var(--navy); }
 </style>
