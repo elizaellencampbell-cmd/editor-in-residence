@@ -147,12 +147,12 @@ const md = (t = '') => esc(t)
      Day: orchid (lime ring, berry centre). Night: navy ring, lemon centre. Captions under both. */
   .chooser { padding: 24px 0 40px; }
   .dots { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 12vw, 200px); max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-  .big-dot { display: flex; flex-direction: column; align-items: center; gap: 28px; text-decoration: none; color: var(--ink); }
+  .big-dot { display: flex; flex-direction: column; align-items: center; gap: 28px; text-decoration: none; color: #fff; }
   .disc { position: relative; display: block; width: 78%; max-width: 330px; aspect-ratio: 1; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
   .disc > span { position: absolute; border-radius: 50%; }
   .haze { inset: -20%; background: var(--ring-c); filter: blur(60px); opacity: .85; transition: background .5s, opacity .5s, inset .5s; }
   /* Hover: the aura turns white and swells */
-  .big-dot:hover .haze, .big-dot:focus-visible .haze { background: #fff; opacity: 1; inset: -26%; }
+  .big-dot:hover .haze, .big-dot:focus-visible .haze { background: #fff; opacity: 1; inset: -16%; }
   .ring { inset: 0; background: var(--ring-c); filter: var(--shadow); }
   .core { inset: 22%; background: var(--core-c); }
   .big-dot:hover .disc, .big-dot:focus-visible .disc { transform: scale(1.05); }
@@ -160,7 +160,7 @@ const md = (t = '') => esc(t)
   .big-dot:focus-visible .cap { text-decoration: underline; text-underline-offset: 6px; }
   .day   { --ring-c: var(--lime); --core-c: #A0006A; }   /* Orchid: lime ring, berry centre */
   .night { --ring-c: var(--navy);   --core-c: var(--lemon); }
-  .cap { position: relative; z-index: 1; font-family: var(--serif); font-weight: 800; font-size: clamp(1.5rem, 2.8vw, 2.4rem); line-height: 1; letter-spacing: -.01em; text-align: center; }
+  .cap { position: relative; z-index: 1; text-shadow: 0 1px 2px rgba(20,33,91,.35), 0 2px 18px rgba(20,33,91,.35); font-family: var(--serif); font-weight: 800; font-size: clamp(1.5rem, 2.8vw, 2.4rem); line-height: 1; letter-spacing: -.01em; text-align: center; }
   .big-dot:hover .cap { font-style: italic; }
   @media (prefers-reduced-motion: reduce) { .disc { transition: none; } }
   @media (max-width: 640px) {
