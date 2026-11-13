@@ -65,6 +65,31 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
       </button>
     </nav>
 
+    <!-- Cursor dot: a violet and lime two-tone dot (the kit's violet colourway) that follows the pointer.
+         Mouse and trackpad only; touch screens keep their normal behaviour. -->
+    <span class="cursor-dot" aria-hidden="true"></span>
+    <script is:inline>
+      (function () {
+        if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        var d = document.querySelector('.cursor-dot');
+        var root = document.documentElement;
+        root.classList.add('has-cursor-dot');
+        var x = -100, y = -100, cx = -100, cy = -100;
+        var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        addEventListener('pointermove', function (e) {
+          x = e.clientX; y = e.clientY; d.classList.add('on');
+          var t = e.target.closest && e.target.closest('a, button');
+          d.classList.toggle('big', !!t);
+          d.classList.toggle('over-dot', !!(e.target.closest && e.target.closest('.big-dot')));
+        });
+        document.addEventListener('pointerleave', function () { d.classList.remove('on'); });
+        (function loop() {
+          cx += (x - cx) * (still ? 1 : .28); cy += (y - cy) * (still ? 1 : .28);
+          d.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
+          requestAnimationFrame(loop);
+        })();
+      })();
+    </script>
     <script is:inline>
       document.getElementById('theme').addEventListener('click', function () {
         var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -76,6 +101,14 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
 </html>
 
 <style>
+  .cursor-dot { position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none; opacity: 0; transition: opacity .2s; }
+  .cursor-dot.on { opacity: 1; }
+  .cursor-dot::before { content: ''; position: absolute; width: 22px; height: 22px; left: -11px; top: -11px; border-radius: 50%;
+    background: radial-gradient(circle, var(--lime) 0 27%, var(--violet) 29%); box-shadow: 0 0 14px 3px color-mix(in srgb, var(--violet) 55%, transparent);
+    transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+  .cursor-dot.big::before { transform: scale(1.6); }
+  .cursor-dot.over-dot::before { transform: scale(2.1); box-shadow: 0 0 22px 6px rgba(255,255,255,.8); }
+  :global(.has-cursor-dot), :global(.has-cursor-dot a), :global(.has-cursor-dot button) { cursor: none; }
   .bottom-nav {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
     height: var(--nav-h); display: flex; align-items: center; gap: 24px;
