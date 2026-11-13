@@ -186,3 +186,13 @@ section { padding: 96px 0; position: relative; }
 .tiles.js-cols > .col { flex: 1 1 0; min-width: 0; }
 .tiles.js-cols > .col.drop { margin-top: clamp(0px, 15vw, 250px); }
 .tile[hidden] { display: none !important; }
+
+/* Header nav: each item sits on its own colourway label so it pops */
+.nav-labels { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px !important; }
+.nav-labels a { display: inline-block; font: 700 .92rem/1 var(--sans) !important; padding: .5em .7em .55em; text-decoration: none !important; filter: var(--shadow); transition: transform .25s cubic-bezier(.2,.8,.2,1); font-style: normal !important; }
+.nav-labels a:hover, .nav-labels a[aria-current='page'] { transform: translateY(-2px) rotate(-2deg); }
+.nav-labels li:nth-child(1) a { background: var(--lemon); color: var(--navy) !important; }
+.nav-labels li:nth-child(2) a { background: var(--aqua); color: var(--navy) !important; }
+.nav-labels li:nth-child(3) a { background: #3B3FD6; color: #fff !important; }
+.nav-labels li:nth-child(4) a { background: #fff; color: var(--cobalt) !important; }
+@media (max-width: 640px) { .nav-labels { gap: 6px !important; } .nav-labels a { font-size: .74rem !important; padding: .45em .5em .5em; } }

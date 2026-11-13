@@ -5,85 +5,49 @@ import Tile from '../components/Tile.astro';
 import { buildTiles } from '../lib/merch.js';
 import { site, categories, categoryColourways } from '../site.config.js';
 
-// Front of book. Featured picks (src/content/merch.json, set in the site editor) lead the page:
-// pick 1 runs full bleed, picks 2–3 run large side by side, picks 4–7 run as a row of smaller stories.
-// Everything else follows in the filterable grid.
+// Writing. Mirrors the original home page: pink hazy header, "Featured.", the category filters,
+// then two wide Featured stories side by side, then the original masonry cards.
+// Wide stories: Featured picks tagged wide (Merch EiR "Full width"), else the first two Featured picks.
 const tiles = buildTiles();
-let picks = tiles.filter((a) => a.rankAll != null && a.image);
-// MOCKUP ONLY: the Featured list is empty for now, so use a sample of pieces with photos.
-if (!picks.length) {
-  const sample = ['guide-to-vanuatu', 'marco-pierre-white', 'barossa-valley', 'matt-berninger', 'chilled-reds', 'first-timer-s-guide-to-singapore', 'lisa-gorman'];
-  picks = sample.map((k) => tiles.find((a) => a.image && a.image.includes(k))).filter(Boolean);
-}
-const [lead, ...rest] = picks;
-const second = rest.slice(0, 2);
-const third = rest.slice(2, 6);
-const pickedUrls = new Set(picks.map((a) => a.url));
-const gridTiles = tiles.filter((a) => !pickedUrls.has(a.url));
+let picks = tiles.filter((a) => a.rankAll != null);
+let wide = picks.filter((a) => a.wide).slice(0, 2);
+if (!wide.length) wide = picks.filter((a) => a.image).slice(0, 2);
+// MOCKUP ONLY: the Featured list is empty in this copy, so use two pieces with photos.
+if (!wide.length) wide = ['guide-to-vanuatu', 'marco-pierre-white'].map((k) => tiles.find((a) => a.image && a.image.includes(k))).filter(Boolean);
+const wideUrls = new Set(wide.map((a) => a.url));
+const gridTiles = tiles.filter((a) => !wideUrls.has(a.url));
 const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a) => a.category === c).length]));
-const kicker = (a) => a.category === 'Interviews' ? 'Interview' : a.label || a.category || 'Feature';
 ---
 <Base title="Writing" description="Food, drink, travel and lifestyle writing by Eliza Campbell.">
-  <div class="field eir-hazy short-hero">
+  <div class="field eir-hazy">
     <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
     <header class="hero">
       <nav class="top" aria-label="Header">
         <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
-        <ul>
+        <ul class="nav-labels">
           <li><a href="/writing/" aria-current="page">Writing</a></li>
           <li><a href="/work-with-me/">Work with me</a></li>
           <li><a href="/#about">About</a></li>
           <li><a href={`mailto:${site.email}`}>Contact</a></li>
         </ul>
       </nav>
-      <div class="page-title">
-        <span class="eir-label">Day · Front of book</span>
-        <h1>Featured.</h1>
-      </div>
     </header>
+    <h1 class="featured-title" id="work">Featured.</h1>
+    <div class="filters wrap" role="group" aria-label="Show writing by category">
+      <button type="button" class="f on" data-cat="all" aria-pressed="true">All <span class="n">{gridTiles.length + wide.length}</span></button>
+      {categories.map((c) => (
+        <button type="button" class="f" data-cat={c} aria-pressed="false"><span class="sw" data-cw={categoryColourways[c]} aria-hidden="true"></span>{c} <span class="n">{counts[c] + wide.filter((a) => a.category === c).length}</span></button>
+      ))}
+    </div>
     <span class="grain" aria-hidden="true"></span>
   </div>
 
-  {lead && (
-    <a class="lead" href={lead.url} target="_blank" rel="noopener" data-cw={categoryColourways[lead.category] ?? 'cobalt'}>
-      <img src={lead.image} alt="" />
-      <span class="lead-copy">
-        <span class="kick">{kicker(lead)} · {lead.outlet}</span>
-        <span class="lead-h">{lead.title}</span>
-      </span>
-    </a>
-  )}
-
-  <section class="ed-rows">
-    <div class="wrap">
-      <div class="row two">
-        {second.map((a) => (
-          <a class="story" href={a.url} target="_blank" rel="noopener" data-cw={categoryColourways[a.category] ?? 'cobalt'}>
-            <span class="pic"><img src={a.image} alt="" loading="lazy" /></span>
-            <span class="kick">{kicker(a)} · {a.outlet}</span>
-            <span class="h">{a.title}</span>
-          </a>
-        ))}
-      </div>
-      <div class="row four">
-        {third.map((a) => (
-          <a class="story small" href={a.url} target="_blank" rel="noopener" data-cw={categoryColourways[a.category] ?? 'cobalt'}>
-            <span class="pic"><img src={a.image} alt="" loading="lazy" /></span>
-            <span class="kick">{kicker(a)} · {a.outlet}</span>
-            <span class="h">{a.title}</span>
-          </a>
-        ))}
-      </div>
+  <section class="wide-section">
+    <div class="wrap wide-row">
+      {wide.map((a) => <Tile a={{ ...a, shape: 'wide' }} />)}
     </div>
   </section>
 
-  <h2 class="featured-title" id="work">All writing.</h2>
-  <div class="filters wrap" role="group" aria-label="Show writing by category">
-    <button type="button" class="f on" data-cat="all" aria-pressed="true">All <span class="n">{gridTiles.length}</span></button>
-    {categories.map((c) => (
-      <button type="button" class="f" data-cat={c} aria-pressed="false"><span class="sw" data-cw={categoryColourways[c]} aria-hidden="true"></span>{c} <span class="n">{counts[c]}</span></button>
-    ))}
-  </div>
   <section class="tiles-section">
     <div class="wrap tiles" id="tiles">
       {gridTiles.map((a) => <Tile a={a} />)}
@@ -227,42 +191,14 @@ const kicker = (a) => a.category === 'Interviews' ? 'Interview' : a.label || a.c
     box-shadow: 0 0 22px 4px color-mix(in srgb, var(--ring) 55%, transparent); }
   .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: #fff; }
 
-  .short-hero { padding-bottom: 0; -webkit-mask-image: none; mask-image: none; }
-  .hero { display: flex; flex-direction: column; color: #fff; padding: 44px max(16px, 4vw) 56px; }
-  .top ul a[aria-current='page'] { font-family: var(--serif); font-weight: 600; font-style: italic; }
-  @media (max-width: 767px) { .top ul { gap: 14px; font-size: .84rem; } }
-  .page-title { margin-top: 12vh; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-  .page-title h1 { color: #fff; margin: 0; font-size: clamp(3.6rem, 10vw, 8.5rem); }
-
-  /* Lead story: full bleed */
-  .lead { position: relative; display: block; height: min(82vh, 860px); color: #fff; text-decoration: none; overflow: hidden; }
-  .lead img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
-  .lead:hover img { transform: scale(1.025); }
-  .lead::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(12, 20, 56, .78)); }
-  .lead-copy { position: absolute; z-index: 1; left: max(16px, 4vw); right: max(16px, 4vw); bottom: clamp(28px, 6vh, 64px); display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
-  .lead-h { font-family: var(--serif); font-weight: 700; font-size: clamp(2rem, 5.4vw, 5rem); line-height: 1.02; letter-spacing: -.02em; max-width: 20ch; text-wrap: balance; }
-  .lead:hover .lead-h { font-style: italic; }
-  .kick { display: inline-block; font: 600 .68rem/1.2 var(--sans); letter-spacing: .16em; text-transform: uppercase; background: var(--lbg); color: var(--lfg); padding: .45em .8em .4em; }
-
-  .ed-rows { padding: 56px 0 24px; }
-  .row { display: grid; gap: 40px 32px; }
-  .row.two { grid-template-columns: 1fr 1fr; }
-  .row.four { grid-template-columns: repeat(4, 1fr); margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--line); }
-  .story { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; text-decoration: none; color: var(--ink); }
-  .pic { display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: var(--g); }
-  .small .pic { aspect-ratio: 1; }
-  .pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
-  .story:hover img { transform: scale(1.03); }
-  .story .h { font-family: var(--serif); font-weight: 700; font-size: clamp(1.5rem, 2.6vw, 2.4rem); line-height: 1.08; letter-spacing: -.015em; text-wrap: balance; }
-  .story.small .h { font-size: clamp(1.1rem, 1.5vw, 1.35rem); line-height: 1.15; font-weight: 600; }
-  .story:hover .h { font-style: italic; }
-  @media (max-width: 900px) { .row.four { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 640px) {
-    .row.two { grid-template-columns: 1fr; }
-    .row.four { gap: 28px 16px; margin-top: 40px; }
-    .lead { height: 72vh; }
-    .page-title { margin-top: 8vh; }
-  }
+  .eir-hazy { padding-bottom: 30vh; -webkit-mask-image: linear-gradient(#000 calc(100% - 30vh), transparent); mask-image: linear-gradient(#000 calc(100% - 30vh), transparent); }
+  .hero { display: flex; flex-direction: column; color: #fff; padding: 44px max(16px, 4vw) 0; }
+  .featured-title { color: #fff; padding-top: 12vh !important; }
+  .wide-section { padding: 0; margin-top: -26vh; position: relative; z-index: 2; }
+  .wide-row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; padding-left: clamp(16px, 5vw, 65px); padding-right: clamp(16px, 5vw, 65px); max-width: 1280px; }
+  .wide-row :global(.tile) { opacity: 1; transform: none; }
+  @media (max-width: 760px) { .wide-row { grid-template-columns: 1fr; } }
+  .tiles-section { padding-top: 40px !important; }
 
   .featured-title { text-align: center; margin: 0; padding: 40px 0 0; font-size: clamp(3rem, 7vw, 5.5rem); scroll-margin-top: 24px; }
 

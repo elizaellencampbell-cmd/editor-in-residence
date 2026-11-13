@@ -1,73 +1,351 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site } from '../site.config.js';
-// Back of book. PLACEHOLDER: services and the "what is Editor in Residence" copy get written with Liza next.
+// Back of book: "What is an Editor in Residence?" Built to Liza's page brief (14 Nov 2026).
+// A dictionary entry that turns into a sales pitch. Rosy hazy wash, Didone serif, one idea per screen.
+// Photo: B&W landscape headshot, melted into the wash (soft mask + multiply), face on the right third line.
+const photo = { a: '/images/eliza-bw-a.jpg', b: '/images/eliza-bw-b.jpg' };
+const contactHref = `mailto:${site.email}?subject=${encodeURIComponent('Booking a residency')}`;
+const ig = 'https://www.instagram.com/editor.inresidence/';
+const PUBS = ['Concrete Playground', 'Time Out Melbourne', 'Halliday Wine Companion'];
+const keepPubs = (h) => h.replace(new RegExp('(' + PUBS.join('|') + ')', 'g'), '<span class="pub">$1</span>');
 const services = [
-  ['Pitch strategy and writing', 'Placeholder. What it is, who it is for, what you get.'],
-  ['Brand positioning and tone of voice', 'Placeholder. What it is, who it is for, what you get.'],
-  ['Content and editorial strategy', 'Placeholder. What it is, who it is for, what you get.'],
-  ['Copywriting and editing', 'Placeholder. What it is, who it is for, what you get.'],
+  ['Pitches and press releases', 'written from scratch or edited from yours'],
+  ['Audience analysis', 'who reads the outlet you want, and what its editors are looking for'],
+  ['Tone of voice and brand positioning', ''],
+  ['Content and editorial strategy', ''],
+  ['Copywriting', 'social included'],
 ];
 ---
-<Base title="Work with me" description="Editor in Residence: editing, content strategy and PR by Eliza Campbell.">
-  <script is:inline>document.documentElement.dataset.theme = 'dark';</script>
-  <div class="night-field">
-    <span class="blob n1" aria-hidden="true"></span><span class="blob n2" aria-hidden="true"></span>
-    <header class="hero">
-      <nav class="top" aria-label="Header">
-        <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
-        <ul>
-          <li><a href="/writing/">Writing</a></li>
-          <li><a href="/work-with-me/" aria-current="page">Work with me</a></li>
-          <li><a href="/#about">About</a></li>
-          <li><a href={`mailto:${site.email}`}>Contact</a></li>
-        </ul>
-      </nav>
-      <div class="page-title">
-        <span class="eir-label">Night · Back of book</span>
-        <h1>Work with me.</h1>
-        <p class="lede">What is Editor in Residence? <em>Placeholder: the one-paragraph answer goes here, written together next.</em></p>
-      </div>
-    </header>
-  </div>
+<Base title="What is an Editor in Residence?" description="Eliza Campbell, former editor of Concrete Playground, Time Out Melbourne and Halliday Wine Companion, now works with PR agencies and brands as an editor in residence.">
+  <div class="rosy">
+    <span class="blob r1" aria-hidden="true"></span><span class="blob r2" aria-hidden="true"></span><span class="blob r3" aria-hidden="true"></span><span class="blob r4" aria-hidden="true"></span>
+    <span class="grain" aria-hidden="true"></span>
 
-  <section>
-    <div class="wrap">
-      <div class="svc">
-        {services.map(([n, d], i) => (
-          <div class="card"><span class="num">0{i + 1}</span><h2>{n}</h2><p>{d}</p></div>
-        ))}
-      </div>
-      <p class="cta">Got a brief? <a class="text-link" href={`mailto:${site.email}`}>{site.email}</a></p>
+    <nav class="top" aria-label="Header">
+      <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
+      <ul class="nav-labels">
+        <li><a href="/writing/">Writing</a></li>
+        <li><a href="/work-with-me/" aria-current="page">Work with me</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href={`mailto:${site.email}`}>Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1. The dictionary entry -->
+    <header class="entry wrap">
+      <h1 class="headword" aria-label="editor in residence">
+        <span aria-hidden="true">ed<span class="md">·</span>i<span class="md">·</span>tor <span class="in">ı<span class="i-dot"></span>n</span> res<span class="md">·</span>i<span class="md">·</span>dence</span>
+      </h1>
+      <p class="pron">/ed·i·tuh in rez·i·dense/ <span class="sep">·</span> <i>noun</i></p>
+      <hr />
+      <ol class="senses">
+        <li><b>1.</b> <span>Me – the editor who used to decide which pitches got published, and now helps you get yours across the line. <i>See also:</i> your editorial double agent.</span></li>
+        <li><b>2.</b> <span>An editor brought in for a good time, not a long time, who arrives with a red pen and leaves behind better copy.</span></li>
+        <li><b>3.</b> <span><i>informal.</i> Your freelance editor on the inside, who tells you what the desk will say before it gets the chance.</span></li>
+      </ol>
+      <p class="origin"><b>Origin:</b> from <i>artist in residence</i>. Same idea, fewer easels, more tracked changes.</p>
+    </header>
+
+    <!-- 2. Cover line, set like a bus-side ad -->
+    <div class="strap">
+      <p class="strap-line"><span class="name">Eliza Campbell</span> knows a good pitch<sup>*</sup></p>
+      <p class="strap-foot"><i>(*and isn't afraid to ask)</i></p>
     </div>
-  </section>
+
+    <!-- 3. The long definition, over the melted photo -->
+    <section class="long" data-photo="a">
+      <div class="photo" aria-hidden="true">
+        <span class="ph pa"><img src={photo.a} alt="" width="1500" height="1000" loading="lazy" /></span>
+        <span class="ph pb"><img src={photo.b} alt="" width="1500" height="1000" loading="lazy" /></span>
+      </div>
+      <div class="wrap long-inner">
+        <div class="long-copy">
+          <p>An editor in residence usually lives at a literary journal, moving in for a season to shape the voice and mentor whoever's around. I've borrowed the idea and taken it to PR agencies and brands, where an editor's eye is in much shorter supply.</p>
+          <p set:html={keepPubs("For the better part of a decade I sat on the other side of your inbox (<i>Halliday Wine Companion</i>, <i>Time Out Melbourne</i>, then all three Concrete Playground editions), reading 80-odd pitches a day and running very few. My taste had less to do with it than you'd hope. Editors pick what their audience will open, finish and share, and what the commercial team can sell around it.")} />
+          <p>That's the bit most pitches miss. I'll show you how a modern publishing team runs, then shape each story for the masthead you're after – the Instagram collab, the photos held back for them alone, the iPhone footage their social team can cut – until it's an easy yes.</p>
+        </div>
+        <blockquote class="pull">To pull it off you need the mind of an editor. I'm going to lend you mine.</blockquote>
+      </div>
+    </section>
+
+    <!-- 4. The receipts: the dot does the talking -->
+    <section class="receipts" id="receipts">
+      <div class="wrap">
+        <p class="receipts-intro" set:html={keepPubs('I took Concrete Playground from meh to cool in 18 months. <em>The receipts:</em>')} />
+        <div class="panels">
+
+          <figure class="panel p-cobalt" data-count>
+            <div class="viz grow" style="--from:1; --to:2.1" aria-hidden="true"><span class="d small"></span><span class="d big"></span></div>
+            <figcaption><span class="num" data-to="4.4" data-dec="1" data-suf="M">4.4M</span><span class="line">social engagements in 18 months, up from 1.0M</span></figcaption>
+          </figure>
+
+          <figure class="panel p-violet" data-count>
+            <div class="viz grow" style="--from:1; --to:4.1" aria-hidden="true"><span class="d small"></span><span class="d big"></span></div>
+            <figcaption><span class="num" data-to="17" data-suf="x">17x</span><span class="line">the link clicks, from 48K to 826K</span></figcaption>
+          </figure>
+
+          <figure class="panel p-peacock" data-count>
+            <div class="viz board" aria-hidden="true"><span class="d top"></span><span class="row"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></div>
+            <figcaption><span class="num" data-to="28849" data-comma="1">28,849</span><span class="line">average views per article, the highest of any CP writer</span></figcaption>
+          </figure>
+
+          <figure class="panel p-navy" data-count>
+            <div class="viz eighty" aria-hidden="true">{Array.from({ length: 80 }, (_, i) => <span class={i === 46 ? 'pick' : ''}></span>)}</div>
+            <figcaption><span class="num" data-to="80" data-suf="-odd">80-odd</span><span class="line">pitches a day. I know which ones get opened.</span></figcaption>
+          </figure>
+
+          <figure class="panel p-emerald" data-count>
+            <div class="viz merge" aria-hidden="true">
+              <span class="m m1"><i>Sydney editor</i></span><span class="m m2"><i>Melbourne editor</i></span><span class="m m3"><i>Brisbane editor</i></span><span class="m m4"><i>Junior writer</i></span><span class="m m5"><i>Editorial director</i></span>
+              <span class="one"></span>
+            </div>
+            <figcaption><span class="num" data-to="1">1</span><span class="line">editor doing the job of a national editorial team. <a href="#book">Want to know how?</a></span></figcaption>
+          </figure>
+
+          <figure class="panel p-fuchsia" data-count>
+            <div class="viz ripple" aria-hidden="true"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="d"></span></div>
+            <figcaption><span class="num" data-to="143" data-suf="K">143K</span><span class="line">views on my Marco Pierre White interview, shared 1,500+ times</span></figcaption>
+          </figure>
+
+          <figure class="panel p-lagoon" data-count>
+            <div class="viz grow" style="--from:1; --to:3.2" aria-hidden="true"><span class="d small"></span><span class="d big"></span></div>
+            <figcaption><span class="num" data-to="919" data-suf="%">919%</span><span class="line">growth in organic pageviews at Afterpay</span></figcaption>
+          </figure>
+
+          <div class="panel signoff">
+            <p>For years I was the yes (and, far more often, the no). Now I'm the double agent in your corner.</p>
+          </div>
+        </div>
+        <p class="footnote" set:html={keepPubs('Social figures compare my first 18 months at Concrete Playground with the 18 months before.')} />
+      </div>
+    </section>
+
+    <!-- 5. Contents page -->
+    <section class="contents">
+      <div class="wrap narrow-ish">
+        <h2 class="contents-h">What a residency covers</h2>
+        <ol class="toc">
+          {services.map(([t, d], i) => (
+            <li><a href="#book"><span class="pg">{String(i + 1).padStart(2, '0')}</span><span class="t">{t}{d && <span class="desc">, {d}</span>}</span><span class="arrow" aria-hidden="true">→</span></a></li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Call to action (6. the dictionary-style gag closes the page) -->
+    <section class="cta" id="book">
+      <div class="wrap narrow-ish">
+        <p class="cta-copy">Residencies run for three months or more, and one-off jobs are billed by the hour. Want an editor on your side of the inbox?</p>
+        <p class="cta-links">Write to me at <a href={`mailto:${site.email}`}>{site.email}</a> or find me on Instagram at <a href={ig} target="_blank" rel="noopener">@editor.inresidence</a>.</p>
+        <p><a class="book" href={contactHref}>Book a residency</a></p>
+        <p class="gag"><b>Synonyms:</b> double agent; former gatekeeper; the one who reads it first. <b>Antonyms:</b> agency; “We are thrilled to announce”.</p>
+      </div>
+    </section>
+  </div>
 </Base>
 
+<script is:inline>
+  (function () {
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var panels = document.querySelectorAll('[data-count]');
+    function fmt(el, v) {
+      var dec = Number(el.dataset.dec || 0), s = v.toFixed(dec);
+      if (el.dataset.comma) s = Math.round(v).toLocaleString('en-AU');
+      return s + (el.dataset.suf || '');
+    }
+    function run(p) {
+      p.classList.add('go');
+      var n = p.querySelector('.num'); if (!n || still) return;
+      var to = Number(n.dataset.to), t0 = performance.now(), dur = 1000;
+      (function step(t) {
+        var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        n.textContent = fmt(n, to * e);
+        if (k < 1) requestAnimationFrame(step); else n.textContent = fmt(n, to);
+      })(t0);
+    }
+    if (still || !('IntersectionObserver' in window)) { panels.forEach(function (p) { p.classList.add('go'); }); return; }
+    document.documentElement.classList.add('anim');
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } });
+    }, { threshold: .35 });
+    panels.forEach(function (p) { io.observe(p); });
+  })();
+</script>
+
 <style>
-  .night-field { position: relative; overflow: hidden; isolation: isolate; background: var(--navy); color: #fff; }
-  .blob { position: absolute; z-index: -1; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
-  .n1 { left: 50%; top: -30%; width: 60%; background: var(--violet); filter: blur(140px); opacity: .8; }
-  .n2 { left: -10%; top: 40%; width: 40%; background: var(--pink); filter: blur(150px); opacity: .45; }
-  .hero { padding: 44px max(16px, 4vw) 80px; }
-  .top { display: flex; justify-content: space-between; align-items: center; }
-  .top ul { display: flex; gap: 34px; list-style: none; margin: 0; padding: 0; font-size: 1rem; }
-  .top a { color: #fff; text-decoration: none; }
-  .top ul a[aria-current='page'] { font-family: var(--serif); font-weight: 600; font-style: italic; }
-  .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: var(--violet); box-shadow: 0 0 22px 4px color-mix(in srgb, var(--violet) 55%, transparent); }
-  .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--navy); }
-  .page-title { margin-top: 14vh; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-  .page-title .eir-label { background: var(--pink); color: var(--navy); }
-  h1 { margin: 0; font-size: clamp(3.4rem, 10vw, 8.5rem); color: #fff; }
-  .lede { font-family: var(--serif); font-weight: 600; font-size: clamp(1.2rem, 2.2vw, 1.7rem); line-height: 1.3; max-width: 40ch; margin: 10px 0 0; }
-  .lede em { opacity: .7; }
-  .svc { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .card { border: 1px solid var(--line); padding: 32px; border-radius: 4px; }
-  .card h2 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin: .3em 0 .4em; }
-  .card p { color: var(--muted); margin: 0; }
-  .num { font: 600 .75rem/1 var(--sans); letter-spacing: .2em; color: var(--pink); }
-  .cta { font-family: var(--serif); font-weight: 600; font-size: clamp(1.3rem, 2.4vw, 1.8rem); margin-top: 56px; }
-  @media (max-width: 767px) {
+  .rosy { position: relative; overflow: hidden; isolation: isolate; color: var(--navy);
+    background: linear-gradient(180deg, #ffd3e6 0, #fbe3ec 900px, #f6e6ee 2400px, #f3e4f1 100%); }
+  .rosy > * { position: relative; z-index: 2; }
+  .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
+  .r1 { left: 52%; top: -260px; width: 62vw; background: var(--pink); filter: blur(150px); opacity: .55; }
+  .r2 { left: -18%; top: 380px; width: 48vw; background: #ffb347; filter: blur(160px); opacity: .35; }
+  .r3 { left: 60%; top: 1900px; width: 46vw; background: var(--aqua); filter: blur(170px); opacity: .3; }
+  .r4 { left: -10%; top: 3300px; width: 50vw; background: var(--violet); filter: blur(180px); opacity: .22; }
+  .grain { position: absolute !important; inset: 0; z-index: 3 !important; mix-blend-mode: overlay; opacity: .3; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  .pub { white-space: nowrap; }
+
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 44px max(16px, 4vw) 0; }
+  .top ul { display: flex; gap: 34px; list-style: none; margin: 0; padding: 0; }
+  .top a { color: var(--navy); text-decoration: none; }
+  .top ul a[aria-current='page'] { font-family: var(--serif); font-weight: 700; font-style: italic; }
+  .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: var(--aqua); box-shadow: 0 0 22px 4px color-mix(in srgb, var(--aqua) 60%, transparent); }
+  .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--pink); }
+
+  /* 1. Dictionary entry */
+  .entry { padding-top: 14vh; padding-bottom: 72px; max-width: 1100px; }
+  .headword { font-family: var(--serif); font-weight: 800; font-size: clamp(3rem, 9.6vw, 8.6rem); line-height: .95; letter-spacing: -.03em; margin: 0; text-transform: lowercase; }
+  .in { position: relative; display: inline-block; }
+  .md { font-weight: 400; opacity: .45; margin: 0 -.02em; }
+  .i-dot { position: absolute; left: -.1em; top: .06em; width: .42em; aspect-ratio: 1; border-radius: 50%; background: var(--aqua);
+    box-shadow: 0 0 .25em .05em color-mix(in srgb, var(--aqua) 70%, transparent); }
+  .i-dot::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--pink); }
+  .pron { font-weight: 400; font-size: clamp(1.05rem, 1.8vw, 1.4rem); margin: 22px 0 0; color: var(--navy); opacity: .85; }
+  .pron i { font-family: var(--serif); font-weight: 600; }
+  .sep { margin: 0 .3em; }
+  .entry hr { border: 0; border-top: 1px solid var(--navy); opacity: .5; margin: 26px 0 30px; }
+  .senses { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; max-width: 64ch; }
+  .senses li { display: grid; grid-template-columns: 2.2em 1fr; font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.5; }
+  .senses b { font-weight: 700; }
+  .senses i, .origin i { font-family: var(--serif); font-weight: 600; }
+  .origin { margin: 28px 0 0; max-width: 64ch; font-size: 1rem; }
+
+  /* 2. Bus-side strap */
+  .strap { background: var(--lemon); color: var(--navy); padding: 30px max(16px, 4vw) 26px; text-align: center; box-shadow: 0 20px 60px -30px rgba(20,33,91,.4); }
+  .strap-line { margin: 0; font: 800 clamp(1.7rem, 4.6vw, 4rem)/1.02 var(--sans); letter-spacing: -.035em; text-transform: none; }
+  .strap-line .name { font-family: var(--serif); font-style: italic; font-weight: 800; letter-spacing: -.02em; }
+  .strap-line sup { font-size: .5em; vertical-align: .9em; color: var(--pink); }
+  .strap-foot { margin: 8px 0 0; font-family: var(--serif); font-weight: 600; font-size: clamp(1rem, 1.6vw, 1.3rem); }
+
+  /* 3. Long definition: copy on the left, the photo melting in on the right.
+     Rule of thirds: her face sits on the right-hand third line, eyes on the top third, looking into the copy. */
+  .long { position: relative; padding: 120px 0 110px; min-height: 46vw; }
+  .photo { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  /* Each photo melts in: soft fades on every edge (no hard lines), multiplied into the wash, with a rosy tint on top */
+  .ph { position: absolute; top: 20px; display: block; isolation: isolate; mix-blend-mode: multiply; opacity: .95;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 32%, #000 78%, transparent 98%), linear-gradient(to bottom, transparent 0, #000 20%, #000 68%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0, #000 32%, #000 78%, transparent 98%), linear-gradient(to bottom, transparent 0, #000 20%, #000 68%, transparent 100%);
+    mask-composite: intersect; }
+  .ph img { display: block; width: 100%; height: auto; filter: contrast(1.02) brightness(1.14); }
+  .ph::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, #ff9ccd, #ffc2df 60%, #ffb3da); mix-blend-mode: color; opacity: .4; }
+  .pa { --fx: 43%; left: 40%; width: 62%; }
+  .pb { --fx: 59%; left: 30%; width: 62%; }
+  .long[data-photo='a'] .pb, .long[data-photo='b'] .pa { display: none; }
+  .long-inner { position: relative; z-index: 1; }
+  .long-copy { max-width: 60ch; width: 46%; font-size: 1.08rem; line-height: 1.75; }
+  .long-copy :global(i) { font-family: var(--serif); font-weight: 600; }
+  .pull { margin: 64px 0 0; max-width: 18ch; font-family: var(--serif); font-weight: 800; font-size: clamp(2.1rem, 4.6vw, 4.2rem); line-height: 1.04; letter-spacing: -.02em; }
+  @media (max-width: 900px) {
+    .long { padding-top: 0; }
+    .photo { position: relative; height: 92vw; }
+    .ph { top: 0; }
+    .pa { --fx: 50%; left: -18%; width: 140%; }
+    .pb { --fx: 50%; left: -48%; width: 150%; }
+    .long-copy { width: auto; }
+    .pull { margin-top: 44px; }
+  }
+
+  /* 4. Receipts */
+  .receipts { padding: 40px 0 80px; }
+  .receipts-intro { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem, 3.2vw, 2.6rem); line-height: 1.15; max-width: 26ch; margin: 0 0 40px; }
+  .receipts-intro :global(em) { color: #3B3FD6; }
+  .panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .panel { position: relative; overflow: hidden; isolation: isolate; margin: 0; border-radius: 6px; min-height: 380px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+    background: var(--g); color: #fff; }
+  .panel::before { content: ''; position: absolute; inset: -30%; z-index: -1; filter: blur(50px);
+    background: radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--a1) 75%, transparent), transparent 42%), radial-gradient(circle at 10% 95%, color-mix(in srgb, var(--a2) 65%, transparent), transparent 45%); }
+  .p-cobalt  { --g: var(--cobalt);  --a1: var(--pink);   --a2: var(--aqua);   --r: var(--pink);  --c: var(--lemon); }
+  .p-violet  { --g: var(--violet);  --a1: var(--pink);   --a2: var(--cobalt); --r: var(--lime);  --c: var(--violet); }
+  .p-peacock { --g: var(--peacock); --a1: var(--lagoon); --a2: var(--lime);   --r: var(--aqua);  --c: var(--pink); }
+  .p-navy    { --g: var(--navy);    --a1: var(--violet); --a2: var(--lagoon); --r: var(--lemon); --c: var(--pink); }
+  .p-emerald { --g: var(--emerald); --a1: var(--lime);   --a2: var(--aqua);   --r: var(--lemon); --c: #3B3FD6; }
+  .p-fuchsia { --g: var(--fuchsia); --a1: #ffb347;       --a2: var(--violet); --r: var(--aqua);  --c: var(--navy); }
+  .p-lagoon  { --g: #0D7C87;        --a1: var(--aqua);   --a2: var(--pink);   --r: var(--lemon); --c: #0D7C87; }
+  .num { display: block; font-family: var(--serif); font-weight: 800; font-size: clamp(3.4rem, 6vw, 5.2rem); line-height: .95; letter-spacing: -.03em; font-variant-numeric: lining-nums tabular-nums; }
+  .line { display: block; margin-top: 10px; font-size: 1rem; line-height: 1.4; max-width: 30ch; }
+  .line a { color: inherit; font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .viz { position: relative; height: 150px; display: flex; align-items: center; gap: 22px; }
+  .d { display: block; border-radius: 50%; background: radial-gradient(circle, var(--c) 0 38%, var(--r) 39%); filter: var(--shadow); flex: none; }
+
+  /* Before/after: sized by area. Small dot 34px; big dot 34px × (sqrt of the ratio), set per panel in --to. */
+  .grow .small { width: 34px; aspect-ratio: 1; background: radial-gradient(circle, color-mix(in srgb, var(--c) 45%, #fff) 0 38%, color-mix(in srgb, var(--pink) 35%, #fff) 39%); opacity: .8; }
+  .grow .big { width: calc(34px * var(--to)); aspect-ratio: 1; transition: transform 1s cubic-bezier(.2,.8,.2,1); transform-origin: left center;
+    box-shadow: 0 0 40px 6px color-mix(in srgb, var(--r) 45%, transparent); }
+  :global(.anim) .grow .big { transform: scale(calc(var(--from) / var(--to))); }
+  :global(.anim) .go .grow .big { transform: none; }
+
+  .board { flex-direction: column; justify-content: center; gap: 10px; }
+  .board .top { width: 56px; aspect-ratio: 1; box-shadow: 0 0 36px 6px color-mix(in srgb, var(--r) 50%, transparent); }
+  .board .row { display: flex; gap: 10px; }
+  .board .row span { width: 18px; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.35); }
+  :global(.anim) .board .top { transform: translateY(40px); opacity: 0; transition: transform .9s cubic-bezier(.2,.8,.2,1), opacity .5s; }
+  :global(.anim) .go .board .top { transform: none; opacity: 1; }
+
+  .eighty { display: grid; grid-template-columns: repeat(16, 1fr); gap: 7px; align-content: center; height: 150px; }
+  .eighty span { width: 100%; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.28); }
+  .eighty .pick { background: radial-gradient(circle, var(--c) 0 38%, var(--r) 39%); transform: scale(2.6); z-index: 1; box-shadow: 0 0 10px 2px color-mix(in srgb, var(--r) 70%, transparent); transition: transform .8s cubic-bezier(.2,.8,.2,1) .2s; }
+  :global(.anim) .eighty .pick { transform: scale(1); }
+  :global(.anim) .go .eighty .pick { transform: scale(2.6); }
+
+  .merge { justify-content: space-between; }
+  .m { position: relative; width: 26px; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.5); transition: transform 1s cubic-bezier(.6,0,.2,1), opacity .6s .6s; }
+  .m i { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px; font: 500 .62rem/1.15 var(--sans); text-align: center; width: 6.5em; font-style: normal; opacity: .9; transition: opacity .4s; }
+  .one { position: absolute; left: 50%; top: 50%; width: 92px; aspect-ratio: 1; margin: -46px 0 0 -46px; border-radius: 50%; background: radial-gradient(circle, var(--c) 0 38%, var(--r) 39%);
+    box-shadow: 0 0 40px 8px color-mix(in srgb, var(--r) 50%, transparent); transition: transform .6s cubic-bezier(.2,.8,.2,1) .8s, opacity .4s .8s; }
+  .merge .m { opacity: 0; }
+  :global(.anim) .merge .m { opacity: 1; }
+  :global(.anim) .merge .one { transform: scale(.2); opacity: 0; }
+  :global(.anim) .go .merge .m { opacity: 0; }
+  :global(.anim) .go .merge .m i { opacity: 0; }
+  :global(.anim) .go .merge .m1 { transform: translateX(240%); } :global(.anim) .go .merge .m2 { transform: translateX(120%); }
+  :global(.anim) .go .merge .m4 { transform: translateX(-120%); } :global(.anim) .go .merge .m5 { transform: translateX(-240%); }
+  :global(.anim) .go .merge .one { transform: none; opacity: 1; }
+
+  .ripple { justify-content: center; }
+  .ripple .d { width: 58px; aspect-ratio: 1; position: relative; z-index: 1; }
+  .ring { position: absolute; left: 50%; top: 50%; width: 58px; aspect-ratio: 1; margin: -29px 0 0 -29px; border-radius: 50%; border: 2px solid var(--r); opacity: 0; }
+  .ripple .r1 { transform: scale(1.8); opacity: .45; } .ripple .r2 { transform: scale(2.6); opacity: .25; } .ripple .r3 { transform: scale(3.4); opacity: .12; }
+  @media (prefers-reduced-motion: no-preference) {
+    .go .ripple .ring { animation: ripple 3s cubic-bezier(.2,.6,.3,1) infinite; }
+    .go .ripple .r2 { animation-delay: 1s; } .go .ripple .r3 { animation-delay: 2s; }
+  }
+  @keyframes ripple { from { transform: scale(1); opacity: .6; } to { transform: scale(3.8); opacity: 0; } }
+
+  .signoff { background: #fff; color: var(--navy); justify-content: center; }
+  .signoff::before { display: none; }
+  .signoff p { margin: 0; font-family: var(--serif); font-weight: 800; font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height: 1.15; }
+  .footnote { margin: 18px 0 0; font-size: .8rem; opacity: .8; }
+
+  /* 5. Contents page */
+  .contents { padding: 40px 0 40px; }
+  .narrow-ish { max-width: 900px; }
+  .contents-h { font-size: clamp(2.2rem, 4.6vw, 3.6rem); margin-bottom: .6em; }
+  .toc { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(20,33,91,.35); }
+  .toc a { display: grid; grid-template-columns: 3.2em 1fr auto; align-items: baseline; gap: 12px; padding: 18px 0; border-bottom: 1px solid rgba(20,33,91,.35); color: var(--navy); text-decoration: none; }
+  .pg { font-family: var(--serif); font-weight: 800; font-size: 1.1rem; color: #3B3FD6; font-variant-numeric: lining-nums; }
+  .toc .t { font-family: var(--serif); font-weight: 700; font-size: clamp(1.25rem, 2.2vw, 1.75rem); line-height: 1.2; }
+  .toc .t .desc { font-family: var(--sans); font-weight: 400; font-size: .7em; }
+  .arrow { transition: transform .3s; }
+  .toc a:hover .t { font-style: italic; }
+  .toc a:hover .arrow { transform: translateX(6px); }
+
+  /* 7. Call to action, then the dictionary-style gag */
+  .cta { padding: 80px 0 110px; }
+  .cta-copy { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.2; max-width: 26ch; margin: 0 0 18px; }
+  .cta-links { font-size: 1.08rem; max-width: 56ch; }
+  .cta-links a { color: #3B3FD6; font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .book { display: inline-block; margin-top: 18px; font: 700 1.15rem/1 var(--sans); padding: 18px 26px; background: #3B3FD6; color: #fff; text-decoration: none; filter: var(--shadow); transition: background .3s; }
+  .book:hover { background: var(--navy); }
+  .gag { margin: 64px 0 0; font-variant: small-caps; letter-spacing: .06em; font-size: 1.05rem; text-transform: lowercase; }
+  .gag b { font-weight: 700; }
+
+  @media (max-width: 1000px) { .panels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
     .top ul { gap: 14px; font-size: .84rem; }
-    .svc { grid-template-columns: 1fr; }
+    .entry { padding-top: 10vh; }
+    .panels { grid-template-columns: 1fr; }
+    .panel { min-height: 320px; }
   }
 </style>

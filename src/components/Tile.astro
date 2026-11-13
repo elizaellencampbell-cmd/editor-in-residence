@@ -24,7 +24,6 @@ const label =
   data-rank-cat={a.rankCat ?? ''}
   data-cw={cw}
 >
-  <span class="tab">{a.outlet}</span>
   <div class="cards">
     {a.image && (
       <div class="card photo" aria-hidden="true">
@@ -38,6 +37,7 @@ const label =
         />
       </div>
     )}
+    {a.category && <span class="vert">{a.category}</span>}
     <div class="card text">
       <span class="kicker">{label}</span>
       <h3>{a.title}</h3>
@@ -49,12 +49,12 @@ const label =
       )}
     </div>
   </div>
+  {a.outlet && <span class="pubname">{a.outlet}</span>}
 </a>
 
 <style>
   .tile {
     position: relative; display: block; text-decoration: none; color: inherit;
-    padding-top: 13px; /* room for the tab hanging over the top edge */
     margin-bottom: 26px;
     break-inside: avoid;
     opacity: 0; transform: translateY(18px);
@@ -63,6 +63,12 @@ const label =
   .tile.in { opacity: 1; transform: none; }
   :global(.no-js) .tile, .tile.no-anim { opacity: 1; transform: none; }
 
+  /* Vertical label in the top corner of the card; publication underneath */
+  .vert { position: absolute; z-index: 3; top: 12px; left: 12px; background: var(--lbg); color: var(--lfg);
+    padding: 6px 10px 6px; font-family: var(--sans); font-weight: 700; font-size: .64rem; line-height: 1.1; letter-spacing: .16em; text-transform: uppercase; filter: var(--shadow); }
+  .pubname { display: block; margin-top: 10px; font-family: var(--sans); font-weight: 700; font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .has-photo.shape-wide .cards { aspect-ratio: 16 / 10; }
+  .shape-wide h3 { font-size: clamp(1.6rem, 5.4cqi, 2.8rem); }
   .tab {
     position: absolute; z-index: 3; top: 0; left: 50%; transform: translateX(-50%);
     background: var(--lbg); color: var(--lfg);
