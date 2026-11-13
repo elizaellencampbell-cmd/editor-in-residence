@@ -1,14 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
 import { site } from '../site.config.js';
+import { linkPubs } from '../lib/pubs.js';
 // Back of book: "What is an Editor in Residence?" Built to Liza's page brief (14 Nov 2026).
 // A dictionary entry that turns into a sales pitch. Rosy hazy wash, Didone serif, one idea per screen.
-// Photo: B&W landscape headshot, melted into the wash (soft mask + multiply), face on the right third line.
-const photo = { a: '/images/eliza-bw-a.jpg', b: '/images/eliza-bw-b.jpg' };
+// Photo: plain B&W landscape headshot with a crisp rounded edge, like the home About photo.
+const photo = '/images/eliza-bw-a.jpg'; // Photo A, Liza's pick
 const contactHref = `mailto:${site.email}?subject=${encodeURIComponent('Booking a residency')}`;
 const ig = 'https://www.instagram.com/editor.inresidence/';
-const PUBS = ['Concrete Playground', 'Time Out Melbourne', 'Halliday Wine Companion'];
-const keepPubs = (h) => h.replace(new RegExp('(' + PUBS.join('|') + ')', 'g'), '<span class="pub">$1</span>');
+const keepPubs = linkPubs;
 const services = [
   ['Pitches and press releases', 'written from scratch or edited from yours'],
   ['Audience analysis', 'who reads the outlet you want, and what its editors are looking for'],
@@ -19,7 +20,7 @@ const services = [
 ---
 <Base title="What is an Editor in Residence?" description="Eliza Campbell, former editor of Concrete Playground, Time Out Melbourne and Halliday Wine Companion, now works with PR agencies and brands as an editor in residence.">
   <div class="rosy">
-    <span class="blob r1" aria-hidden="true"></span><span class="blob r2" aria-hidden="true"></span><span class="blob r3" aria-hidden="true"></span><span class="blob r4" aria-hidden="true"></span>
+    <span class="blob r1" aria-hidden="true"></span><span class="blob r2" aria-hidden="true"></span><span class="blob r3" aria-hidden="true"></span><span class="blob r4" aria-hidden="true"></span><span class="blob r5" aria-hidden="true"></span><span class="blob r6" aria-hidden="true"></span>
     <span class="grain" aria-hidden="true"></span>
 
     <nav class="top" aria-label="Header">
@@ -34,9 +35,7 @@ const services = [
 
     <!-- 1. The dictionary entry -->
     <header class="entry wrap">
-      <h1 class="headword" aria-label="editor in residence">
-        <span aria-hidden="true">ed<span class="md">·</span>i<span class="md">·</span>tor <span class="in">ı<span class="i-dot"></span>n</span> res<span class="md">·</span>i<span class="md">·</span>dence</span>
-      </h1>
+      <h1 class="masthead"><Logo variant="masthead" label="Editor in Residence" /></h1>
       <p class="pron">/ed·i·tuh in rez·i·dense/ <span class="sep">·</span> <i>noun</i></p>
       <hr />
       <ol class="senses">
@@ -44,36 +43,44 @@ const services = [
         <li><b>2.</b> <span>An editor brought in for a good time, not a long time, who arrives with a red pen and leaves behind better copy.</span></li>
         <li><b>3.</b> <span><i>informal.</i> Your freelance editor on the inside, who tells you what the desk will say before it gets the chance.</span></li>
       </ol>
-      <p class="origin"><b>Origin:</b> from <i>artist in residence</i>. Same idea, fewer easels, more tracked changes.</p>
+      <p class="origin"><b>Origin:</b> from <i>artist in residence</i>. Less paint, more track changes.</p>
     </header>
 
     <!-- 2. Cover line, set like a bus-side ad -->
     <div class="strap">
       <p class="strap-line"><span class="name">Eliza Campbell</span> knows a good pitch<sup>*</sup></p>
-      <p class="strap-foot"><i>(*and isn't afraid to ask)</i></p>
+      <p class="strap-foot"><i>(<span class="ast">*</span>and isn't afraid to ask)</i></p>
     </div>
 
-    <!-- 3. The long definition, over the melted photo -->
-    <section class="long" data-photo="a">
-      <div class="photo" aria-hidden="true">
-        <span class="ph pa"><img src={photo.a} alt="" width="1500" height="1000" loading="lazy" /></span>
-        <span class="ph pb"><img src={photo.b} alt="" width="1500" height="1000" loading="lazy" /></span>
-      </div>
+    <!-- 3. The long definition, beside the headshot -->
+    <section class="long">
       <div class="wrap long-inner">
         <div class="long-copy">
-          <p>An editor in residence usually lives at a literary journal, moving in for a season to shape the voice and mentor whoever's around. I've borrowed the idea and taken it to PR agencies and brands, where an editor's eye is in much shorter supply.</p>
-          <p set:html={keepPubs("For the better part of a decade I sat on the other side of your inbox (<i>Halliday Wine Companion</i>, <i>Time Out Melbourne</i>, then all three Concrete Playground editions), reading 80-odd pitches a day and running very few. My taste had less to do with it than you'd hope. Editors pick what their audience will open, finish and share, and what the commercial team can sell around it.")} />
-          <p>That's the bit most pitches miss. I'll show you how a modern publishing team runs, then shape each story for the masthead you're after – the Instagram collab, the photos held back for them alone, the iPhone footage their social team can cut – until it's an easy yes.</p>
+          <p class="lead">Most brands and PR agencies think getting a pitch across the line comes down to what the editor likes. They're wrong. It's about what that editor's audience likes – and it's an editor's job to know exactly what that looks like.</p>
+          <p class="aside">I wish choosing pitches came down to what I personally find interesting. Wouldn't that be nice?</p>
+          <p set:html={keepPubs("For the better part of a decade I sat on the other side of your inbox – at Halliday Wine Companion, Time Out Melbourne and Concrete Playground nationally – reading 80-odd pitches a day and running very few.")} />
+          <p>A modern editorial team lives and dies by data and conversion. Every story has to earn maximum reach and engagement, because that's what turns into commercial opportunity. Keep that in mind every time you write a pitch.</p>
+          <p>Understanding how publishing works also means understanding the limits of the team you're pitching to: how many writers they have, what they can shoot, how fast they can turn a story around. If your pitches, exclusives and assets aren't tailored to that, you're doing yourself a disservice.</p>
         </div>
-        <blockquote class="pull">To pull it off you need the mind of an editor. I'm going to lend you mine.</blockquote>
+        <figure class="photo">
+          <img src={photo} alt="Eliza Campbell" width="1500" height="1000" loading="lazy" />
+        </figure>
+      </div>
+      <div class="wrap">
+        <blockquote class="pull">Want to know what goes on in the mind of an editor? I'll lend you mine.</blockquote>
       </div>
     </section>
 
     <!-- 4. The receipts: the dot does the talking -->
     <section class="receipts" id="receipts">
       <div class="wrap">
-        <p class="receipts-intro" set:html={keepPubs('I took Concrete Playground from meh to cool in 18 months. <em>The receipts:</em>')} />
+        <p class="receipts-intro" set:html={keepPubs('I took Concrete Playground from meh to cool in 18 months.<br /><em class="rcpt">The receipts:</em>')} />
         <div class="panels">
+
+          <figure class="panel p-orchid meh" data-count>
+            <div class="viz glowup" aria-hidden="true"><span class="d dull"></span><span class="arrow-r">→</span><span class="d cool"></span></div>
+            <figcaption><span class="num">From meh to cool</span><span class="line">with the expertise of a professional party girl (aka me)</span></figcaption>
+          </figure>
 
           <figure class="panel p-cobalt" data-count>
             <div class="viz grow" style="--from:1; --to:2.1" aria-hidden="true"><span class="d small"></span><span class="d big"></span></div>
@@ -156,7 +163,7 @@ const services = [
     }
     function run(p) {
       p.classList.add('go');
-      var n = p.querySelector('.num'); if (!n || still) return;
+      var n = p.querySelector('.num'); if (!n || still || !n.dataset.to) return;
       var to = Number(n.dataset.to), t0 = performance.now(), dur = 1000;
       (function step(t) {
         var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
@@ -174,11 +181,14 @@ const services = [
 </script>
 
 <style>
+  /* One rainbow wash from top to bottom: the hot pink glow of the top half, then peach, lemon, mint, aqua, sky and lilac, back to blush. */
   .rosy { position: relative; overflow: hidden; isolation: isolate; color: var(--navy);
-    background: linear-gradient(180deg, #ffd3e6 0, #fbe3ec 900px, #f6e6ee 2400px, #f3e4f1 100%); }
+    background: linear-gradient(180deg, #ffc4df 0, #ffd3e6 700px, #ffd9c7 1500px, #fbefb6 2300px, #d9f5d8 3000px, #c9f1ec 3700px, #d6e6fa 4400px, #e5dafa 5100px, #ffd3e6 100%); }
   .rosy > * { position: relative; z-index: 2; }
   .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
-  .r1 { left: 52%; top: -260px; width: 62vw; background: var(--pink); filter: blur(150px); opacity: .55; }
+  .r1 { left: 52%; top: -260px; width: 62vw; background: var(--pink); filter: blur(150px); opacity: .6; }
+  .r5 { left: 55%; top: 2500px; width: 46vw; background: var(--lemon); filter: blur(170px); opacity: .35; }
+  .r6 { left: -14%; top: 4300px; width: 50vw; background: #8fb8ff; filter: blur(180px); opacity: .35; }
   .r2 { left: -18%; top: 380px; width: 48vw; background: #ffb347; filter: blur(160px); opacity: .35; }
   .r3 { left: 60%; top: 1900px; width: 46vw; background: var(--aqua); filter: blur(170px); opacity: .3; }
   .r4 { left: -10%; top: 3300px; width: 50vw; background: var(--violet); filter: blur(180px); opacity: .22; }
@@ -187,20 +197,14 @@ const services = [
   .pub { white-space: nowrap; }
 
   .top { display: flex; justify-content: space-between; align-items: center; padding: 44px max(16px, 4vw) 0; }
-  .top ul { display: flex; gap: 34px; list-style: none; margin: 0; padding: 0; }
+  .top ul { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; }
   .top a { color: var(--navy); text-decoration: none; }
-  .top ul a[aria-current='page'] { font-family: var(--serif); font-weight: 700; font-style: italic; }
   .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: var(--aqua); box-shadow: 0 0 22px 4px color-mix(in srgb, var(--aqua) 60%, transparent); }
   .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--pink); }
 
   /* 1. Dictionary entry */
   .entry { padding-top: 14vh; padding-bottom: 72px; max-width: 1100px; }
-  .headword { font-family: var(--serif); font-weight: 800; font-size: clamp(3rem, 9.6vw, 8.6rem); line-height: .95; letter-spacing: -.03em; margin: 0; text-transform: lowercase; }
-  .in { position: relative; display: inline-block; }
-  .md { font-weight: 400; opacity: .45; margin: 0 -.02em; }
-  .i-dot { position: absolute; left: -.1em; top: .06em; width: .42em; aspect-ratio: 1; border-radius: 50%; background: var(--aqua);
-    box-shadow: 0 0 .25em .05em color-mix(in srgb, var(--aqua) 70%, transparent); }
-  .i-dot::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--pink); }
+  .masthead { width: min(820px, 92vw); margin: 0 0 26px; color: var(--navy); }
   .pron { font-weight: 400; font-size: clamp(1.05rem, 1.8vw, 1.4rem); margin: 22px 0 0; color: var(--navy); opacity: .85; }
   .pron i { font-family: var(--serif); font-weight: 600; }
   .sep { margin: 0 .3em; }
@@ -216,46 +220,52 @@ const services = [
   .strap-line { margin: 0; font: 800 clamp(1.7rem, 4.6vw, 4rem)/1.02 var(--sans); letter-spacing: -.035em; text-transform: none; }
   .strap-line .name { font-family: var(--serif); font-style: italic; font-weight: 800; letter-spacing: -.02em; }
   .strap-line sup { font-size: .5em; vertical-align: .9em; color: var(--pink); }
+  .strap-foot .ast { color: var(--pink); font-style: normal; font-weight: 800; }
   .strap-foot { margin: 8px 0 0; font-family: var(--serif); font-weight: 600; font-size: clamp(1rem, 1.6vw, 1.3rem); }
 
   /* 3. Long definition: copy on the left, the photo melting in on the right.
      Rule of thirds: her face sits on the right-hand third line, eyes on the top third, looking into the copy. */
-  .long { position: relative; padding: 120px 0 110px; min-height: 46vw; }
-  .photo { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-  /* Each photo melts in: soft fades on every edge (no hard lines), multiplied into the wash, with a rosy tint on top */
-  .ph { position: absolute; top: 20px; display: block; isolation: isolate; mix-blend-mode: multiply; opacity: .95;
-    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 32%, #000 78%, transparent 98%), linear-gradient(to bottom, transparent 0, #000 20%, #000 68%, transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(to right, transparent 0, #000 32%, #000 78%, transparent 98%), linear-gradient(to bottom, transparent 0, #000 20%, #000 68%, transparent 100%);
-    mask-composite: intersect; }
-  .ph img { display: block; width: 100%; height: auto; filter: contrast(1.02) brightness(1.14); }
-  .ph::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, #ff9ccd, #ffc2df 60%, #ffb3da); mix-blend-mode: color; opacity: .4; }
-  .pa { --fx: 43%; left: 40%; width: 62%; }
-  .pb { --fx: 59%; left: 30%; width: 62%; }
-  .long[data-photo='a'] .pb, .long[data-photo='b'] .pa { display: none; }
-  .long-inner { position: relative; z-index: 1; }
-  .long-copy { max-width: 60ch; width: 46%; font-size: 1.08rem; line-height: 1.75; }
+  .long { padding: 110px 0 100px; }
+  .long-inner { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .long-copy { font-size: 1.08rem; line-height: 1.75; }
+  .long-copy p { max-width: 60ch; }
+  .long-copy .lead { font-family: var(--serif); font-weight: 700; font-size: clamp(1.4rem, 2.2vw, 1.85rem); line-height: 1.3; margin-top: 0; }
+  .long-copy .aside { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 1.2rem; color: #3B3FD6; }
   .long-copy :global(i) { font-family: var(--serif); font-weight: 600; }
-  .pull { margin: 64px 0 0; max-width: 18ch; font-family: var(--serif); font-weight: 800; font-size: clamp(2.1rem, 4.6vw, 4.2rem); line-height: 1.04; letter-spacing: -.02em; }
+  .long-copy :global(a.pub) { color: inherit; text-decoration-color: #3B3FD6; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .long-copy :global(a.pub:hover) { color: #3B3FD6; }
+  /* Plain black and white, crisp rounded edge, like the home About photo. Cropped so her face sits on a third line. */
+  .photo { margin: 6px 0 0; position: sticky; top: 40px; }
+  .photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; display: block; filter: grayscale(1); box-shadow: 0 24px 60px -30px rgba(20,33,91,.45); }
+  .photo img { object-position: 46% 50%; }
+  .pull { margin: 80px 0 0; max-width: 20ch; font-family: var(--serif); font-weight: 800; font-size: clamp(2.1rem, 4.6vw, 4.2rem); line-height: 1.04; letter-spacing: -.02em; }
   @media (max-width: 900px) {
-    .long { padding-top: 0; }
-    .photo { position: relative; height: 92vw; }
-    .ph { top: 0; }
-    .pa { --fx: 50%; left: -18%; width: 140%; }
-    .pb { --fx: 50%; left: -48%; width: 150%; }
-    .long-copy { width: auto; }
-    .pull { margin-top: 44px; }
+    .long { padding-top: 60px; }
+    .long-inner { grid-template-columns: 1fr; }
+    .photo { position: static; order: -1; }
+    .photo img { aspect-ratio: 4 / 3; }
+    .pull { margin-top: 56px; }
   }
 
   /* 4. Receipts */
   .receipts { padding: 40px 0 80px; }
   .receipts-intro { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem, 3.2vw, 2.6rem); line-height: 1.15; max-width: 26ch; margin: 0 0 40px; }
-  .receipts-intro :global(em) { color: #3B3FD6; }
+  .receipts-intro :global(em) { color: #3B3FD6; white-space: nowrap; }
+  .receipts-intro :global(a.pub) { color: inherit; text-decoration-color: #3B3FD6; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .footnote :global(a.pub) { color: inherit; }
   .panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .panel { position: relative; overflow: hidden; isolation: isolate; margin: 0; border-radius: 6px; min-height: 380px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
     background: var(--g); color: #fff; }
   .panel::before { content: ''; position: absolute; inset: -30%; z-index: -1; filter: blur(50px);
     background: radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--a1) 75%, transparent), transparent 42%), radial-gradient(circle at 10% 95%, color-mix(in srgb, var(--a2) 65%, transparent), transparent 45%); }
+  .p-orchid  { --g: #A0006A;        --a1: var(--lime);   --a2: var(--pink);   --r: var(--lime);  --c: #A0006A; }
+  .meh .num { font-size: clamp(2.6rem, 4.4vw, 3.8rem); line-height: 1; }
+  .glowup { gap: 18px; }
+  .glowup .dull { width: 46px; aspect-ratio: 1; background: #b9a7b2; filter: grayscale(1); opacity: .7; }
+  .glowup .arrow-r { font: 700 1.6rem/1 var(--sans); opacity: .8; }
+  .glowup .cool { width: 96px; aspect-ratio: 1; box-shadow: 0 0 44px 8px color-mix(in srgb, var(--r) 55%, transparent); transition: transform 1s cubic-bezier(.2,.8,.2,1), filter 1s; }
+  :global(.anim) .glowup .cool { transform: scale(.5); filter: grayscale(1); }
+  :global(.anim) .go .glowup .cool { transform: none; filter: var(--shadow); }
   .p-cobalt  { --g: var(--cobalt);  --a1: var(--pink);   --a2: var(--aqua);   --r: var(--pink);  --c: var(--lemon); }
   .p-violet  { --g: var(--violet);  --a1: var(--pink);   --a2: var(--cobalt); --r: var(--lime);  --c: var(--violet); }
   .p-peacock { --g: var(--peacock); --a1: var(--lagoon); --a2: var(--lime);   --r: var(--aqua);  --c: var(--pink); }
@@ -343,7 +353,6 @@ const services = [
 
   @media (max-width: 1000px) { .panels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 640px) {
-    .top ul { gap: 14px; font-size: .84rem; }
     .entry { padding-top: 10vh; }
     .panels { grid-template-columns: 1fr; }
     .panel { min-height: 320px; }

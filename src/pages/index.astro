@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
 import home from '../content/home.json';
 import { site } from '../site.config.js';
+import { linkPubs } from '../lib/pubs.js';
 
 const outlets = 'Concrete Playground, Time Out Melbourne, Halliday Wine Companion and Broadsheet';
 
@@ -42,7 +43,7 @@ const md = (t = '') => keepPubs(esc(t)
           <p class="standfirst">
             {sec.signoff && <span class="eir-label sf-label">{sec.signoff}</span>}
             <span class="sf-by">{sec.byline}</span>
-            {sec.credentials && <span class="sf-cred" set:html={keepPubs(esc(sec.credentials))} />}
+            {sec.credentials && <span class="sf-cred" set:html={linkPubs(esc(sec.credentials))} />}
           </p>
         </header>
       </div>
@@ -76,7 +77,7 @@ const md = (t = '') => keepPubs(esc(t)
             <p class="ig">Instagram: <a href={site.instagram} target="_blank" rel="noopener">{site.instagramHandle}</a></p>
             <div class="labels small sigs">
               <span class="eir-label pop-indigo">Eliza Campbell knows a good pitch<sup>*</sup></span>
-              <span class="sig-foot">(*and isn't afraid to ask)</span>
+              <span class="sig-foot">(<span class="ast">*</span>and isn't afraid to ask)</span>
               <span class="eir-label pop-lemon">{site.signoff[0]}</span>
             </div>
           </div>
@@ -142,6 +143,8 @@ const md = (t = '') => keepPubs(esc(t)
   .sf-by { font-weight: 700; font-size: clamp(1.05rem, 1.6vw, 1.35rem); }
   .sf-cred { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(1.05rem, 1.5vw, 1.35rem); color: #fff; }
   @media (min-width: 900px) { .sf-cred { white-space: nowrap; } }
+  .sf-cred :global(a) { color: #fff; text-decoration: underline; text-decoration-color: var(--lemon); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .sf-cred :global(a:hover) { text-decoration-color: #fff; }
   @media (max-width: 767px) {
     .top ul { gap: 16px; font-size: .86rem; }
     .masthead { margin-top: 18vh; }
@@ -193,7 +196,8 @@ const md = (t = '') => keepPubs(esc(t)
   .about-copy :global(a) { color: inherit; text-decoration-color: #3B3FD6; text-decoration-thickness: 2px; text-underline-offset: 3px; }
   .about-copy :global(a:hover) { color: #3B3FD6; }
   .pop-indigo.eir-label { background: #3B3FD6; color: #fff; }
-  .pop-indigo sup { color: var(--lemon); font-size: .6em; }
+  .pop-indigo sup { color: var(--pink); font-size: .6em; }
+  .sig-foot .ast { color: var(--pink); font-style: normal; font-weight: 800; }
   .sig-foot { font-family: var(--serif); font-style: italic; font-weight: 600; margin: -2px 0 10px; }
   .pop-lemon.eir-label { background: var(--lemon); color: var(--navy); }
   .about-copy p { max-width: 60ch; }

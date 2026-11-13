@@ -188,11 +188,14 @@ section { padding: 96px 0; position: relative; }
 .tile[hidden] { display: none !important; }
 
 /* Header nav: each item sits on its own colourway label so it pops */
-.nav-labels { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px !important; }
-.nav-labels a { display: inline-block; font: 700 .92rem/1 var(--sans) !important; padding: .5em .7em .55em; text-decoration: none !important; filter: var(--shadow); transition: transform .25s cubic-bezier(.2,.8,.2,1); font-style: normal !important; }
-.nav-labels a:hover, .nav-labels a[aria-current='page'] { transform: translateY(-2px) rotate(-2deg); }
-.nav-labels li:nth-child(1) a { background: var(--lemon); color: var(--navy) !important; }
-.nav-labels li:nth-child(2) a { background: var(--aqua); color: var(--navy) !important; }
-.nav-labels li:nth-child(3) a { background: #3B3FD6; color: #fff !important; }
-.nav-labels li:nth-child(4) a { background: #fff; color: var(--cobalt) !important; }
+.nav-labels { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 10px !important; list-style: none; margin: 0; padding: 0; }
+.nav-labels li { display: flex; }
+.nav-labels a { display: inline-block; font: 700 .92rem/1 var(--sans) !important; padding: .5em .7em .55em; text-decoration: none !important; filter: var(--shadow); transition: transform .25s cubic-bezier(.2,.8,.2,1); font-style: normal !important; transform: none; }
+/* All level, no tilt. The current page gets an underline instead. */
+.nav-labels a:hover { transform: translateY(-2px); }
+.nav-labels a[aria-current='page'] { text-decoration: underline !important; text-decoration-thickness: 2px !important; text-underline-offset: 3px; }
+.nav-labels li:nth-child(1) a { background: var(--lime); color: var(--navy) !important; }
+.nav-labels li:nth-child(2) a { background: var(--pink); color: #fff !important; }
+.nav-labels li:nth-child(3) a { background: var(--violet); color: #fff !important; }
+.nav-labels li:nth-child(4) a { background: var(--sky); color: var(--navy) !important; }
 @media (max-width: 640px) { .nav-labels { gap: 6px !important; } .nav-labels a { font-size: .74rem !important; padding: .45em .5em .5em; } }
