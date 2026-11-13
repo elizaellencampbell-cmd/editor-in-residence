@@ -65,7 +65,7 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
       </button>
     </nav>
 
-    <!-- Cursor dot: a violet and lime two-tone dot (the kit's violet colourway) that follows the pointer.
+    <!-- Cursor dot: the Ice colourway (teal ring, white centre) that follows the pointer.
          Mouse and trackpad only; touch screens keep their normal behaviour. -->
     <span class="cursor-dot" aria-hidden="true"></span>
     <script is:inline>
@@ -104,7 +104,7 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
   .cursor-dot { position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none; opacity: 0; transition: opacity .2s; }
   .cursor-dot.on { opacity: 1; }
   .cursor-dot::before { content: ''; position: absolute; width: 22px; height: 22px; left: -11px; top: -11px; border-radius: 50%;
-    background: radial-gradient(circle, var(--lime) 0 27%, var(--violet) 29%); box-shadow: 0 0 14px 3px color-mix(in srgb, var(--violet) 55%, transparent);
+    background: radial-gradient(circle, #fff 0 27%, #0F7B86 29%); box-shadow: 0 0 14px 3px rgba(15,123,134,.55);
     transition: transform .25s cubic-bezier(.2,.8,.2,1); }
   .cursor-dot.big::before { transform: scale(1.6); }
   .cursor-dot.over-dot::before { transform: scale(2.1); box-shadow: 0 0 22px 6px rgba(255,255,255,.8); }
