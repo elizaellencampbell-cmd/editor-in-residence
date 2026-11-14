@@ -146,7 +146,9 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
 
     // Photo ⇄ text card, every 3s, staggered, paused on hover/focus. Off under reduced motion.
     var paused = new Set();
-    allTiles.forEach(function (t, i) {
+    // The wide Featured stories sit outside the grid; they flip too.
+    var flipTiles = Array.prototype.slice.call(document.querySelectorAll('.wide-row .tile')).concat(allTiles);
+    flipTiles.forEach(function (t, i) {
       t.addEventListener('mouseenter', function () { paused.add(t); });
       t.addEventListener('mouseleave', function () { paused.delete(t); });
       t.addEventListener('focus', function () { paused.add(t); t.classList.add('flip'); });
@@ -157,7 +159,7 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
     setInterval(function () {
       if (reduce.matches || document.hidden) return;
       tick = (tick + 1) % 10;
-      allTiles.forEach(function (t) {
+      flipTiles.forEach(function (t) {
         if (paused.has(t) || !t.classList.contains('has-photo')) return;
         if (Number(t.dataset.offset) === tick) t.classList.toggle('flip');
       });
