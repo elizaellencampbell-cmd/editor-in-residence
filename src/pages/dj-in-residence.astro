@@ -32,12 +32,12 @@ const lists = [
     </nav>
 
     <header class="intro wrap">
-      <h1 class="masthead"><Logo variant="masthead" label="Editor in Residence" /></h1>
+      <h1 class="masthead"><Logo variant="dj" label="DJ in Residence" /></h1>
       <p class="stack">
-        <span class="eir-label dj">DJ in Residence.</span>
+        <span class="eir-label dj">By Eliza Campbell.</span>
         <span class="lede">Fun fact: I have chromesthesia. I hear in colour.</span>
       </p>
-      <p class="how">Not just music, either. Venues, countries, drinks and people all come in a colour. If we've met, I know what colour you are. (I won't tell you.)</p>
+      <p class="how">Not just music, either. Venues, countries, drinks and people all come in a colour. If we've met, I know what colour you are (and I'll tell you if you ask nicely).</p>
       <p class="how">So every playlist here gets its own dot: the ground, the ring and the centre are what it looks like to me. Pick a colour, press play.</p>
     </header>
 
@@ -54,6 +54,17 @@ const lists = [
         ))}
       </ul>
       <p class="note">Working titles. Real playlists to come.</p>
+    </section>
+
+    <section class="brands wrap" aria-labelledby="brands-h">
+      <h2 id="brands-h">Music for brands.</h2>
+      <p class="brands-lede">Music is the fastest way to tell people how to feel about you. Get it right and people linger, spend and remember the room. Get it wrong and you're the shop playing the same twelve songs on loop.</p>
+      <ul class="uses">
+        <li class="u-lemon"><h3>In store</h3><p>Playlists built for your space and your pace: slow for browsing, quicker when you need the foot traffic moving.</p></li>
+        <li class="u-aqua"><h3>On social</h3><p>TikTok and Reels are sound-on. I'll find the track that stops the scroll and still sounds like the brand.</p></li>
+        <li class="u-pink"><h3>Launches and PR</h3><p>Launch nights, long tables and listening parties, scored to the brand's colour. A sonic identity, minus the jingle.</p></li>
+      </ul>
+      <p class="fine">Playing music in a shop or venue needs a business music licence, not a personal Spotify account. I'll point you to the right one.</p>
     </section>
 
     <section class="cta wrap">
@@ -102,6 +113,17 @@ const lists = [
   .mood { margin: 0 0 18px; line-height: 1.5; max-width: 30ch; }
   .listen { display: inline-block; font: 700 .9rem/1 var(--sans); padding: .6em .85em; background: #fff; color: var(--navy); text-decoration: none; filter: var(--shadow); }
   .note { margin: 18px 0 0; font-family: var(--serif); font-style: italic; font-weight: 600; opacity: .8; }
+
+  .brands { padding-top: 110px; }
+  .brands h2 { margin: 0 0 16px; font-size: clamp(2.4rem, 5vw, 4rem); }
+  .brands-lede { max-width: 58ch; font-size: 1.12rem; line-height: 1.6; margin: 0 0 28px; }
+  .uses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .uses li { border-radius: 6px; padding: 26px 24px 24px; color: var(--navy); box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+  .uses h3 { margin: 0 0 10px; font-size: clamp(1.5rem, 2.2vw, 2rem); }
+  .uses p { margin: 0; line-height: 1.55; }
+  .u-lemon { background: var(--lemon); } .u-aqua { background: var(--aqua); } .u-pink { background: var(--pink); }
+  .fine { margin: 18px 0 0; font-size: .92rem; opacity: .8; max-width: 60ch; }
+  @media (max-width: 900px) { .uses { grid-template-columns: 1fr; } }
 
   .cta { padding-top: 100px; }
   .cta-copy { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.2; max-width: 26ch; margin: 0 0 14px; }

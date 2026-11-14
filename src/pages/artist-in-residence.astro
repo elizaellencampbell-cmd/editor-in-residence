@@ -11,14 +11,14 @@ const projects = [
   { img: 'cocobella-summer-sessions', title: 'cocobella Summer Sessions', brief: "Use cocobella's UGC social content to inspire a suite of imagery that places its hydration products across different 'summer sessions'.", credit: 'Photographer: Andersen Studios', link: 'https://www.instagram.com/p/DFoJUDSTirK/' },
   { img: 'cocobella-in-studio', title: 'cocobella In-Studio', brief: "Bring cocobella's strawberry and lamington yoghurts to life with a series of food-porn studio images.", credit: 'Photographer: Willow Creative', link: 'https://www.instagram.com/p/DBFKKltTaQ3/' },
 ];
-// On screen: Liza as on-screen talent. Videos play on hover once the mp4s are in /public/videos/onscreen/ (set `video`).
+// On screen: Liza as on-screen talent. Each card shows a still (`poster`, a frame from the reel) and plays on hover (`video`, mp4 in /public/videos/onscreen/).
 // MOCKUP: Instagram is blocked from here, so these are colour posters until Liza sends the files.
 const reels = [
-  { url: 'https://www.instagram.com/reel/DcZ2hEYhLve/', who: 'Instagram', cw: 'hotpink', video: '' },
-  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/DbAh2lJDzk3/', who: 'Concrete Playground', cw: 'cobalt', video: '' },
-  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/Dbco2X1CsFO/', who: 'Concrete Playground', cw: 'violet', video: '' },
-  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/DcAscQqGpLr/', who: 'Concrete Playground', cw: 'peacock', video: '' },
-  { url: 'https://www.instagram.com/reel/DYixMq8Db5f/', who: 'Instagram', cw: 'emerald', video: '' },
+  { url: 'https://www.instagram.com/reel/DcZ2hEYhLve/', who: 'Instagram', cw: 'hotpink', video: '', poster: '' },
+  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/DbAh2lJDzk3/', who: 'Concrete Playground', cw: 'cobalt', video: '', poster: '' },
+  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/Dbco2X1CsFO/', who: 'Concrete Playground', cw: 'violet', video: '', poster: '' },
+  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/DcAscQqGpLr/', who: 'Concrete Playground', cw: 'peacock', video: '', poster: '' },
+  { url: 'https://www.instagram.com/reel/DYixMq8Db5f/', who: 'Instagram', cw: 'emerald', video: '', poster: '' },
 ];
 const print = [
   { img: 'halliday-breaking-the-rules', title: 'Breaking the rules: Angus Vinden' },
@@ -45,9 +45,9 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
     </nav>
 
     <header class="intro wrap">
-      <h1 class="masthead"><Logo variant="masthead" label="Editor in Residence" /></h1>
+      <h1 class="masthead"><Logo variant="air" label="Artist in Residence" /></h1>
       <p class="stack">
-        <span class="eir-label air">Artist in Residence.</span>
+        <span class="eir-label air">By Eliza Campbell.</span>
         <span class="lede">The visual side of my portfolio: on screen, creative direction, print and photography.</span>
       </p>
       <ul class="jump">
@@ -65,7 +65,7 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
         {reels.map((r, i) => (
           <li class="reel" data-cw={r.cw}>
             <a href={r.url} target="_blank" rel="noopener" aria-label={`Watch reel ${i + 1} on Instagram`}>
-              {r.video ? <video src={r.video} muted loop playsinline preload="metadata"></video> : <span class="poster" aria-hidden="true"><span class="pdot"></span></span>}
+              {r.video ? <video src={r.video} poster={r.poster || undefined} muted loop playsinline preload="metadata"></video> : r.poster ? <img class="still" src={r.poster} alt="" loading="lazy" /> : <span class="poster" aria-hidden="true"><span class="pdot"></span></span>}
               <span class="play" aria-hidden="true"></span>
               <span class="eir-label who" set:html={r.who === 'Instagram' ? 'Instagram' : `<i>${r.who}</i>`} />
             </a>
@@ -181,7 +181,7 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
   .reels { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; }
   .reel a { position: relative; display: block; aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; background: var(--g); box-shadow: 0 24px 60px -30px rgba(20, 33, 91, .55); color: inherit; text-decoration: none; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
   .reel a:hover { transform: translateY(-4px) scale(1.02); }
-  .reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .reel .still, .reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .poster { position: absolute; inset: 0; display: grid; place-items: center; }
   .poster::before { content: ''; position: absolute; inset: -30%; filter: blur(40px); background: radial-gradient(circle at 80% 15%, var(--a1), transparent 45%), radial-gradient(circle at 15% 90%, var(--a2), transparent 45%); opacity: .85; }
   .pdot { position: relative; width: 38%; aspect-ratio: 1; border-radius: 50%; background: var(--ring); box-shadow: 0 0 60px 10px color-mix(in srgb, var(--ring) 60%, transparent); }
