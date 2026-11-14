@@ -6,7 +6,7 @@ import { buildTiles } from '../lib/merch.js';
 import { site, categories, categoryColourways } from '../site.config.js';
 
 // Writing. Mirrors the original home page: pink hazy header, "Featured.", the category filters,
-// then two wide Featured stories side by side, then the original masonry cards.
+// then two wide Featured stories stacked, each the full width of the page, then the original masonry cards.
 // Wide stories: Featured picks tagged wide (Merch EiR "Full width"), else the first two Featured picks.
 const tiles = buildTiles();
 let picks = tiles.filter((a) => a.rankAll != null);
@@ -195,9 +195,12 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
   .hero { display: flex; flex-direction: column; color: #fff; padding: 44px max(16px, 4vw) 0; }
   .featured-title { color: #fff; padding-top: 12vh !important; }
   .wide-section { padding: 0; margin-top: -26vh; position: relative; z-index: 2; }
-  .wide-row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; padding-left: clamp(16px, 5vw, 65px); padding-right: clamp(16px, 5vw, 65px); max-width: 1280px; }
+  .wide-row { display: grid; grid-template-columns: 1fr; gap: 30px; padding-left: clamp(16px, 5vw, 65px); padding-right: clamp(16px, 5vw, 65px); max-width: 1280px; }
   .wide-row :global(.tile) { opacity: 1; transform: none; }
-  @media (max-width: 760px) { .wide-row { grid-template-columns: 1fr; } }
+  /* Stacked features: double width, so a wider frame (2:1) and bigger headlines */
+  .wide-row :global(.has-photo.shape-wide .cards) { aspect-ratio: 2 / 1; }
+  .wide-row :global(.shape-wide h3) { font-size: clamp(1.8rem, 4.6cqi, 3.8rem); }
+  @media (max-width: 760px) { .wide-row :global(.has-photo.shape-wide .cards) { aspect-ratio: 16 / 10; } }
   .tiles-section { padding-top: 40px !important; }
 
   .featured-title { text-align: center; margin: 0; padding: 40px 0 0; font-size: clamp(3rem, 7vw, 5.5rem); scroll-margin-top: 24px; }
