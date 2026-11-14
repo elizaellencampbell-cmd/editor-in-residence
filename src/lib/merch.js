@@ -1,7 +1,7 @@
 // Merchandising: the Featured list and one list per category (src/content/merch.json,
 // edited in the site editor or filled from the Merch EiR Notion board).
 // Picks are matched to articles.json by link; any field set on a pick overrides the
-// article's own. A pick whose link isn't in articles.json becomes a new tile.
+// article's own (wide: true = the Notion "Full width" tag). A pick whose link isn't in articles.json becomes a new tile.
 import articles from '../data/articles.json';
 import merch from '../content/merch.json';
 import { categories } from '../site.config.js';

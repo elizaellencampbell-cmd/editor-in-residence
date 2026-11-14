@@ -61,6 +61,7 @@ const pickFields = (withCategory: boolean): TinaField[] => [
   { type: 'string', name: 'quote', label: 'Pull quote (optional)', ui: { component: 'textarea' } },
   { type: 'string', name: 'quoteBy', label: 'Quote by (optional)' },
   { type: 'string', name: 'label', label: 'Card label (optional)', options: ['Feature', 'Interview', 'Column', 'Guide', 'Review', 'News', 'Partnership'] },
+  { type: 'boolean', name: 'wide', label: 'Full width', description: 'Show this story wide across the page (the "Full width" tag on the Merch EiR board).' },
   ...(withCategory ? [{ type: 'string', name: 'category', label: 'Category (for a new link)', options: categoryOptions } as TinaField] : []),
 ];
 const pickList = (name: string, label: string, withCategory = false): TinaField => ({
