@@ -205,18 +205,21 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
 
   .featured-title { text-align: center; margin: 0; padding: 40px 0 0; font-size: clamp(3rem, 7vw, 5.5rem); scroll-margin-top: 24px; }
 
-  .filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 26px; padding-top: 18px; padding-bottom: 8px; }
+  /* Filters run the full width of the featured tiles, big enough to read at a glance */
+  .filters { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding: 26px clamp(16px, 5vw, 65px) 14px; max-width: 1280px; }
   .f {
-    font: inherit; font-family: var(--sans); font-weight: 600; font-size: .74rem; letter-spacing: .16em; text-transform: uppercase;
-    cursor: pointer; background: none; border: 0; border-bottom: 1px solid transparent; color: var(--fg); opacity: .8; padding: 6px 0; display: inline-flex; align-items: center; gap: 8px;
+    font: inherit; font-family: var(--sans); font-weight: 700; font-size: clamp(1rem, 1.75vw, 1.6rem); letter-spacing: .12em; text-transform: uppercase;
+    cursor: pointer; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--fg); opacity: .9; padding: 8px 0; display: inline-flex; align-items: center; gap: .55em;
+    text-shadow: 0 1px 10px rgba(20, 33, 91, .25);
   }
   .f:hover { opacity: 1; }
   .f.on { opacity: 1; border-bottom-color: currentColor; }
-  .n { opacity: .7; font-weight: 500; }
+  .n { opacity: .75; font-weight: 500; }
+  @media (max-width: 760px) { .filters { justify-content: center; gap: 4px 18px; } .f { font-size: .82rem; border-bottom-width: 2px; } }
   .more-wrap { text-align: center; margin: 24px 0 0; }
   .more-btn { font: 700 1rem/1 var(--sans); padding: 14px 22px; border: 0; cursor: pointer; background: var(--lbg); color: var(--lfg); filter: var(--shadow); }
   .more-btn:hover { background: var(--ring); color: #fff; }
-  .sw { width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle, var(--centre) 0 38%, var(--ring) 40%); }
+  .sw { width: .8em; height: .8em; flex: none; box-shadow: 0 0 10px rgba(255,255,255,.35); border-radius: 50%; background: radial-gradient(circle, var(--centre) 0 38%, var(--ring) 40%); }
 
   .tiles-section { padding-top: 0; margin-top: 0; position: relative; z-index: 2; }
   .tiles { padding-left: clamp(16px, 5vw, 65px); padding-right: clamp(16px, 5vw, 65px); max-width: 1280px; }
