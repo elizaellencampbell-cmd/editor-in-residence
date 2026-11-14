@@ -22,6 +22,15 @@ const sectionTemplates: Template[] = [
     ],
   },
   {
+    name: 'chooser', label: 'Two dots (Read my writing / Work with me)',
+    fields: [
+      { type: 'string', name: 'dayTitle', label: 'First dot caption' },
+      { type: 'string', name: 'dayLink', label: 'First dot link' },
+      { type: 'string', name: 'nightTitle', label: 'Second dot caption' },
+      { type: 'string', name: 'nightLink', label: 'Second dot link' },
+    ],
+  },
+  {
     name: 'about', label: 'About (headshot + bio)',
     fields: [
       { type: 'string', name: 'heading', label: 'Heading' },
