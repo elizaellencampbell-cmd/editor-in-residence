@@ -195,8 +195,7 @@ section { padding: 96px 0; position: relative; }
 .nav-labels a:hover { transform: translateY(-2px); }
 .nav-labels a[aria-current='page'] { text-decoration: underline !important; text-decoration-thickness: 2px !important; text-underline-offset: 3px; }
 .nav-labels li:nth-child(1) a { background: var(--lime); color: var(--navy) !important; }
-.nav-labels li:nth-child(2) a { background: var(--pink); color: #fff !important; }
-.nav-labels li:nth-child(3) a { background: var(--lemon); color: var(--navy) !important; }
-.nav-labels li:nth-child(4) a { background: var(--violet); color: #fff !important; }
-.nav-labels li:nth-child(5) a { background: var(--sky); color: var(--navy) !important; }
+.nav-labels li:nth-child(2) a { background: var(--aqua); color: var(--navy) !important; }
+.nav-labels li:nth-child(3) a { background: var(--violet); color: #fff !important; }
+.nav-labels li:nth-child(4) a { background: var(--lemon); color: var(--navy) !important; }
 @media (max-width: 640px) { .nav-labels { gap: 6px !important; } .nav-labels a { font-size: .74rem !important; padding: .45em .5em .5em; } }

@@ -1,28 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
 import { site } from '../site.config.js';
-// Artist in Residence: Liza's photography and creative direction.
-// MOCKUP: the photos and projects below are placeholders until Liza sends her own.
-// Night-leaning wash (violet, aqua, lime) so it reads as its own flavour beside the pink Writing and rainbow Work with me pages.
-const photos = [
-  { cw: 'cobalt', shape: 'tall', label: 'Food' },
-  { cw: 'hotpink', shape: 'wide', label: 'Interiors' },
-  { cw: 'peacock', shape: 'square', label: 'Travel' },
-  { cw: 'violet', shape: 'square', label: 'Portraits' },
-  { cw: 'emerald', shape: 'tall', label: 'Drinks' },
-  { cw: 'sky', shape: 'wide', label: 'Travel' },
-  { cw: 'navy', shape: 'square', label: 'Food' },
-  { cw: 'hotpink', shape: 'square', label: 'Cities' },
-  { cw: 'cobalt', shape: 'wide', label: 'Nightlife' },
-  { cw: 'violet', shape: 'wide', label: 'Rooms' },
-];
+import { linkPubs } from '../lib/pubs.js';
+// Artist in Residence: the visual side of Liza's portfolio.
+// Creative direction and print come from her Canva portfolio ("Eliza Campbell Creative Portfolio").
+// MOCKUP: images are low-res page captures from Canva; swap in full-size files before launch.
+// Photography is waiting on Liza's folder of images.
 const projects = [
-  { cw: 'violet', title: 'Project name', who: 'Client or publication', role: 'Creative direction, styling, photography' },
-  { cw: 'peacock', title: 'Project name', who: 'Client or publication', role: 'Art direction, shot list, casting' },
-  { cw: 'hotpink', title: 'Project name', who: 'Client or publication', role: 'Concept, mood board, on-set direction' },
+  { img: 'cocobella-summer-sessions', title: 'cocobella Summer Sessions', brief: "Use cocobella's UGC social content to inspire a suite of imagery that places its hydration products across different 'summer sessions'.", credit: 'Photographer: Andersen Studios', link: 'https://www.instagram.com/p/DFoJUDSTirK/' },
+  { img: 'rokeby-bold-brew', title: 'Rokeby Bold Brew', brief: 'Launch Bold Brew with a look and feel distinct from the rest of the Rokeby range, built on movement, energy and power.', credit: 'Photographer: Charlie Hawks', link: 'https://www.instagram.com/p/DFBhwMOTTUx/' },
+  { img: 'rokeby-thanasi', title: 'Rokeby x Thanasi Kokkinakis', brief: "Introduce and amplify Rokeby's partnership with tennis star Thanasi Kokkinakis, from behind the scenes to launch.", credit: 'Videographer: Overlap Studios', link: 'https://www.instagram.com/rokebynutrition/reel/DE3NAiFzwuY/' },
+  { img: 'cocobella-in-studio', title: 'cocobella In-Studio', brief: "Bring cocobella's strawberry and lamington yoghurts to life with a series of food-porn studio images.", credit: 'Photographer: Willow Creative', link: 'https://www.instagram.com/p/DBFKKltTaQ3/' },
+  { img: 'time-out-meet-the-maker', title: 'Time Out Melbourne: Meet the Maker', brief: 'Go behind the scenes with Melbourne artisans, telling their story and showing their craft through casual interview and b-roll.', credit: 'Videographer: Nigel Kippers', link: 'https://www.youtube.com/watch?v=z6YXlqbG2_I' },
 ];
+const print = [
+  { img: 'halliday-breaking-the-rules', title: 'Breaking the rules: Angus Vinden' },
+  { img: 'halliday-wishlist', title: 'Wishlist: CBD cellar doors' },
+  { img: 'halliday-perfect-match', title: 'Perfect match: Melissa Leong' },
+  { img: 'halliday-high-country', title: 'Escape to the High Country' },
+];
+const photos = ['tall', 'wide', 'square', 'square', 'tall', 'wide', 'square', 'square', 'wide', 'wide'];
+const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy', 'hotpink', 'cobalt', 'violet'];
 ---
-<Base title="Artist in Residence" description="Photography and creative direction by Eliza Campbell.">
+<Base title="Artist in Residence" description="The visual side of Eliza Campbell's portfolio: creative direction, print and photography.">
   <div class="night">
     <span class="blob n1" aria-hidden="true"></span><span class="blob n2" aria-hidden="true"></span><span class="blob n3" aria-hidden="true"></span><span class="blob n4" aria-hidden="true"></span>
     <span class="grain" aria-hidden="true"></span>
@@ -30,71 +31,79 @@ const projects = [
     <nav class="top" aria-label="Header">
       <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
       <ul class="nav-labels">
-        <li><a href="/writing/">Writing</a></li>
-        <li><a href="/work-with-me/">Work with me</a></li>
+        <li><a href="/">Editor in Residence</a></li>
         <li><a href="/artist-in-residence/" aria-current="page">Artist in Residence</a></li>
-        <li><a href="/#about">About</a></li>
+        <li><a href="/dj-in-residence/">DJ in Residence</a></li>
         <li><a href={`mailto:${site.email}`}>Contact</a></li>
       </ul>
     </nav>
 
-    <header class="entry wrap">
-      <h1 class="headword">art<span class="md">·</span>ist in res<span class="md">·</span>i<span class="md">·</span>dence</h1>
-      <p class="pron">/ah·tist in rez·i·dense/ <span class="sep">·</span> <i>noun</i></p>
-      <ol class="senses">
-        <li><b>1.</b> <span>Me, behind the camera: the plates, rooms, cities and people I photograph when I'm not writing about them.</span></li>
-        <li><b>2.</b> <span>The person who decides how a story looks as well as how it reads: the concept, the mood board, the shot list and the call on set.</span></li>
-      </ol>
-      <p class="origin"><b>Origin:</b> the original. <i>Editor in Residence</i> borrowed the idea; this page gives it back.</p>
+    <header class="intro wrap">
+      <h1 class="masthead"><Logo variant="masthead" label="Editor in Residence" /></h1>
+      <p class="stack">
+        <span class="eir-label air">Artist in Residence.</span>
+        <span class="lede">The visual side of my portfolio: creative direction, print and photography.</span>
+      </p>
+      <ul class="jump">
+        <li><a href="#creative-direction">Creative direction</a></li>
+        <li><a href="#print">Print</a></li>
+        <li><a href="#photography">Photography</a></li>
+      </ul>
     </header>
 
-    <section class="block wrap" id="photography">
-      <div class="head">
-        <h2>Photography</h2>
-        <span class="eir-label tag">Placeholder: your photos go here</span>
-      </div>
-      <div class="gallery">
-        {photos.map((p) => (
-          <figure class={`ph ${p.shape}`} data-cw={p.cw}>
-            <span class="vert">{p.label}</span>
-          </figure>
-        ))}
-      </div>
-    </section>
-
     <section class="block wrap" id="creative-direction">
-      <div class="head">
-        <h2>Creative direction</h2>
-        <span class="eir-label tag">Placeholder: your projects go here</span>
-      </div>
+      <h2>Creative direction</h2>
       <div class="projects">
         {projects.map((p, i) => (
-          <article class="proj">
-            <div class="cover" data-cw={p.cw}><span class="pg">{String(i + 1).padStart(2, '0')}</span></div>
-            <h3>{p.title}</h3>
-            <p class="who">{p.who}</p>
-            <p class="role">{p.role}</p>
+          <article class={`proj ${i === 0 ? 'lead' : ''}`}>
+            <a class="shot" href={p.link} target="_blank" rel="noopener"><img src={`/images/air/${p.img}.jpg`} alt={p.title} loading="lazy" /></a>
+            <div class="copy">
+              <h3>{p.title}</h3>
+              <p class="brief">{p.brief}</p>
+              <p class="credit">{p.credit}</p>
+              <a class="live" href={p.link} target="_blank" rel="noopener">See it live</a>
+            </div>
           </article>
         ))}
       </div>
     </section>
 
+    <section class="block wrap" id="print">
+      <h2>Print</h2>
+      <p class="sub" set:html={linkPubs('Feature spreads for Halliday Wine Companion magazine.')} />
+      <div class="spreads">
+        {print.map((p) => (
+          <figure class="spread"><img src={`/images/air/${p.img}.jpg`} alt={p.title} loading="lazy" /><figcaption>{p.title}</figcaption></figure>
+        ))}
+      </div>
+    </section>
+
+    <section class="block wrap" id="photography">
+      <div class="head">
+        <h2>Photography</h2>
+        <span class="eir-label tag">Coming soon: your photo folder</span>
+      </div>
+      <div class="gallery">
+        {photos.map((s, i) => <figure class={`ph ${s}`} data-cw={cws[i]}></figure>)}
+      </div>
+    </section>
+
     <section class="cta wrap">
       <p class="cta-copy">Need a story that looks as good as it reads?</p>
-      <p class="cta-links">Write to me at <a href={`mailto:${site.email}?subject=${encodeURIComponent('Creative direction')}`}>{site.email}</a> or see more on Instagram at <a href={site.instagram} target="_blank" rel="noopener">{site.instagramHandle}</a>.</p>
+      <p class="cta-links">Write to me at <a href={`mailto:${site.email}?subject=${encodeURIComponent('Creative direction')}`}>{site.email}</a> or find me on Instagram at <a href={site.instagram} target="_blank" rel="noopener">{site.instagramHandle}</a>.</p>
     </section>
   </div>
 </Base>
 
 <style>
   .night { position: relative; overflow: hidden; isolation: isolate; color: var(--navy); padding-bottom: 100px;
-    background: linear-gradient(180deg, #d9ccff 0, #e5dafa 800px, #c9f1ec 1800px, #e6f7c4 2800px, #f3eaff 100%); }
+    background: linear-gradient(180deg, #d9ccff 0, #e5dafa 800px, #c9f1ec 1900px, #e6f7c4 3000px, #f3eaff 100%); }
   .night > * { position: relative; z-index: 2; }
   .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
   .n1 { left: 50%; top: -280px; width: 62vw; background: var(--violet); filter: blur(160px); opacity: .45; }
-  .n2 { left: -16%; top: 500px; width: 48vw; background: var(--aqua); filter: blur(160px); opacity: .4; }
-  .n3 { left: 58%; top: 1600px; width: 46vw; background: var(--lime); filter: blur(170px); opacity: .35; }
-  .n4 { left: -10%; top: 2600px; width: 50vw; background: var(--pink); filter: blur(180px); opacity: .2; }
+  .n2 { left: -16%; top: 600px; width: 48vw; background: var(--aqua); filter: blur(160px); opacity: .4; }
+  .n3 { left: 58%; top: 1800px; width: 46vw; background: var(--lime); filter: blur(170px); opacity: .35; }
+  .n4 { left: -10%; top: 3000px; width: 50vw; background: var(--pink); filter: blur(180px); opacity: .2; }
   .grain { position: absolute !important; inset: 0; z-index: 3 !important; mix-blend-mode: overlay; opacity: .3; pointer-events: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
@@ -102,40 +111,56 @@ const projects = [
   .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: var(--lime); box-shadow: 0 0 22px 4px color-mix(in srgb, var(--lime) 60%, transparent); }
   .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--violet); }
 
-  .entry { padding-top: 12vh; padding-bottom: 60px; max-width: 1100px; }
-  .headword { font-family: var(--serif); font-weight: 800; font-size: clamp(3rem, 9vw, 8rem); line-height: .95; letter-spacing: -.03em; margin: 0; }
-  .md { font-weight: 400; opacity: .45; }
-  .pron { font-size: clamp(1.05rem, 1.8vw, 1.4rem); margin: 22px 0 26px; opacity: .85; }
-  .pron i, .senses i, .origin i { font-family: var(--serif); font-weight: 600; }
-  .sep { margin: 0 .3em; }
-  .senses { list-style: none; margin: 0; padding: 26px 0 0; border-top: 1px solid rgba(20, 33, 91, .4); display: grid; gap: 18px; max-width: 64ch; }
-  .senses li { display: grid; grid-template-columns: 2.2em 1fr; font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.5; }
-  .origin { margin: 28px 0 0; max-width: 64ch; }
+  .intro { padding-top: 12vh; padding-bottom: 20px; }
+  .masthead { width: min(820px, 92vw); margin: 0 0 26px; color: var(--navy); }
+  .stack { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin: 0; }
+  .air { --lbg: var(--lemon); --lfg: var(--navy); font-size: clamp(1rem, 1.6vw, 1.3rem); }
+  .lede { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(1.2rem, 2vw, 1.6rem); max-width: 40ch; }
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 28px 0 0; }
+  .jump a { display: inline-block; font: 700 .9rem/1 var(--sans); padding: .55em .8em; background: #fff; color: var(--navy); text-decoration: none; filter: var(--shadow); }
+  .jump a:hover { background: var(--navy); color: #fff; }
 
-  .block { padding-top: 80px; }
-  .head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
-  .head h2 { margin: 0; font-size: clamp(2.4rem, 5vw, 4rem); }
+  .block { padding-top: 90px; }
+  .block h2 { margin: 0 0 24px; font-size: clamp(2.4rem, 5vw, 4rem); }
+  .sub { margin: -12px 0 24px; font-size: 1.05rem; }
+  .sub :global(a) { color: inherit; text-decoration-color: #3B3FD6; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+  .head h2 { margin: 0; }
   .tag { --lbg: var(--violet); --lfg: #fff; font-size: .8rem; }
 
-  .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 200px; grid-auto-flow: dense; gap: 16px; }
-  .ph { position: relative; margin: 0; border-radius: 10px; overflow: hidden; background: var(--g); box-shadow: 0 24px 60px -30px rgba(20, 33, 91, .45); }
+  /* Projects: the first runs wide, the rest in pairs */
+  .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 32px; }
+  .proj { display: flex; flex-direction: column; gap: 16px; }
+  .proj.lead { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+  .shot { display: block; border-radius: 10px; overflow: hidden; box-shadow: 0 24px 60px -30px rgba(20, 33, 91, .45); }
+  .shot img { display: block; width: 100%; height: auto; aspect-ratio: 596 / 282; object-fit: cover; transition: transform .5s; }
+  .shot:hover img { transform: scale(1.02); }
+  .proj h3 { margin: 0 0 8px; font-size: clamp(1.5rem, 2.4vw, 2.1rem); }
+  .proj.lead h3 { font-size: clamp(2rem, 3.4vw, 3rem); }
+  .brief { margin: 0 0 8px; line-height: 1.6; max-width: 52ch; }
+  .credit { margin: 0 0 14px; font-family: var(--serif); font-style: italic; font-weight: 600; }
+  .live { display: inline-block; font: 700 .9rem/1 var(--sans); padding: .6em .85em; background: #3B3FD6; color: #fff; text-decoration: none; filter: var(--shadow); }
+  .live:hover { background: var(--navy); }
+
+  .spreads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  .spread { margin: 0; }
+  .spread img { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 24px 60px -30px rgba(20, 33, 91, .45); }
+  .spread figcaption { margin-top: 10px; font-family: var(--serif); font-weight: 700; font-size: 1.15rem; }
+
+  .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 180px; grid-auto-flow: dense; gap: 16px; }
+  .ph { position: relative; margin: 0; border-radius: 10px; overflow: hidden; background: var(--g); opacity: .85; }
   .ph::before { content: ''; position: absolute; inset: -30%; filter: blur(40px); background: radial-gradient(circle at 80% 15%, var(--a1), transparent 45%), radial-gradient(circle at 15% 90%, var(--a2), transparent 45%); opacity: .8; }
   .ph.tall { grid-row: span 2; }
   .ph.wide { grid-column: span 2; }
-  .vert { position: absolute; left: 12px; top: 12px; font: 700 .72rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; padding: .45em .6em; background: var(--lbg); color: var(--lfg); filter: var(--shadow); }
-
-  .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .proj h3 { margin: 16px 0 4px; font-size: clamp(1.4rem, 2.2vw, 1.9rem); }
-  .proj .who { margin: 0; font-family: var(--serif); font-style: italic; font-weight: 600; }
-  .proj .role { margin: 6px 0 0; font-size: .95rem; opacity: .85; }
-  .cover { position: relative; aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden; background: var(--g); }
-  .cover::before { content: ''; position: absolute; inset: -30%; filter: blur(40px); background: radial-gradient(circle at 80% 15%, var(--a1), transparent 45%), radial-gradient(circle at 15% 90%, var(--a2), transparent 45%); opacity: .8; }
-  .pg { position: absolute; left: 18px; bottom: 10px; font: 800 4.5rem/1 var(--serif); color: #fff; text-shadow: 0 2px 20px rgba(20, 33, 91, .3); }
 
   .cta { padding-top: 100px; }
   .cta-copy { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.2; max-width: 26ch; margin: 0 0 14px; }
   .cta-links { font-size: 1.08rem; max-width: 56ch; }
   .cta-links a { color: #3B3FD6; font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 3px; overflow-wrap: anywhere; }
 
-  @media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 150px; } .projects { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) {
+    .projects, .spreads { grid-template-columns: 1fr; }
+    .proj.lead { grid-template-columns: 1fr; gap: 16px; }
+    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 140px; }
+  }
 </style>

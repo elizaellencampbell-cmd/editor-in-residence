@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../site.config.js';
+// DJ in Residence: playlists, each one a dot. The colourway is what the music looks like (synaesthesia).
+// MOCKUP: names and moods are working titles; Liza will merch real playlists (Spotify links/embeds) later.
+const lists = [
+  { cw: 'Hot pink', g: '#FF3EA5', ring: '#14215B', centre: '#fff', fg: 'navy', name: 'Pre-drinks', mood: 'Getting ready with the door open and the volume up.' },
+  { cw: 'Nudibranch', g: '#3b3fd6', ring: '#F2E21C', centre: '#3b3fd6', fg: 'white', name: 'Sunday slow-down', mood: 'Coffee, the papers and nowhere to be.' },
+  { cw: 'Night Violet', g: '#2c2352', ring: '#3FD9C8', centre: '#FF3EA5', fg: 'white', name: 'After midnight', mood: 'For the walk home that takes the long way.' },
+  { cw: 'Electric Violet', g: '#6A2BD9', ring: '#C6F03A', centre: '#6A2BD9', fg: 'white', name: 'Dance floor', mood: 'No skips, no sitting down.' },
+  { cw: 'Orchid', g: '#a1006a', ring: '#C6F03A', centre: '#a1006a', fg: 'white', name: 'Long lunch', mood: 'Another bottle? Go on, then.' },
+  { cw: 'Peacock', g: '#05535C', ring: '#FF3EA5', centre: '#3FD9C8', fg: 'white', name: 'Coast road', mood: 'Windows down, somewhere past Geelong.' },
+  { cw: 'Cobalt', g: '#2350E6', ring: '#FF3EA5', centre: '#fff', fg: 'white', name: 'Deadline', mood: 'Head down, headphones on, copy due at five.' },
+  { cw: 'Navy and lemon', g: '#14215B', ring: '#F2E21C', centre: '#14215B', fg: 'white', name: 'Golden hour', mood: 'The first warm evening of the year.' },
+  { cw: 'Emerald', g: '#0E8A5F', ring: '#F2E21C', centre: '#0E8A5F', fg: 'white', name: 'Garden party', mood: 'Spritzes, sunburn and a borrowed speaker.' },
+];
+---
+<Base title="DJ in Residence" description="Playlists by Eliza Campbell, each one a colour.">
+  <div class="night">
+    <span class="blob d1" aria-hidden="true"></span><span class="blob d2" aria-hidden="true"></span><span class="blob d3" aria-hidden="true"></span><span class="blob d4" aria-hidden="true"></span><span class="blob d5" aria-hidden="true"></span>
+    <span class="grain" aria-hidden="true"></span>
+
+    <nav class="top" aria-label="Header">
+      <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
+      <ul class="nav-labels">
+        <li><a href="/">Editor in Residence</a></li>
+        <li><a href="/artist-in-residence/">Artist in Residence</a></li>
+        <li><a href="/dj-in-residence/" aria-current="page">DJ in Residence</a></li>
+        <li><a href={`mailto:${site.email}`}>Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="intro wrap">
+      <h1 class="masthead"><Logo variant="masthead" label="Editor in Residence" /></h1>
+      <p class="stack">
+        <span class="eir-label dj">DJ in Residence.</span>
+        <span class="lede">Some people hear colour. I make playlists that look like something.</span>
+      </p>
+      <p class="how">Every playlist gets a dot, and every dot is a colourway: the ground, the ring and the centre are what the music looks like to me. Pick a colour, press play.</p>
+    </header>
+
+    <section class="wrap" aria-label="Playlists">
+      <ul class="lists">
+        {lists.map((l) => (
+          <li class={`pl fg-${l.fg}`} style={`--g:${l.g};--ring:${l.ring};--centre:${l.centre}`}>
+            <span class="glowdot" aria-hidden="true"><span class="glow"></span><span class="dot"></span></span>
+            <span class="cw">{l.cw}</span>
+            <h2>{l.name}</h2>
+            <p class="mood">{l.mood}</p>
+            <a class="listen" href="#" aria-disabled="true">Listen on Spotify</a>
+          </li>
+        ))}
+      </ul>
+      <p class="note">Working titles. Real playlists to come.</p>
+    </section>
+
+    <section class="cta wrap">
+      <p class="cta-copy">Need a soundtrack for a launch, a long table or a shopfront?</p>
+      <p class="cta-links">Write to me at <a href={`mailto:${site.email}?subject=${encodeURIComponent('DJ in Residence')}`}>{site.email}</a>.</p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .night { position: relative; overflow: hidden; isolation: isolate; color: #fff; padding-bottom: 100px;
+    background: linear-gradient(180deg, #2c2352 0, #241d47 900px, #1d2a5e 1800px, #2c2352 100%); }
+  .night > * { position: relative; z-index: 2; }
+  .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
+  .d1 { left: 52%; top: -260px; width: 60vw; background: #FF3EA5; filter: blur(170px); opacity: .35; }
+  .d2 { left: -18%; top: 500px; width: 50vw; background: #3FD9C8; filter: blur(170px); opacity: .25; }
+  .d3 { left: 60%; top: 1200px; width: 44vw; background: #6A2BD9; filter: blur(160px); opacity: .5; }
+  .d4 { left: -8%; top: 1900px; width: 46vw; background: #2350E6; filter: blur(180px); opacity: .4; }
+  .d5 { left: 40%; top: 2500px; width: 40vw; background: #C6F03A; filter: blur(170px); opacity: .18; }
+  .grain { position: absolute !important; inset: 0; z-index: 3 !important; mix-blend-mode: overlay; opacity: .3; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 44px max(16px, 4vw) 0; }
+  .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: #3FD9C8; box-shadow: 0 0 22px 4px color-mix(in srgb, #3FD9C8 60%, transparent); }
+  .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: #FF3EA5; }
+
+  .intro { padding-top: 12vh; padding-bottom: 40px; }
+  .masthead { width: min(820px, 92vw); margin: 0 0 26px; color: #fff; }
+  .stack { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin: 0; }
+  .dj { --lbg: var(--aqua); --lfg: var(--navy); font-size: clamp(1rem, 1.6vw, 1.3rem); }
+  .lede { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: clamp(1.3rem, 2.2vw, 1.8rem); max-width: 36ch; }
+  .how { margin: 22px 0 0; max-width: 58ch; font-size: 1.08rem; line-height: 1.6; opacity: .9; }
+
+  .lists { list-style: none; margin: 30px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .pl { position: relative; overflow: hidden; isolation: isolate; border-radius: 6px; background: var(--g); padding: 30px 26px 28px; display: flex; flex-direction: column; align-items: flex-start; min-height: 420px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+  .pl.fg-white { color: #fff; } .pl.fg-navy { color: var(--navy); }
+  .glowdot { position: relative; width: 150px; aspect-ratio: 1; margin: 6px 0 auto; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+  .glow { position: absolute; inset: 0; border-radius: 50%; background: var(--ring); filter: blur(60px); opacity: .9; transition: background .4s, transform .4s; }
+  .dot { position: absolute; inset: 0; border-radius: 50%; background: var(--ring); }
+  .dot::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--centre); }
+  .pl:hover .glowdot { transform: scale(1.06); }
+  .pl:hover .glow { background: #fff; transform: scale(1.25); }
+  .cw { margin-top: 26px; font: 700 .78rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+  .pl h2 { margin: 8px 0 6px; font-size: clamp(1.8rem, 2.6vw, 2.4rem); line-height: 1.05; }
+  .pl:hover h2 { font-style: italic; }
+  .mood { margin: 0 0 18px; line-height: 1.5; max-width: 30ch; }
+  .listen { display: inline-block; font: 700 .9rem/1 var(--sans); padding: .6em .85em; background: #fff; color: var(--navy); text-decoration: none; filter: var(--shadow); }
+  .note { margin: 18px 0 0; font-family: var(--serif); font-style: italic; font-weight: 600; opacity: .8; }
+
+  .cta { padding-top: 100px; }
+  .cta-copy { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.2; max-width: 26ch; margin: 0 0 14px; }
+  .cta-links { font-size: 1.08rem; }
+  .cta-links a { color: #fff; font-weight: 700; text-decoration-color: var(--aqua); text-decoration-thickness: 2px; text-underline-offset: 3px; overflow-wrap: anywhere; }
+
+  @media (max-width: 1000px) { .lists { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .lists { grid-template-columns: 1fr; } .pl { min-height: 0; } .glowdot { width: 120px; margin-bottom: 0; } }
+</style>
