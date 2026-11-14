@@ -134,7 +134,8 @@ section { padding: 96px 0; position: relative; }
 }
 
 /* The flashing dot on the i of "in" – rebuilt from eir-signature-dot.gif (33 frames: 0.9s hold, then 0.14s cuts)
-   so it stays crisp and transparent on any colourway. Reduced motion holds the first frame. */
+   so it stays crisp and transparent on any colourway. Slowed right down from the GIF; see the note at the rule below.
+   Reduced motion holds the first frame. */
 @property --flash-ring { syntax: '<color>'; inherits: true; initial-value: #2350e6; }
 @property --flash-centre { syntax: '<color>'; inherits: true; initial-value: #ff3ea5; }
 @keyframes eir-flash {
@@ -172,7 +173,9 @@ section { padding: 96px 0; position: relative; }
   94.796% { --flash-ring: #ff3ea5; --flash-centre: #5b1675; }
   97.398% { --flash-ring: #f2e21c; --flash-centre: #a98bff; }
 }
-.flash-dot { --flash-ring: #2350e6; --flash-centre: #ff3ea5; animation: eir-flash 5380ms step-end infinite; }
+/* Safety: the colours melt into each other, about one change every 1.3 seconds, with no hard cuts.
+   The original GIF cut every 0.14s (about 7 changes a second), which is over the 3-flashes-a-second limit (WCAG 2.3.1). */
+.flash-dot { --flash-ring: #2350e6; --flash-centre: #ff3ea5; animation: eir-flash 42s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .flash-dot { animation: none; } }
 
 .text-link { font-family: var(--serif); font-style: italic; font-weight: 600; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
