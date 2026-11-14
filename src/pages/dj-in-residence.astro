@@ -4,7 +4,10 @@ import Logo from '../components/Logo.astro';
 import { site } from '../site.config.js';
 // DJ in Residence: playlists, each one a dot. The colourway is what the music looks like (synaesthesia).
 // MOCKUP: names and moods are working titles; Liza will merch real playlists (Spotify links/embeds) later.
-const lists = [
+// Real playlists come from src/content/dj.json (Merch DJ Notion board): { name, url, colour (hex, dot centre), description, collage (image of album covers) }.
+// Until it has entries, the placeholder colourways below show.
+import dj from '../content/dj.json';
+const placeholders = [
   { cw: 'Hot pink', g: '#FF3EA5', ring: '#14215B', centre: '#fff', fg: 'navy', name: 'Pre-drinks', mood: 'Getting ready with the door open and the volume up.' },
   { cw: 'Nudibranch', g: '#3b3fd6', ring: '#F2E21C', centre: '#3b3fd6', fg: 'white', name: 'Sunday slow-down', mood: 'Coffee, the papers and nowhere to be.' },
   { cw: 'Night Violet', g: '#2c2352', ring: '#3FD9C8', centre: '#FF3EA5', fg: 'white', name: 'After midnight', mood: 'For the walk home that takes the long way.' },
@@ -15,6 +18,8 @@ const lists = [
   { cw: 'Navy and lemon', g: '#14215B', ring: '#F2E21C', centre: '#14215B', fg: 'white', name: 'Golden hour', mood: 'The first warm evening of the year.' },
   { cw: 'Emerald', g: '#0E8A5F', ring: '#F2E21C', centre: '#0E8A5F', fg: 'white', name: 'Garden party', mood: 'Spritzes, sunburn and a borrowed speaker.' },
 ];
+const real = dj.playlists.map((p) => ({ cw: '', g: '#2c2352', ring: '#fff', centre: p.colour, fg: 'white', name: p.name, mood: p.description || '', url: p.url, collage: p.collage }));
+const lists = real.length ? real : placeholders;
 ---
 <Base title="DJ in Residence" description="Playlists by Eliza Campbell, each one a colour.">
   <div class="night">
@@ -44,12 +49,12 @@ const lists = [
     <section class="wrap" aria-label="Playlists">
       <ul class="lists">
         {lists.map((l) => (
-          <li class={`pl fg-${l.fg}`} style={`--g:${l.g};--ring:${l.ring};--centre:${l.centre}`}>
+          <li class={`pl fg-${l.fg} ${l.collage ? 'has-collage' : ''}`} style={`--g:${l.g};--ring:${l.ring};--centre:${l.centre}${l.collage ? `;--collage:url(${l.collage})` : ''}`}>
             <span class="glowdot" aria-hidden="true"><span class="glow"></span><span class="dot"></span></span>
-            <span class="cw">{l.cw}</span>
+            {l.cw && <span class="cw">{l.cw}</span>}
             <h2>{l.name}</h2>
-            <p class="mood">{l.mood}</p>
-            <a class="listen" href="#" aria-disabled="true">Listen on Spotify</a>
+            {l.mood && <p class="mood">{l.mood}</p>}
+            <a class="listen" href={l.url || '#'} target={l.url ? '_blank' : undefined} rel="noopener">Listen on Spotify</a>
           </li>
         ))}
       </ul>
@@ -100,6 +105,8 @@ const lists = [
 
   .lists { list-style: none; margin: 30px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .pl { position: relative; overflow: hidden; isolation: isolate; border-radius: 6px; background: var(--g); padding: 30px 26px 28px; display: flex; flex-direction: column; align-items: flex-start; min-height: 420px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+  /* Real playlists: a collage of the playlist's album covers behind, darkened so white type holds */
+  .pl.has-collage { background: linear-gradient(rgba(20,16,40,.35), rgba(20,16,40,.82)), var(--collage) center / cover; }
   .pl.fg-white { color: #fff; } .pl.fg-navy { color: var(--navy); }
   .glowdot { position: relative; width: 150px; aspect-ratio: 1; margin: 6px 0 auto; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
   .glow { position: absolute; inset: 0; border-radius: 50%; background: var(--ring); filter: blur(60px); opacity: .9; transition: background .4s, transform .4s; }

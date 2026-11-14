@@ -7,27 +7,15 @@ import { linkPubs } from '../lib/pubs.js';
 // Creative direction and print come from her Canva portfolio ("Eliza Campbell Creative Portfolio").
 // MOCKUP: images are low-res page captures from Canva; swap in full-size files before launch.
 // Photography is waiting on Liza's folder of images.
-const projects = [
-  { img: 'cocobella-summer-sessions', title: 'cocobella Summer Sessions', brief: "Use cocobella's UGC social content to inspire a suite of imagery that places its hydration products across different 'summer sessions'.", credit: 'Photographer: Andersen Studios', link: 'https://www.instagram.com/p/DFoJUDSTirK/' },
-  { img: 'rokeby-bold-brew', title: 'Rokeby Bold Brew', brief: 'Launch Bold Brew with a look and feel distinct from the rest of the Rokeby range, built on movement, energy and power.', credit: 'Photographer: Charlie Hawks', link: 'https://www.instagram.com/p/DFBhwMOTTUx/' },
-  { img: 'cocobella-in-studio', title: 'cocobella In-Studio', brief: "Bring cocobella's strawberry and lamington yoghurts to life with a series of food-porn studio images.", credit: 'Photographer: Willow Creative', link: 'https://www.instagram.com/p/DBFKKltTaQ3/' },
-];
-// On screen: Liza as on-screen talent. Each card shows a still (`poster`, a frame from the reel) and plays on hover (`video`, mp4 in /public/videos/onscreen/).
-// MOCKUP: Instagram is blocked from here, so these are colour posters until Liza sends the files.
-const reels = [
-  { url: 'https://www.instagram.com/reel/DcZ2hEYhLve/', who: 'Instagram', cw: 'hotpink', video: '', poster: '' },
-  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/DbAh2lJDzk3/', who: 'Concrete Playground', cw: 'cobalt', video: '', poster: '' },
-  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/Dbco2X1CsFO/', who: 'Concrete Playground', cw: 'violet', video: '', poster: '' },
-  { url: 'https://www.instagram.com/concreteplaygroundmelbourne/reel/DcAscQqGpLr/', who: 'Concrete Playground', cw: 'peacock', video: '', poster: '' },
-  { url: 'https://www.instagram.com/reel/DYixMq8Db5f/', who: 'Instagram', cw: 'emerald', video: '', poster: '' },
-];
-const print = [
-  { img: 'halliday-breaking-the-rules', title: 'Breaking the rules: Angus Vinden' },
-  { img: 'halliday-wishlist', title: 'Wishlist: CBD cellar doors' },
-  { img: 'halliday-perfect-match', title: 'Perfect match: Melissa Leong' },
-  { img: 'halliday-high-country', title: 'Escape to the High Country' },
-];
-const photos = ['tall', 'wide', 'square', 'square', 'tall', 'wide', 'square', 'square', 'wide', 'wide'];
+// Content lives in src/content/air.json, written from the Merch AiR Notion board ("merch it").
+import air from '../content/air.json';
+const img = (p) => (!p ? '' : /^(https?:)?\//.test(p) ? p : `/images/air/${p}.jpg`);
+const projects = air.creativeDirection.map((p) => ({ ...p, img: img(p.img) }));
+const reelCws = ['hotpink', 'cobalt', 'violet', 'peacock', 'emerald', 'sky', 'navy'];
+const reels = air.onScreen.map((r, i) => ({ ...r, poster: img(r.poster), who: /concreteplayground/i.test(r.url) ? 'Concrete Playground' : 'Instagram', cw: reelCws[i % reelCws.length] }));
+const print = air.print.map((p) => ({ ...p, img: img(p.img) }));
+const shotShapes = ['tall', 'wide', 'square', 'square', 'tall', 'wide', 'square', 'square', 'wide', 'wide'];
+const shots = air.photography.length ? air.photography.map((p) => ({ ...p, img: img(p.img) })) : shotShapes.map((shape) => ({ shape, img: '', alt: '' }));
 const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy', 'hotpink', 'cobalt', 'violet'];
 ---
 <Base title="Artist in Residence" description="The visual side of Eliza Campbell's portfolio: creative direction, print and photography.">
@@ -80,7 +68,7 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
       <div class="projects">
         {projects.map((p, i) => (
           <article class={`proj ${i === 0 ? 'lead' : ''}`}>
-            <a class="shot" href={p.link} target="_blank" rel="noopener"><img src={`/images/air/${p.img}.jpg`} alt={p.title} loading="lazy" /></a>
+            <a class="shot" href={p.link} target="_blank" rel="noopener"><img src={p.img} alt={p.title} loading="lazy" /></a>
             <div class="copy">
               <h3>{p.title}</h3>
               <p class="brief">{p.brief}</p>
@@ -97,7 +85,7 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
       <p class="sub" set:html={linkPubs('Feature spreads for Halliday Wine Companion magazine.')} />
       <div class="spreads">
         {print.map((p) => (
-          <figure class="spread"><img src={`/images/air/${p.img}.jpg`} alt={p.title} loading="lazy" /><figcaption>{p.title}</figcaption></figure>
+          <figure class="spread"><img src={p.img} alt={p.title} loading="lazy" /><figcaption>{p.title}</figcaption></figure>
         ))}
       </div>
     </section>
@@ -108,7 +96,7 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
         <span class="eir-label tag">Coming soon: your photo folder</span>
       </div>
       <div class="gallery">
-        {photos.map((s, i) => <figure class={`ph ${s}`} data-cw={cws[i]}></figure>)}
+        {shots.map((p, i) => <figure class={`ph ${p.shape || 'square'} ${p.img ? 'has-img' : ''}`} data-cw={cws[i % cws.length]}>{p.img && <img src={p.img} alt={p.alt || ''} loading="lazy" />}</figure>)}
       </div>
     </section>
 
@@ -200,6 +188,8 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
   .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 180px; grid-auto-flow: dense; gap: 16px; }
   .ph { position: relative; margin: 0; border-radius: 10px; overflow: hidden; background: var(--g); opacity: .85; }
   .ph::before { content: ''; position: absolute; inset: -30%; filter: blur(40px); background: radial-gradient(circle at 80% 15%, var(--a1), transparent 45%), radial-gradient(circle at 15% 90%, var(--a2), transparent 45%); opacity: .8; }
+  .ph.has-img { opacity: 1; } .ph.has-img::before { display: none; }
+  .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .ph.tall { grid-row: span 2; }
   .ph.wide { grid-column: span 2; }
 
