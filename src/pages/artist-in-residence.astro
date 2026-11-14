@@ -12,10 +12,11 @@ import air from '../content/air.json';
 const img = (p) => (!p ? '' : /^(https?:)?\//.test(p) ? p : `/images/air/${p}.jpg`);
 const projects = air.creativeDirection.map((p) => ({ ...p, img: img(p.img) }));
 const reelCws = ['hotpink', 'cobalt', 'violet', 'peacock', 'emerald', 'sky', 'navy'];
-const reels = air.onScreen.map((r, i) => ({ ...r, poster: img(r.poster), who: /concreteplayground/i.test(r.url) ? 'Concrete Playground' : 'Instagram', cw: reelCws[i % reelCws.length] }));
+const reels = air.onScreen.map((r, i) => ({ ...r, poster: img(r.poster), who: r.label || (/concreteplayground/i.test(r.url) ? 'Concrete Playground' : 'Instagram'), cw: reelCws[i % reelCws.length] }));
 const print = air.print.map((p) => ({ ...p, img: img(p.img) }));
 const shotShapes = ['tall', 'wide', 'square', 'square', 'tall', 'wide', 'square', 'square', 'wide', 'wide'];
-const shots = air.photography.length ? air.photography.map((p) => ({ ...p, img: img(p.img) })) : shotShapes.map((shape) => ({ shape, img: '', alt: '' }));
+const shapeRatio = { wide: 1.5, square: 1, tall: 0.75 };
+const shots = air.photography.length ? air.photography.map((p) => ({ ...p, img: img(p.img), ratio: p.ratio || shapeRatio[p.shape] || 1.5 })) : shotShapes.map((shape) => ({ shape, img: '', alt: '', ratio: shapeRatio[shape] }));
 const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy', 'hotpink', 'cobalt', 'violet'];
 ---
 <Base title="Artist in Residence" description="The visual side of Eliza Campbell's portfolio: creative direction, print and photography.">
@@ -49,14 +50,14 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
 
     <section class="block wrap" id="on-screen">
       <h2>On screen</h2>
-      <p class="sub">Me in front of the camera. Hover to play.</p>
+      <p class="sub">Me in front of the camera.</p>
       <ul class="reels">
         {reels.map((r, i) => (
           <li class="reel" data-cw={r.cw}>
-            <a href={r.url} target="_blank" rel="noopener" aria-label={`Watch reel ${i + 1} on Instagram`}>
+            <a href={r.url} target="_blank" rel="noopener" aria-label={`${r.title || `Reel ${i + 1}`}, on Instagram`}>
               {r.video ? <video src={r.video} poster={r.poster || undefined} muted loop playsinline preload="metadata"></video> : r.poster ? <img class="still" src={r.poster} alt="" loading="lazy" /> : <span class="poster" aria-hidden="true"><span class="pdot"></span></span>}
               <span class="play" aria-hidden="true"></span>
-              <span class="eir-label who" set:html={r.who === 'Instagram' ? 'Instagram' : `<i>${r.who}</i>`} />
+              <span class="eir-label who" set:html={r.who === 'Concrete Playground' ? `<i>${r.who}</i>` : r.who} />
             </a>
           </li>
         ))}
@@ -93,10 +94,10 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
     <section class="block wrap" id="photography">
       <div class="head">
         <h2>Photography</h2>
-        <span class="eir-label tag">Coming soon: your photo folder</span>
+        
       </div>
       <div class="gallery">
-        {shots.map((p, i) => <figure class={`ph ${p.shape || 'square'} ${p.img ? 'has-img' : ''}`} data-cw={cws[i % cws.length]}>{p.img && <img src={p.img} alt={p.alt || ''} loading="lazy" />}</figure>)}
+        {shots.map((p, i) => <figure class={`ph ${p.img ? 'has-img' : ''}`} style={`--r:${p.ratio}`} data-cw={cws[i % cws.length]}>{p.img && <img src={p.img} alt={p.alt || ''} loading="lazy" />}</figure>)}
       </div>
     </section>
 
@@ -185,13 +186,12 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
   .spread img { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 24px 60px -30px rgba(20, 33, 91, .45); }
   .spread figcaption { margin-top: 10px; font-family: var(--serif); font-weight: 700; font-size: 1.15rem; }
 
-  .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 180px; grid-auto-flow: dense; gap: 16px; }
-  .ph { position: relative; margin: 0; border-radius: 10px; overflow: hidden; background: var(--g); opacity: .85; }
+  /* Justified rows: every photo keeps its own shape, rows always run edge to edge (no gaps) */
+  .gallery { display: flex; flex-wrap: wrap; gap: 14px; }
+  .ph { flex: var(--r) 1 calc(var(--r) * 230px); aspect-ratio: var(--r); position: relative; margin: 0; border-radius: 10px; overflow: hidden; background: var(--g); opacity: .85; }
   .ph::before { content: ''; position: absolute; inset: -30%; filter: blur(40px); background: radial-gradient(circle at 80% 15%, var(--a1), transparent 45%), radial-gradient(circle at 15% 90%, var(--a2), transparent 45%); opacity: .8; }
   .ph.has-img { opacity: 1; } .ph.has-img::before { display: none; }
   .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .ph.tall { grid-row: span 2; }
-  .ph.wide { grid-column: span 2; }
 
   .cta { padding-top: 100px; }
   .cta-copy { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.2; max-width: 26ch; margin: 0 0 14px; }
@@ -203,6 +203,6 @@ const cws = ['cobalt', 'hotpink', 'peacock', 'violet', 'emerald', 'sky', 'navy',
     .reels { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 58%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
     .reel { scroll-snap-align: start; }
     .proj.lead { grid-template-columns: 1fr; gap: 16px; }
-    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 140px; }
+    .ph { flex-basis: calc(var(--r) * 130px); }
   }
 </style>

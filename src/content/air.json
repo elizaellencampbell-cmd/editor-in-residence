@@ -1,34 +1,36 @@
 {
   "onScreen": [
     {
-      "title": "Reel 1",
+      "title": "Reset by Oura",
+      "label": "Oura",
       "url": "https://www.instagram.com/reel/DcZ2hEYhLve/",
-      "video": "",
-      "poster": ""
+      "video": "/videos/onscreen/reset-by-oura.mp4",
+      "poster": "/images/air/onscreen/reset-by-oura.jpg"
     },
     {
-      "title": "Concrete Playground reel",
+      "title": "Cosy pubs and bars in Melbourne",
       "url": "https://www.instagram.com/concreteplaygroundmelbourne/reel/DbAh2lJDzk3/",
-      "video": "",
-      "poster": ""
+      "video": "/videos/onscreen/best-cosy-pubs.mp4",
+      "poster": "/images/air/onscreen/best-cosy-pubs.jpg"
     },
     {
-      "title": "Concrete Playground reel",
+      "title": "Worth the money: Melbourne wine bars",
       "url": "https://www.instagram.com/concreteplaygroundmelbourne/reel/Dbco2X1CsFO/",
-      "video": "",
-      "poster": ""
+      "video": "/videos/onscreen/worth-the-money-wine-bars.mp4",
+      "poster": "/images/air/onscreen/worth-the-money-wine-bars.jpg"
     },
     {
-      "title": "Concrete Playground reel",
+      "title": "Travel diaries",
       "url": "https://www.instagram.com/concreteplaygroundmelbourne/reel/DcAscQqGpLr/",
-      "video": "",
-      "poster": ""
+      "video": "/videos/onscreen/travel-diaries.mp4",
+      "poster": "/images/air/onscreen/travel-diaries.jpg"
     },
     {
-      "title": "Reel 5",
+      "title": "American Express campaign",
+      "label": "American Express",
       "url": "https://www.instagram.com/reel/DYixMq8Db5f/",
-      "video": "",
-      "poster": ""
+      "video": "/videos/onscreen/amex-campaign.mp4",
+      "poster": "/images/air/onscreen/amex-campaign.jpg"
     }
   ],
   "creativeDirection": [
@@ -72,5 +74,132 @@
       "img": "/images/air/halliday-high-country.jpg"
     }
   ],
-  "photography": []
+  "photography": [
+    {
+      "img": "/images/air/photos/16.jpg",
+      "alt": "Lerici from the castle, Liguria",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/06.jpg",
+      "alt": "By the lake, Bled",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/02.jpg",
+      "alt": "Flowering stems above a bay, Northland",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/10.jpg",
+      "alt": "Via towards the Colosseum, Rome",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/15.jpg",
+      "alt": "Beach umbrella against the sky",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/08.jpg",
+      "alt": "Swimming platform, Lake Bled",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/03.jpg",
+      "alt": "Colonnade over the sea, Miramare, Trieste",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/18.jpg",
+      "alt": "A laugh in the courtyard",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/22.jpg",
+      "alt": "Fuel dock, Bay of Islands",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/07.jpg",
+      "alt": "Snorkel hung on a branch",
+      "shape": "wide",
+      "ratio": 1.333
+    },
+    {
+      "img": "/images/air/photos/12.jpg",
+      "alt": "Lerici harbour",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/01.jpg",
+      "alt": "Bay of Islands Swordfish Club sign",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/11.jpg",
+      "alt": "Trieste waterfront at dusk",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/05.jpg",
+      "alt": "TSS Earnslaw, Queenstown",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/17.jpg",
+      "alt": "Evening swim, Lake Bled",
+      "shape": "square",
+      "ratio": 1.251
+    },
+    {
+      "img": "/images/air/photos/13.jpg",
+      "alt": "Lerici street",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/20.jpg",
+      "alt": "Golden hour at a winery",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/09.jpg",
+      "alt": "Rainforest river",
+      "shape": "wide",
+      "ratio": 1.5
+    },
+    {
+      "img": "/images/air/photos/14.jpg",
+      "alt": "Lakeside lido",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/04.jpg",
+      "alt": "Bungy over the Kawarau River",
+      "shape": "square",
+      "ratio": 1.25
+    },
+    {
+      "img": "/images/air/photos/19.jpg",
+      "alt": "Sun over the ocean",
+      "shape": "wide",
+      "ratio": 1.5
+    }
+  ]
 }
