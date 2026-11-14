@@ -132,7 +132,7 @@ const radio = dj.playlists.map((p) => ({ name: p.name, colour: p.colour, id: (p.
   .player { --c: #fff; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; align-items: center; margin-top: 70px; margin-bottom: 30px; }
   .player h2 { margin: 0 0 10px; font-size: clamp(2.4rem, 5vw, 4rem); }
   .on-air { margin: 0 0 20px; font-size: 1.1rem; }
-  .on-air em { font-family: var(--serif); font-weight: 600; color: var(--c); }
+  .on-air em { font-family: var(--serif); font-weight: 600; border-bottom: 3px solid var(--c); }
   .tune { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .tune button { width: 30px; height: 30px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
     background: radial-gradient(circle, var(--c) 0 38%, #fff 40% 52%, #1a1530 54%); transition: transform .2s; }
@@ -169,7 +169,7 @@ const radio = dj.playlists.map((p) => ({ name: p.name, colour: p.colour, id: (p.
   @media (max-width: 1200px) { .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .pl { position: relative; overflow: hidden; isolation: isolate; border-radius: 6px; background: var(--g); padding: 30px 26px 28px; display: flex; flex-direction: column; align-items: flex-start; min-height: 420px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
   /* Real playlists: a collage of the playlist's album covers behind, darkened so white type holds */
-  .pl.has-collage { background: linear-gradient(rgba(20,16,40,.35), rgba(20,16,40,.82)), var(--collage) center / cover; }
+  .pl.has-collage { background: linear-gradient(rgba(20,16,40,.3) 0, rgba(20,16,40,.8) 42%, rgba(20,16,40,.94) 100%), var(--collage) center / cover; }
   .pl.fg-white { color: #fff; } .pl.fg-navy { color: var(--navy); }
   .glowdot { position: relative; width: 150px; aspect-ratio: 1; margin: 6px 0 auto; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
   .glow { position: absolute; inset: 0; border-radius: 50%; background: var(--ring); filter: blur(60px); opacity: .9; transition: background .4s, transform .4s; }

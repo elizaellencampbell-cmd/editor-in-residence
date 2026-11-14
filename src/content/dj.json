@@ -1,1 +1,116 @@
-{ "playlists": [] }
+{
+  "playlists": [
+    {
+      "name": "Sunshower",
+      "url": "https://open.spotify.com/playlist/5MWsHCINd8Y0aSd5p5WAwa",
+      "colour": "#CFE6DE",
+      "description": "Light precipitation",
+      "collage": "/images/dj/sunshower.jpg"
+    },
+    {
+      "name": "Sonic sundown",
+      "url": "https://open.spotify.com/playlist/4XsQ4zMWDN4XLnHZK1lGHp",
+      "colour": "#A04229",
+      "description": "Ambient/experimental electro – from dusk 'til dawn.",
+      "collage": "/images/dj/sonic-sundown.jpg"
+    },
+    {
+      "name": "Indie coming of age",
+      "url": "https://open.spotify.com/playlist/39azRuK0iHNGRJtW51CURk",
+      "colour": "#6D73AF",
+      "description": "Growing up and coming apart.",
+      "collage": "/images/dj/indie-coming-of-age.jpg"
+    },
+    {
+      "name": "Soft rock background music",
+      "url": "https://open.spotify.com/playlist/413yGs2ihm8gJTObpnwcq8",
+      "colour": "#141450",
+      "description": "",
+      "collage": "/images/dj/soft-rock-background-music.jpg"
+    },
+    {
+      "name": "Travelling on",
+      "url": "https://open.spotify.com/playlist/7BXSzbCUNsptyAU4NuSJ7i",
+      "colour": "#8EC560",
+      "description": "Staring out of the window of a train.",
+      "collage": "/images/dj/travelling-on.jpg"
+    },
+    {
+      "name": "Classic soft rock",
+      "url": "https://open.spotify.com/playlist/6QUm6LiPXKrlJPTZMdasXl",
+      "colour": "#FCED5E",
+      "description": "",
+      "collage": "/images/dj/classic-soft-rock.jpg"
+    },
+    {
+      "name": "Warm songs for cold days",
+      "url": "https://open.spotify.com/playlist/4iCsTaxPBKVPOLmnfu9jQz",
+      "colour": "#EB6762",
+      "description": "",
+      "collage": "/images/dj/warm-songs-for-cold-days.jpg"
+    },
+    {
+      "name": "In direct sunlight",
+      "url": "https://open.spotify.com/playlist/5u5i3DtpxY3oUvnVpw0Twn",
+      "colour": "#FFFE54",
+      "description": "",
+      "collage": "/images/dj/in-direct-sunlight.jpg"
+    },
+    {
+      "name": "Serotonin",
+      "url": "https://open.spotify.com/playlist/6wBG3Dxw1QPp11h7JMcYuz",
+      "colour": "#F6E851",
+      "description": "",
+      "collage": "/images/dj/serotonin.jpg"
+    },
+    {
+      "name": "So cinematic",
+      "url": "https://open.spotify.com/playlist/2U8eulnqFsJoKxVF7duvbV",
+      "colour": "#9BC2BD",
+      "description": "",
+      "collage": "/images/dj/so-cinematic.jpg"
+    },
+    {
+      "name": "Hapless, hopeless, helpless",
+      "url": "https://open.spotify.com/playlist/4jlFfj2F5ne7loKiWSrt5y",
+      "colour": "#6D6B3A",
+      "description": "Silently screaming into the void",
+      "collage": "/images/dj/hapless-hopeless-helpless.jpg"
+    },
+    {
+      "name": "The middle of nowhere",
+      "url": "https://open.spotify.com/playlist/0bY5VXsZK5mEU4veO7eX5a",
+      "colour": "#ADB0BF",
+      "description": "Liminal spaces.",
+      "collage": "/images/dj/the-middle-of-nowhere.jpg"
+    },
+    {
+      "name": "Frozen, faithless, faceless",
+      "url": "https://open.spotify.com/playlist/36fKh3FaZDPXeVLHpklfLv",
+      "colour": "#4175FF",
+      "description": "Untethered, losing grip",
+      "collage": "/images/dj/frozen-faithless-faceless.jpg"
+    },
+    {
+      "name": "Youth in review",
+      "url": "https://open.spotify.com/playlist/4UqBRwsLnRQus5i7goL9W4",
+      "colour": "#C1E674",
+      "description": "",
+      "collage": "/images/dj/youth-in-review.jpg"
+    },
+    {
+      "name": "Angsty, angry, apathetic",
+      "url": "https://open.spotify.com/playlist/6DGDdgZX9sth2Yb2dUDCI6",
+      "colour": "#CC3925",
+      "description": "",
+      "collage": "/images/dj/angsty-angry-apathetic.jpg"
+    },
+    {
+      "name": "A soundtrack for your best possible life",
+      "url": "https://open.spotify.com/playlist/20EAyWEb6gYB1sFC5Xwo8m",
+      "colour": "#BDE0C0",
+      "description": "Songs to dissolve in.",
+      "collage": "/images/dj/a-soundtrack-for-your-best-possible-life.jpg"
+    }
+  ]
+}
