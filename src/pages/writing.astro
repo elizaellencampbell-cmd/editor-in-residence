@@ -15,7 +15,9 @@ if (!wide.length) wide = picks.filter((a) => a.image).slice(0, 2);
 // MOCKUP ONLY: the Featured list is empty in this copy, so use two pieces with photos.
 if (!wide.length) wide = ['guide-to-vanuatu', 'marco-pierre-white'].map((k) => tiles.find((a) => a.image && a.image.includes(k))).filter(Boolean);
 const wideUrls = new Set(wide.map((a) => a.url));
-const gridTiles = tiles.filter((a) => !wideUrls.has(a.url));
+// The grid holds every story. The two wide ones are hidden in the grid on the All view (they sit above it),
+// and under a category the wide row goes away and they take their normal place in the grid.
+const gridTiles = tiles;
 const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a) => a.category === c).length]));
 ---
 <Base title="Writing" description="Food, drink, travel and lifestyle writing by Eliza Campbell.">
@@ -34,15 +36,15 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
     </header>
     <h1 class="featured-title" id="work">Featured.</h1>
     <div class="filters wrap" role="group" aria-label="Show writing by category">
-      <button type="button" class="f on" data-cat="all" aria-pressed="true">All <span class="n">{gridTiles.length + wide.length}</span></button>
+      <button type="button" class="f on" data-cat="all" aria-pressed="true">All <span class="n">{gridTiles.length}</span></button>
       {categories.map((c) => (
-        <button type="button" class="f" data-cat={c} aria-pressed="false"><span class="sw" data-cw={categoryColourways[c]} aria-hidden="true"></span>{c} <span class="n">{counts[c] + wide.filter((a) => a.category === c).length}</span></button>
+        <button type="button" class="f" data-cat={c} aria-pressed="false"><span class="sw" data-cw={categoryColourways[c]} aria-hidden="true"></span>{c} <span class="n">{counts[c]}</span></button>
       ))}
     </div>
     <span class="grain" aria-hidden="true"></span>
   </div>
 
-  <section class="wide-section">
+  <section class="wide-section" id="wide">
     <div class="wrap wide-row">
       {wide.map((a) => <Tile a={{ ...a, shape: 'wide' }} />)}
     </div>
@@ -62,6 +64,9 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
     if (!grid) return;
     var allTiles = Array.prototype.slice.call(grid.querySelectorAll('.tile'));
     var tiles = allTiles;
+    var wideSection = document.getElementById('wide');
+    var wideHrefs = Array.prototype.map.call(document.querySelectorAll('.wide-row .tile'), function (t) { return t.getAttribute('href'); });
+    function isWide(t) { return wideHrefs.indexOf(t.getAttribute('href')) > -1; }
     var buttons = document.querySelectorAll('.filters .f');
     var reduce = matchMedia('(prefers-reduced-motion: reduce)');
     var current = 'all';
@@ -102,11 +107,14 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
       });
       var shown = 0, total = 0;
       tiles.forEach(function (t) {
-        var match = cat === 'all' || t.dataset.category === cat;
+        var match = cat === 'all' ? !isWide(t) : t.dataset.category === cat;
         if (match) total++;
         t.hidden = !(match && shown < limit);
         if (!t.hidden) shown++;
       });
+      // The two wide Featured stories only show on the All view.
+      if (wideSection) wideSection.hidden = cat !== 'all';
+      document.body.classList.toggle('cat-view', cat !== 'all');
       more.hidden = shown >= total;
       more.textContent = 'Show more (' + (total - shown) + ' to go)';
       buttons.forEach(function (b) {
@@ -197,6 +205,9 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
   .hero { display: flex; flex-direction: column; color: #fff; padding: 44px max(16px, 4vw) 0; }
   .featured-title { color: #fff; padding-top: 12vh !important; }
   .wide-section { padding: 0; margin-top: -26vh; position: relative; z-index: 2; }
+  .wide-section[hidden] { display: none; }
+  /* Category views have no wide row, so the grid moves up into its place. */
+  :global(body.cat-view) .tiles-section { margin-top: -26vh; }
   .wide-row { display: grid; grid-template-columns: 1fr; gap: 30px; padding-left: clamp(16px, 5vw, 65px); padding-right: clamp(16px, 5vw, 65px); max-width: 1280px; }
   .wide-row :global(.tile) { opacity: 1; transform: none; }
   /* Stacked features: double width, so a wider frame (2:1) and bigger headlines */
