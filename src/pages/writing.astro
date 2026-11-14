@@ -79,7 +79,7 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
       var cols = [];
       for (var i = 0; i < n; i++) {
         var c = document.createElement('div');
-        c.className = 'col' + (n === 3 && i === 2 ? ' drop' : '');
+        c.className = 'col'; // no staggered column: Liza never wants a gap
         grid.appendChild(c);
         cols.push(c);
       }

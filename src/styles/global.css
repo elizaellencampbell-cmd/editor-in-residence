@@ -184,7 +184,7 @@ section { padding: 96px 0; position: relative; }
 @media (max-width: 559px) { .tiles { columns: 1; } }
 .tiles.js-cols { columns: auto; display: flex; gap: 26px; align-items: flex-start; }
 .tiles.js-cols > .col { flex: 1 1 0; min-width: 0; }
-.tiles.js-cols > .col.drop { margin-top: clamp(0px, 15vw, 250px); }
+/* No staggered drop column: the grid never shows a gap (Liza, 14 Nov 2026) */
 .tile[hidden] { display: none !important; }
 
 /* Header nav: each item sits on its own colourway label so it pops */
