@@ -20,6 +20,7 @@ const placeholders = [
 ];
 const real = dj.playlists.map((p) => ({ cw: '', g: '#2c2352', ring: '#fff', centre: p.colour, fg: 'white', name: p.name, mood: p.description || '', url: p.url, collage: p.collage }));
 const lists = real.length ? real : placeholders;
+const radio = dj.playlists.map((p) => ({ name: p.name, colour: p.colour, id: (p.url.match(/playlist\/([A-Za-z0-9]+)/) || [])[1] })).filter((p) => p.id);
 ---
 <Base title="DJ in Residence" description="Playlists by Eliza Campbell, each one a colour.">
   <div class="night">
@@ -46,6 +47,23 @@ const lists = real.length ? real : placeholders;
       <p class="how">So every playlist here gets its own dot: the ground, the ring and the centre are what it looks like to me. Pick a colour, press play.</p>
     </header>
 
+    {radio.length > 0 && (
+      <section class="wrap player" id="radio" aria-labelledby="radio-h" data-playlists={JSON.stringify(radio)}>
+        <div class="player-side">
+          <h2 id="radio-h">EiR Radio.</h2>
+          <p class="on-air">Now playing on EiR Radio: <em class="on-name">{radio[0].name}</em></p>
+          <ul class="tune" aria-label="Change the station">
+            {radio.map((p) => (
+              <li><button type="button" data-radio={p.id} title={p.name} aria-label={p.name} style={`--c:${p.colour}`}></button></li>
+            ))}
+          </ul>
+          <p class="hint">Not signed in to Spotify? You'll hear 30-second previews.</p>
+        </div>
+        <iframe class="embed" title="EiR Radio on Spotify" src={`https://open.spotify.com/embed/playlist/${radio[0].id}?utm_source=generator`}
+          width="100%" height="452" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </section>
+    )}
+
     <section class="wrap" aria-label="Playlists">
       <ul class="lists">
         {lists.map((l) => (
@@ -54,11 +72,14 @@ const lists = real.length ? real : placeholders;
             {l.cw && <span class="cw">{l.cw}</span>}
             <h2>{l.name}</h2>
             {l.mood && <p class="mood">{l.mood}</p>}
-            <a class="listen" href={l.url || '#'} target={l.url ? '_blank' : undefined} rel="noopener">Listen on Spotify</a>
+            <p class="acts">
+              {l.url && <button type="button" class="listen radio-play" data-radio={(l.url.match(/playlist\/([A-Za-z0-9]+)/) || [])[1]}>Play on EiR Radio</button>}
+              <a class="listen alt" href={l.url || '#'} target={l.url ? '_blank' : undefined} rel="noopener">Listen on Spotify</a>
+            </p>
           </li>
         ))}
       </ul>
-      <p class="note">Working titles. Real playlists to come.</p>
+      {!real.length && <p class="note">Working titles. Real playlists to come.</p>}
     </section>
 
     <section class="brands wrap" aria-labelledby="brands-h">
@@ -80,7 +101,47 @@ const lists = real.length ? real : placeholders;
   </div>
 </Base>
 
+<script>
+  // EiR Radio player: tune with the dots or a card's "Play on EiR Radio". The choice is remembered for the dot in the corner.
+  const player = document.getElementById('radio');
+  if (player) {
+    const lists: { id: string; name: string; colour: string }[] = JSON.parse(player.dataset.playlists || '[]');
+    const frame = player.querySelector<HTMLIFrameElement>('.embed')!;
+    const onName = player.querySelector<HTMLElement>('.on-name')!;
+    const tune = (id: string, scroll = false) => {
+      const p = lists.find((l) => l.id === id);
+      if (!p) return;
+      if (!frame.src.includes(id)) frame.src = `https://open.spotify.com/embed/playlist/${id}?utm_source=generator`;
+      onName.textContent = p.name;
+      player.style.setProperty('--c', p.colour);
+      player.querySelectorAll<HTMLButtonElement>('.tune button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.radio === id)));
+      try { localStorage.setItem('eir-radio', id); } catch (e) {}
+      dispatchEvent(new CustomEvent('eir-radio', { detail: id }));
+      if (scroll) player.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    let start: string | null = null;
+    try { start = localStorage.getItem('eir-radio'); } catch (e) {}
+    const day = Math.floor(Date.now() / 86400000);
+    tune(lists.some((l) => l.id === start) ? start! : lists[day % lists.length].id);
+    document.querySelectorAll<HTMLButtonElement>('[data-radio]').forEach((b) =>
+      b.addEventListener('click', () => tune(b.dataset.radio!, !b.closest('.tune'))));
+  }
+</script>
+
 <style>
+  .player { --c: #fff; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; align-items: center; margin-top: 70px; margin-bottom: 30px; }
+  .player h2 { margin: 0 0 10px; font-size: clamp(2.4rem, 5vw, 4rem); }
+  .on-air { margin: 0 0 20px; font-size: 1.1rem; }
+  .on-air em { font-family: var(--serif); font-weight: 600; color: var(--c); }
+  .tune { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .tune button { width: 30px; height: 30px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+    background: radial-gradient(circle, var(--c) 0 38%, #fff 40% 52%, #1a1530 54%); transition: transform .2s; }
+  .tune button:hover { transform: scale(1.15); }
+  .tune button[aria-pressed='true'] { box-shadow: 0 0 0 3px #fff, 0 0 18px 4px var(--c); }
+  .hint { margin: 0; font-size: .82rem; opacity: .65; }
+  .embed { display: block; border: 0; border-radius: 12px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.7), 0 0 60px -10px color-mix(in srgb, var(--c) 45%, transparent); }
+  @media (max-width: 900px) { .player { grid-template-columns: 1fr; gap: 24px; } }
+
   .night { position: relative; overflow: hidden; isolation: isolate; color: #fff; padding-bottom: 100px;
     background: linear-gradient(180deg, #2c2352 0, #241d47 900px, #1d2a5e 1800px, #2c2352 100%); }
   .night > * { position: relative; z-index: 2; }
@@ -120,6 +181,9 @@ const lists = real.length ? real : placeholders;
   .pl h2 { margin: 8px 0 6px; font-size: clamp(1.8rem, 2.6vw, 2.4rem); line-height: 1.05; }
   .pl:hover h2 { font-style: italic; }
   .mood { margin: 0 0 18px; line-height: 1.5; max-width: 30ch; }
+  .acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+  button.listen { border: 0; cursor: pointer; }
+  .listen.alt { background: transparent; color: inherit; box-shadow: inset 0 0 0 1.5px currentColor; filter: none; }
   .listen { display: inline-block; font: 700 .9rem/1 var(--sans); padding: .6em .85em; background: #fff; color: var(--navy); text-decoration: none; filter: var(--shadow); }
   .note { margin: 18px 0 0; font-family: var(--serif); font-style: italic; font-weight: 600; opacity: .8; }
 

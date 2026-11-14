@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Logo from '../components/Logo.astro';
+import Radio from '../components/Radio.astro';
 import { site, categories } from '../site.config.js';
 
 const { title, description = 'Food, drink, travel and lifestyle writing by Eliza Campbell.' } = Astro.props;
@@ -51,6 +52,8 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
         </p>
       </div>
     </footer>
+
+    <Radio />
 
     <nav class="bottom-nav" aria-label="Main">
       <a href="/" class="mark" data-cw="cobalt" aria-label="Home"><Logo variant="wordmark" flash={false} /></a>
