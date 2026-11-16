@@ -1,0 +1,5 @@
+# Search engines are welcome everywhere except the site editor.
+User-agent: *
+Disallow: /admin/
+
+Sitemap: https://www.editorinresidence.com.au/sitemap.xml
