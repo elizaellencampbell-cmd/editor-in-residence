@@ -1,0 +1,11 @@
+# Cloudflare Pages headers.
+# Keep the site editor and the preview copies on pages.dev out of search results,
+# so Google only lists www.editorinresidence.com.au.
+/admin/*
+  X-Robots-Tag: noindex
+
+https://editorinresidence.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.editorinresidence.pages.dev/*
+  X-Robots-Tag: noindex

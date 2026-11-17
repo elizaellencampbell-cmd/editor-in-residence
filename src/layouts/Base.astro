@@ -4,16 +4,69 @@ import Logo from '../components/Logo.astro';
 import Radio from '../components/Radio.astro';
 import { site, categories } from '../site.config.js';
 
-const { title, description = 'Food, drink, travel and lifestyle writing by Eliza Campbell.' } = Astro.props;
+const { title, description = 'Food, drink, travel and lifestyle writing by Eliza Campbell.', noindex = false } = Astro.props;
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} ${site.byline}`;
 const path = Astro.url.pathname;
 // v1: the bottom menu is the four portfolio categories plus About and email.
 // Strategy, Services, Writing and Contact pages are parked in v2-drafts/ until v2.
 const nav = [
-  ...categories.map((c) => ({ href: `/#${c.toLowerCase()}`, label: c })),
+  ...categories.map((c) => ({ href: `/writing/#${c.toLowerCase()}`, label: c })),
   { href: '/about/', label: 'About' },
 ];
 const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
+const canonical = new URL(path, Astro.site).href;
+
+// Structured data: tells search engines who Eliza is, that Editor in Residence is her business,
+// and which profiles elsewhere are hers (sameAs). Shown to Google only, not on the page.
+const home = new URL('/', Astro.site).href;
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${home}#eliza`,
+      name: 'Eliza Campbell',
+      alternateName: 'Liza Campbell',
+      jobTitle: 'Editor, writer and independent consultant',
+      description: 'Melbourne food, drink, travel and lifestyle writer and editor, formerly of Concrete Playground, Time Out Melbourne and Halliday Wine Companion.',
+      url: home,
+      image: new URL('/images/eliza-campbell.jpg', Astro.site).href,
+      email: `mailto:${site.email}`,
+      address: { '@type': 'PostalAddress', addressLocality: 'Melbourne', addressRegion: 'VIC', addressCountry: 'AU' },
+      worksFor: { '@id': `${home}#eir` },
+      alumniOf: { '@type': 'CollegeOrUniversity', name: 'RMIT University' },
+      knowsAbout: ['Food writing', 'Drink and wine writing', 'Travel writing', 'Editing', 'Content strategy', 'Public relations'],
+      sameAs: [
+        site.instagram,
+        site.linkedin,
+        'https://www.timeout.com/profile/eliza-campbell',
+        'https://www.broadsheet.com.au/author/eliza-campbell',
+        'https://concreteplayground.com/global/author/eliza-campbell',
+      ],
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${home}#eir`,
+      name: site.name,
+      description: 'Independent editorial consultancy helping PR agencies and brands see stories the way an editor does.',
+      url: home,
+      logo: new URL('/favicon.svg', Astro.site).href,
+      image: ogImage,
+      email: site.email,
+      founder: { '@id': `${home}#eliza` },
+      areaServed: 'AU',
+      address: { '@type': 'PostalAddress', addressLocality: 'Melbourne', addressRegion: 'VIC', addressCountry: 'AU' },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#website`,
+      name: site.name,
+      url: home,
+      inLanguage: 'en-AU',
+      publisher: { '@id': `${home}#eliza` },
+    },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en-AU" data-cw={site.heroColourway}>
@@ -23,12 +76,17 @@ const ogImage = new URL('/images/og-eliza-campbell.jpg', Astro.site).href;
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="canonical" href={new URL(path, Astro.site).href} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="sitemap" href="/sitemap.xml" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_AU" />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     <script is:inline>
       (function () {
         var t;
