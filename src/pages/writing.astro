@@ -20,7 +20,7 @@ const wideUrls = new Set(wide.map((a) => a.url));
 const gridTiles = tiles;
 const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a) => a.category === c).length]));
 ---
-<Base title="Writing" description="Food, drink, travel and lifestyle writing by Eliza Campbell.">
+<Base fullTitle="Writing Portfolio – Eliza Campbell, Freelance Food and Travel Writer" description="The portfolio of Melbourne freelance writer Eliza Campbell: food, drink, travel and lifestyle stories for Concrete Playground, Time Out, Broadsheet and Halliday Wine Companion.">
   <div class="field eir-hazy">
     <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
     <header class="hero">
@@ -35,6 +35,7 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
       </nav>
     </header>
     <h1 class="featured-title" id="work">Featured.</h1>
+    <p class="writing-intro">Freelance food, drink, travel and lifestyle writing.</p>
     <div class="filters wrap" role="group" aria-label="Show writing by category">
       <button type="button" class="f on" data-cat="all" aria-pressed="true">All <span class="n">{gridTiles.length}</span></button>
       {categories.map((c) => (
@@ -216,6 +217,7 @@ const counts = Object.fromEntries(categories.map((c) => [c, gridTiles.filter((a)
   @media (max-width: 760px) { .wide-row :global(.has-photo.shape-wide .cards) { aspect-ratio: 16 / 10; } }
   .tiles-section { padding-top: 40px !important; }
 
+  .writing-intro { text-align: center; color: #fff; font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem, 1.6vw, 1.3rem); margin: .6em auto 0; padding: 0 16px; }
   .featured-title { text-align: center; margin: 0; padding: 40px 0 0; font-size: clamp(3rem, 7vw, 5.5rem); scroll-margin-top: 24px; }
 
   /* Filters run the full width of the featured tiles, big enough to read at a glance */

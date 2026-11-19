@@ -18,7 +18,7 @@ const services = [
   ['Copywriting', 'social included'],
 ];
 ---
-<Base title="What is an Editor in Residence?" description="Eliza Campbell, former editor of Concrete Playground, Time Out Melbourne and Halliday Wine Companion, now works with PR agencies and brands as an editor in residence.">
+<Base fullTitle="Freelance Editor, Copywriter and Content Strategist · Editor in Residence" description="Freelance editor, copywriter and content strategist for Australian brands and PR agencies: pitches, press releases, tone of voice and content strategy.">
   <div class="rosy">
     <span class="blob r1" aria-hidden="true"></span><span class="blob r2" aria-hidden="true"></span><span class="blob r3" aria-hidden="true"></span><span class="blob r4" aria-hidden="true"></span><span class="blob r5" aria-hidden="true"></span><span class="blob r6" aria-hidden="true"></span>
     <span class="grain" aria-hidden="true"></span>
@@ -63,7 +63,7 @@ const services = [
           <p>Understanding how publishing works also means understanding the limits of the team you're pitching to: how many writers they have, what they can shoot, how fast they can turn a story around. If your pitches, exclusives and assets aren't tailored to that, you're doing yourself a disservice.</p>
         </div>
         <figure class="photo">
-          <img src={photo} alt="Eliza Campbell" width="1500" height="1000" loading="lazy" />
+          <img src={photo} alt="Eliza Campbell, freelance editor, copywriter and content strategist" width="1500" height="1000" loading="lazy" />
         </figure>
       </div>
       <div class="wrap">
@@ -132,6 +132,7 @@ const services = [
     <section class="contents">
       <div class="wrap narrow-ish">
         <h2 class="contents-h">What a residency covers</h2>
+        <p class="contents-intro">I work with brands and PR agencies across Australia as a freelance editor, copywriter and content strategist.</p>
         <ol class="toc">
           {services.map(([t, d], i) => (
             <li><a href="#book"><span class="pg">{String(i + 1).padStart(2, '0')}</span><span class="t">{t}{d && <span class="desc">, {d}</span>}</span><span class="arrow" aria-hidden="true">→</span></a></li>
@@ -332,6 +333,7 @@ const services = [
   .contents { padding: 40px 0 40px; }
   .narrow-ish { max-width: 900px; }
   .contents-h { font-size: clamp(2.2rem, 4.6vw, 3.6rem); margin-bottom: .6em; }
+  .contents-intro { max-width: 40ch; margin: -.2em 0 1.6em; font-size: 1.1rem; }
   .toc { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(20,33,91,.35); }
   .toc a { display: grid; grid-template-columns: 3.2em 1fr auto; align-items: baseline; gap: 12px; padding: 18px 0; border-bottom: 1px solid rgba(20,33,91,.35); color: var(--navy); text-decoration: none; }
   .pg { font-family: var(--serif); font-weight: 800; font-size: 1.1rem; color: #3B3FD6; font-variant-numeric: lining-nums; }
