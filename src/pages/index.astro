@@ -18,7 +18,7 @@ const md = (t = '') => keepPubs(esc(t)
   .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|mailto:[^)\s]+|\/[^)\s]*)\)/g, '<a href="$2">$1</a>')
   .replace(/\*([^*]+)\*/g, '<em>$1</em>'))
 ---
-<Base description={`Food, drink, travel and lifestyle writing by Eliza Campbell for ${outlets}.`}>
+<Base fullTitle="Eliza Campbell – Freelance Writer and Editor in Melbourne · Editor in Residence" description="Eliza Campbell is a Melbourne freelance writer, editor, copywriter and content strategist, and former editor of Concrete Playground and Time Out Melbourne.">
   <!-- One hazy wash behind the whole page: hot pink ground at the top, aura glows drifting down, softening to a pale wash. No hard edges. -->
   <div class="wash eir-hazy">
     <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
@@ -67,7 +67,7 @@ const md = (t = '') => keepPubs(esc(t)
         <div class="wrap about-inner">
           <picture class="headshot">
             <source srcset="/images/eliza-campbell.webp" type="image/webp" />
-            <img src={sec.photo || '/images/eliza-campbell.jpg'} alt={sec.heading || 'Eliza Campbell'} width="800" height="1000" loading="lazy" />
+            <img src={sec.photo || '/images/eliza-campbell.jpg'} alt={`${sec.heading || 'Eliza Campbell'}, freelance writer and editor in Melbourne`} width="800" height="1000" loading="lazy" />
           </picture>
           <div class="about-copy">
             <h2>{sec.heading}</h2>

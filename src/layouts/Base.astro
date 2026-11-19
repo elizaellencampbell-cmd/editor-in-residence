@@ -4,8 +4,8 @@ import Logo from '../components/Logo.astro';
 import Radio from '../components/Radio.astro';
 import { site, categories } from '../site.config.js';
 
-const { title, description = 'Food, drink, travel and lifestyle writing by Eliza Campbell.', noindex = false } = Astro.props;
-const pageTitle = title ? `${title} · ${site.name}` : `${site.name} ${site.byline}`;
+const { title, description = 'Food, drink, travel and lifestyle writing by Eliza Campbell.', noindex = false, fullTitle } = Astro.props;
+const pageTitle = fullTitle ? fullTitle : title ? `${title} · ${site.name}` : `${site.name} ${site.byline}`;
 const path = Astro.url.pathname;
 // v1: the bottom menu is the four portfolio categories plus About and email.
 // Strategy, Services, Writing and Contact pages are parked in v2-drafts/ until v2.
@@ -27,15 +27,21 @@ const schema = {
       '@id': `${home}#eliza`,
       name: 'Eliza Campbell',
       alternateName: 'Liza Campbell',
-      jobTitle: 'Editor, writer and independent consultant',
-      description: 'Melbourne food, drink, travel and lifestyle writer and editor, formerly of Concrete Playground, Time Out Melbourne and Halliday Wine Companion.',
+      jobTitle: 'Freelance writer, editor, copywriter and content strategist',
+      description: 'Melbourne freelance writer, editor, copywriter and content strategist, formerly editor at Concrete Playground, Time Out Melbourne and Halliday Wine Companion.',
+      hasOccupation: [
+        { '@type': 'Occupation', name: 'Freelance writer', occupationLocation: { '@type': 'Country', name: 'Australia' } },
+        { '@type': 'Occupation', name: 'Freelance editor', occupationLocation: { '@type': 'Country', name: 'Australia' } },
+        { '@type': 'Occupation', name: 'Freelance copywriter', occupationLocation: { '@type': 'Country', name: 'Australia' } },
+        { '@type': 'Occupation', name: 'Freelance content strategist', occupationLocation: { '@type': 'Country', name: 'Australia' } },
+      ],
       url: home,
       image: new URL('/images/eliza-campbell.jpg', Astro.site).href,
       email: `mailto:${site.email}`,
       address: { '@type': 'PostalAddress', addressLocality: 'Melbourne', addressRegion: 'VIC', addressCountry: 'AU' },
       worksFor: { '@id': `${home}#eir` },
       alumniOf: { '@type': 'CollegeOrUniversity', name: 'RMIT University' },
-      knowsAbout: ['Food writing', 'Drink and wine writing', 'Travel writing', 'Editing', 'Content strategy', 'Public relations'],
+      knowsAbout: ['Freelance writing', 'Copywriting', 'Editing', 'Content strategy', 'Food writing', 'Drink and wine writing', 'Travel writing', 'Tone of voice', 'Public relations'],
       sameAs: [
         site.instagram,
         site.linkedin,
@@ -48,13 +54,20 @@ const schema = {
       '@type': 'ProfessionalService',
       '@id': `${home}#eir`,
       name: site.name,
-      description: 'Independent editorial consultancy helping PR agencies and brands see stories the way an editor does.',
+      description: 'Freelance editing, copywriting and content strategy for Australian brands and PR agencies, from a former Concrete Playground and Time Out Melbourne editor.',
+      serviceType: ['Freelance writing', 'Freelance editing', 'Copywriting', 'Content strategy'],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Services',
+        itemListElement: ['Freelance writing', 'Freelance editing', 'Copywriting', 'Content and editorial strategy', 'Pitches and press releases', 'Audience analysis', 'Tone of voice and brand positioning']
+          .map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })),
+      },
       url: home,
       logo: new URL('/favicon.svg', Astro.site).href,
       image: ogImage,
       email: site.email,
       founder: { '@id': `${home}#eliza` },
-      areaServed: 'AU',
+      areaServed: { '@type': 'Country', name: 'Australia' },
       address: { '@type': 'PostalAddress', addressLocality: 'Melbourne', addressRegion: 'VIC', addressCountry: 'AU' },
     },
     {
