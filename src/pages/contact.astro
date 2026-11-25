@@ -1,0 +1,266 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site.config.js';
+import { linkPubs } from '../lib/pubs.js';
+// Contact: one door for every kind of enquiry. Built 25 Nov 2026.
+// Soft wash (lemon to mint to sky to lilac), no hard section lines, one colourway per door.
+// The form writes an email in the visitor's own mail app (no third-party service).
+// To send straight to the inbox instead, set FORM_ACTION to '/api/contact' once the
+// Resend keys are in Cloudflare (see functions/api/contact.js).
+const FORM_ACTION = '';
+const ig = 'https://www.instagram.com/editor.inresidence/';
+const mail = (subject) => `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
+
+const doors = [
+  {
+    cw: 'cobalt',
+    kicker: 'Editors',
+    title: 'Commission a story',
+    body: linkPubs('Food, drink, travel and lifestyle features, reviews, guides and interviews, from someone who has filed for Concrete Playground, Time Out Melbourne, Halliday Wine Companion and Broadsheet.'),
+    subject: 'Commissioning a story',
+    link: ['/writing/', 'Read my writing'],
+  },
+  {
+    cw: 'navy',
+    kicker: 'PR agencies and brands',
+    title: 'Book a residency',
+    body: 'Pitches, press releases, audience analysis, tone of voice and content strategy, from the editor who used to read your pitches.',
+    subject: 'Booking a residency',
+    link: ['/work-with-me/', 'What a residency covers'],
+  },
+  {
+    cw: 'violet',
+    kicker: 'Producers and creative teams',
+    title: 'On screen and creative direction',
+    body: 'Presenting, shoots, creative direction and photography for stories that need to look as good as they read.',
+    subject: 'Creative direction',
+    link: ['/artist-in-residence/', 'See Artist in Residence'],
+  },
+  {
+    cw: 'emerald',
+    kicker: 'Venues and launches',
+    title: 'Book a soundtrack',
+    body: 'Playlists and sets for launches, long tables and shopfronts, chosen by colour as much as by sound.',
+    subject: 'DJ in Residence',
+    link: ['/dj-in-residence/', 'Listen to DJ in Residence'],
+  },
+];
+const topics = ['Commissioning a story', 'Booking a residency', 'On screen or creative direction', 'DJ in Residence', 'Something else'];
+---
+<Base title="Contact" description="Get in touch with Eliza Campbell to commission a story, book an Editor in Residence, or talk creative direction and DJ bookings.">
+  <div class="wash">
+    <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span><span class="blob b4" aria-hidden="true"></span>
+    <span class="grain" aria-hidden="true"></span>
+
+    <nav class="top" aria-label="Header">
+      <a href="/" class="logo-dot" aria-label="Editor in Residence, home"><span></span></a>
+      <ul class="nav-labels">
+        <li><a href="/">Editor in Residence</a></li>
+        <li><a href="/artist-in-residence/">Artist in Residence</a></li>
+        <li><a href="/dj-in-residence/">DJ in Residence</a></li>
+        <li><a href="/contact/" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1. Hello -->
+    <header class="hello wrap">
+      <p class="kick"><span class="eir-label pop">Contact</span></p>
+      <h1>Pull up a chair.</h1>
+      <p class="lede">I spent years on the receiving end of a very full inbox, so I promise to read yours properly. Tell me what you're working on, who it's for and when you need it – and if you're not sure what you need yet, that's fine too.</p>
+      <p class="direct"><a href={`mailto:${site.email}`}>{site.email}</a></p>
+    </header>
+
+    <!-- 2. Pick a door -->
+    <section class="doors-sec" aria-labelledby="doors-h">
+      <div class="wrap">
+        <h2 id="doors-h" class="sec-h">What brings you here?</h2>
+        <div class="doors">
+          {doors.map((d) => (
+            <article class="door" data-cw={d.cw}>
+              <p class="door-kick">{d.kicker}</p>
+              <h3>{d.title}</h3>
+              <p class="door-body" set:html={d.body} />
+              <p class="door-links">
+                <a class="door-mail" href={mail(d.subject)}>Email me</a>
+                <a class="door-more" href={d.link[0]}>{d.link[1]} <span aria-hidden="true">→</span></a>
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. The form -->
+    <section class="form-sec" id="write" aria-labelledby="form-h">
+      <div class="wrap cols">
+        <div class="intro">
+          <h2 id="form-h" class="sec-h">Or leave me a note.</h2>
+          <p>A few lines is plenty. The more I know about the brief, the audience and the deadline, the more useful my first reply will be.</p>
+          {!FORM_ACTION && <p class="fine">Pressing send opens your email app with everything filled in, ready to go.</p>}
+        </div>
+
+        <div class="card">
+          <p id="sent" class="notice" hidden>Thanks, that's come through. I'll be in touch soon.</p>
+          <p id="failed" class="notice err" hidden>Something went wrong sending that. Please email me directly at <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+          <form id="contact-form" method="POST" action={FORM_ACTION || undefined} data-mailto={FORM_ACTION ? undefined : site.email}>
+            <div class="row2">
+              <label>Your name<input name="name" required autocomplete="name" /></label>
+              <label>Your email<input name="email" type="email" required autocomplete="email" /></label>
+            </div>
+            <label><span>Publication, agency or brand <span class="opt">(optional)</span></span><input name="company" autocomplete="organization" /></label>
+            <div class="row2">
+              <label>What's it about?
+                <select name="service">
+                  {topics.map((t) => <option>{t}</option>)}
+                </select>
+              </label>
+              <label><span>Deadline or dates <span class="opt">(optional)</span></span><input name="when" /></label>
+            </div>
+            <label>Message<textarea name="message" rows="6" required></textarea></label>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+            <button type="submit">Send <span aria-hidden="true">→</span></button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Elsewhere -->
+    <section class="elsewhere" aria-labelledby="else-h">
+      <div class="wrap">
+        <h2 id="else-h" class="sec-h">Find me elsewhere</h2>
+        <ul class="socials">
+          <li><a class="s s-lemon" href={site.instagram} target="_blank" rel="noopener"><span class="k">Instagram</span><span class="v">{site.instagramHandle}</span></a></li>
+          <li><a class="s s-aqua" href={ig} target="_blank" rel="noopener"><span class="k">Instagram</span><span class="v">@editor.inresidence</span></a></li>
+          <li><a class="s s-lime" href={site.linkedin} target="_blank" rel="noopener"><span class="k">LinkedIn</span><span class="v">Eliza Campbell</span></a></li>
+          <li><a class="s s-pink" href={`mailto:${site.email}`}><span class="k">Email</span><span class="v">{site.email}</span></a></li>
+        </ul>
+        <p class="based">Based in Melbourne, working with editors, agencies and brands across Australia.</p>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script is:inline>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    if (q.get('sent') === '1') document.getElementById('sent').hidden = false;
+    if (q.get('sent') === '0') document.getElementById('failed').hidden = false;
+
+    // No form service yet: build the email in the visitor's own mail app.
+    var f = document.getElementById('contact-form');
+    var to = f && f.dataset.mailto;
+    if (!to) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (f.website.value) return;
+      var v = function (k) { return (f[k].value || '').trim(); };
+      var lines = [v('message'), '', '–', v('name')];
+      if (v('company')) lines.push(v('company'));
+      lines.push(v('email'));
+      if (v('when')) lines.push('', 'Deadline or dates: ' + v('when'));
+      var subject = v('service') + (v('name') ? ' – ' + v('name') : '');
+      location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
+      document.getElementById('sent').textContent = "Your email app should have opened with your note ready to send. If it didn't, write to me at " + to + '.';
+      document.getElementById('sent').hidden = false;
+    });
+  })();
+</script>
+
+<style>
+  /* One soft wash, top to bottom: lemon, mint, aqua, sky, lilac, blush. No hard section lines. */
+  .wash { position: relative; overflow: hidden; isolation: isolate; color: var(--navy);
+    background: linear-gradient(180deg, #fbf0b4 0, #f6f3c6 500px, #daf5d9 1100px, #c9f1ec 1700px, #d6e6fa 2300px, #e5dafa 2900px, #ffd3e6 100%); }
+  .wash > * { position: relative; z-index: 2; }
+  .blob { position: absolute !important; z-index: 0 !important; border-radius: 50%; aspect-ratio: 1; pointer-events: none; }
+  .b1 { left: 50%; top: -280px; width: 60vw; background: var(--lemon); filter: blur(150px); opacity: .55; }
+  .b2 { left: -18%; top: 700px; width: 48vw; background: var(--aqua); filter: blur(170px); opacity: .35; }
+  .b3 { left: 58%; top: 1700px; width: 46vw; background: var(--pink); filter: blur(170px); opacity: .22; }
+  .b4 { left: -12%; top: 2600px; width: 50vw; background: var(--violet); filter: blur(180px); opacity: .2; }
+  .grain { position: absolute !important; inset: 0; z-index: 3 !important; mix-blend-mode: overlay; opacity: .3; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  .wash :global(.pub) { white-space: nowrap; }
+
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 44px max(16px, 4vw) 0; }
+  .top a { color: var(--navy); text-decoration: none; }
+  .logo-dot span { display: block; position: relative; width: 40px; aspect-ratio: 1; border-radius: 50%; background: var(--aqua); box-shadow: 0 0 22px 4px color-mix(in srgb, var(--aqua) 60%, transparent); }
+  .logo-dot span::after { content: ''; position: absolute; inset: 22%; border-radius: 50%; background: var(--pink); }
+
+  .sec-h { font-family: var(--serif); font-weight: 800; font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 32px; }
+
+  /* 1. Hello */
+  .hello { padding-top: 12vh; padding-bottom: 80px; max-width: 1100px; }
+  .kick { margin: 0 0 22px; }
+  .pop { --lbg: var(--cobalt); --lfg: #fff; font-size: clamp(.95rem, 1.6vw, 1.15rem); }
+  .hello h1 { font-family: var(--serif); font-weight: 800; font-size: clamp(3.2rem, 9vw, 8rem); line-height: .95; letter-spacing: -.03em; margin: 0 0 28px; }
+  .lede { font-size: clamp(1.1rem, 1.7vw, 1.35rem); line-height: 1.6; max-width: 56ch; margin: 0 0 26px; }
+  .direct { margin: 0; font-family: var(--serif); font-weight: 700; font-style: italic; font-size: clamp(1.4rem, 3vw, 2.3rem); }
+  .direct a { color: #3B3FD6; text-decoration-thickness: 2px; text-underline-offset: 6px; overflow-wrap: anywhere; }
+  .direct a:hover { color: var(--fuchsia); }
+
+  /* 2. Doors: one colourway each, aura glow, no borders */
+  .doors-sec { padding: 20px 0 90px; }
+  .doors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .door { position: relative; overflow: hidden; isolation: isolate; border-radius: 6px; padding: 32px 30px 28px; min-height: 300px;
+    display: flex; flex-direction: column; background: var(--g); color: var(--fg); }
+  .door::before { content: ''; position: absolute; inset: -30%; z-index: -1; filter: blur(50px);
+    background: radial-gradient(circle at 88% 8%, color-mix(in srgb, var(--a1) 70%, transparent), transparent 42%), radial-gradient(circle at 8% 96%, color-mix(in srgb, var(--a2) 60%, transparent), transparent 45%); }
+  .door-kick { margin: 0 0 14px; font-weight: 700; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; opacity: .9; }
+  .door h3 { font-family: var(--serif); font-weight: 800; font-size: clamp(1.7rem, 2.8vw, 2.4rem); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 14px; }
+  .door-body { margin: 0 0 26px; font-size: 1.02rem; line-height: 1.55; max-width: 44ch; }
+  .door-body :global(a.pub) { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .door-links { margin: auto 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; }
+  .door-mail { display: inline-block; font: 700 1rem/1 var(--sans); padding: .7em 1em .75em; background: var(--lbg); color: var(--lfg); text-decoration: none; filter: var(--shadow); transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+  .door-mail:hover { transform: translateY(-2px); }
+  .door-more { color: inherit; font-weight: 700; text-decoration: none; }
+  .door-more span { display: inline-block; transition: transform .3s; }
+  .door-more:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .door-more:hover span { transform: translateX(5px); }
+
+  /* 3. Form on a frosted card, soft-filled fields rather than ruled lines */
+  .form-sec { padding: 10px 0 100px; }
+  .cols { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .intro p { font-size: 1.08rem; line-height: 1.65; max-width: 40ch; }
+  .intro .fine { font-family: var(--serif); font-style: italic; font-weight: 600; color: #3B3FD6; }
+  .card { background: rgba(255,255,255,.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 10px; padding: clamp(22px, 3.5vw, 40px); box-shadow: 0 30px 70px -40px rgba(20,33,91,.45); }
+  form { display: grid; gap: 20px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  label { display: grid; gap: 8px; font-weight: 700; font-size: .9rem; color: var(--navy); }
+  .opt { font-weight: 400; opacity: .7; }
+  input, select, textarea {
+    font: 400 1.05rem/1.4 var(--sans); color: var(--navy); width: 100%;
+    background: rgba(255,255,255,.75); border: 0; border-radius: 6px; padding: 13px 14px;
+    box-shadow: inset 0 0 0 1px rgba(20,33,91,.08); transition: box-shadow .2s, background .2s;
+  }
+  textarea { resize: vertical; min-height: 150px; }
+  input:focus, select:focus, textarea:focus { outline: none; background: #fff; box-shadow: inset 0 0 0 2px #3B3FD6; }
+  button { justify-self: start; cursor: pointer; border: 0; font: 700 1.1rem/1 var(--sans); padding: 17px 26px; background: #3B3FD6; color: #fff; filter: var(--shadow); transition: background .3s, transform .25s; }
+  button:hover { background: var(--navy); transform: translateY(-2px); }
+  .hp { position: absolute; left: -9999px; }
+  .notice { margin: 0 0 20px; padding: 14px 18px; border-radius: 6px; background: color-mix(in srgb, var(--aqua) 35%, #fff); font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 1.1rem; }
+  .notice.err { background: color-mix(in srgb, var(--pink) 22%, #fff); }
+  .notice a { color: #3B3FD6; }
+
+  /* 4. Elsewhere: socials as labels in different flavours */
+  .elsewhere { padding: 10px 0 110px; }
+  .socials { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px; }
+  .s { display: inline-flex; flex-direction: column; gap: 4px; padding: 14px 18px 15px; text-decoration: none; color: var(--navy); filter: var(--shadow); transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+  .s:hover { transform: translateY(-3px); }
+  .s .k { font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+  .s .v { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; overflow-wrap: anywhere; }
+  .s-lemon { background: var(--lemon); }
+  .s-aqua { background: var(--aqua); }
+  .s-lime { background: var(--lime); }
+  .s-pink { background: var(--pink); color: #fff; }
+  .based { margin: 34px 0 0; font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 1.15rem; }
+
+  @media (max-width: 860px) {
+    .doors { grid-template-columns: 1fr; }
+    .cols { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .row2 { grid-template-columns: 1fr; }
+    .door { min-height: 0; }
+    .s .v { font-size: 1.05rem; }
+    .s-pink .v { overflow-wrap: normal; white-space: nowrap; }
+  }
+</style>

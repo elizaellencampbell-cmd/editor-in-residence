@@ -7,6 +7,7 @@ const pages = [
   { path: '/about/', priority: '0.8' },
   { path: '/artist-in-residence/', priority: '0.7' },
   { path: '/dj-in-residence/', priority: '0.5' },
+  { path: '/contact/', priority: '0.7' },
 ];
 
 export function GET({ site }) {
