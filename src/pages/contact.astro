@@ -7,7 +7,7 @@ import { linkPubs } from '../lib/pubs.js';
 // The form writes an email in the visitor's own mail app (no third-party service).
 // To send straight to the inbox instead, set FORM_ACTION to '/api/contact' once the
 // Resend keys are in Cloudflare (see functions/api/contact.js).
-const FORM_ACTION = '';
+const FORM_ACTION = '/api/contact';
 const ig = 'https://www.instagram.com/editor.inresidence/';
 const mail = (subject) => `mailto:${site.email}?subject=${encodeURIComponent(subject)}`;
 
@@ -66,7 +66,7 @@ const topics = ['Commissioning a story', 'Booking a residency', 'On screen or cr
     <header class="hello wrap">
       <p class="kick"><span class="eir-label pop">Contact</span></p>
       <h1>Pull up a chair.</h1>
-      <p class="lede">I spent years on the receiving end of a very full inbox, so I promise to read yours properly. Tell me what you're working on, who it's for and when you need it – and if you're not sure what you need yet, that's fine too.</p>
+      <p class="lede">Tell me what you're working on, who it's for and when you need it – and if you're not sure what you need yet, that's fine too.</p>
       <p class="direct"><a href={`mailto:${site.email}`}>{site.email}</a></p>
     </header>
 

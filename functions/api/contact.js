@@ -9,6 +9,8 @@
 export async function onRequestPost({ request, env }) {
   const back = (ok) => Response.redirect(new URL(`/contact/?sent=${ok ? 1 : 0}`, request.url), 303);
 
+  if (!env.RESEND_API_KEY || !env.CONTACT_TO || !env.CONTACT_FROM) return back(false);
+
   const form = await request.formData();
   // Honeypot: bots fill the hidden "website" field
   if (form.get('website')) return back(true);
@@ -23,7 +25,8 @@ export async function onRequestPost({ request, env }) {
     `Name: ${name}`,
     `Email: ${email}`,
     `Agency or brand: ${get('company') || '-'}`,
-    `Service: ${get('service')}`,
+    `About: ${get('service')}`,
+    `Deadline or dates: ${get('when') || '-'}`,
     '',
     message,
   ].join('\n');
@@ -38,7 +41,7 @@ export async function onRequestPost({ request, env }) {
       from: `Editor in Residence website <${env.CONTACT_FROM}>`,
       to: [env.CONTACT_TO],
       reply_to: email,
-      subject: `New enquiry from ${name}`,
+      subject: `${get('service') || 'New enquiry'} – ${name}`,
       text,
     }),
   });
